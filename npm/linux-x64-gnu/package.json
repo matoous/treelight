@@ -1,0 +1,23 @@
+{
+  "name": "treelight-linux-x64-gnu",
+  "version": "0.0.0",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "treelight.linux-x64-gnu.node",
+  "files": [
+    "treelight.linux-x64-gnu.node"
+  ],
+  "description": "Tree-sitter based syntax highlighter.",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  },
+  "repository": "https://github.com/matoous/treelight",
+  "libc": [
+    "glibc"
+  ]
+}

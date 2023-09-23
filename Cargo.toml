@@ -1,0 +1,23 @@
+[package]
+edition = "2021"
+name = "rism"
+version = "0.0.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+tree-sitter-highlight = "0.20"
+tree-sitter-javascript = "0.20"
+tree-sitter-typescript = "0.20"
+napi = { version = "2.12.2" }
+napi-derive = "2.12.2"
+lazy_static = "1.4.0"
+tree-sitter-go = "0.20.0"
+
+
+[build-dependencies]
+napi-build = "2.0.1"
+
+[profile.release]
+lto = true
