@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "rism"
+name = "treelight"
 version = "0.0.0"
 
 [lib]

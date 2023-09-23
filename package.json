@@ -1,7 +1,7 @@
 {
   "name": "treelight",
   "description": "Tree-sitter based syntax highlighter.",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
@@ -28,13 +28,8 @@
     "test": "ava",
     "universal": "napi universal",
     "version": "napi version",
-    "bench": "bun bench.js"
+    "bench": "tsx bench.js"
   },
   "packageManager": "yarn@3.6.3",
-  "optionalDependencies": {
-    "rism-win32-x64-msvc": "0.0.0",
-    "rism-darwin-x64": "0.0.0",
-    "rism-linux-x64-gnu": "0.0.0"
-  },
   "repository": "https://github.com/matoous/treelight"
 }
