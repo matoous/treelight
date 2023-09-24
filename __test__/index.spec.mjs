@@ -1,7 +1,25 @@
 import test from 'ava'
 
-import { highlight, Language } from '../index.js'
+import { highlight } from '../index.js'
 
-test('highlihgt go', (t) => {
-  t.is(highlight('x := 1', Language.GO), '<span class="variable">x</span> <span class="operator">:=</span> <span class="number">1</span>\n')
+test('go', (t) => {
+  t.snapshot(highlight('x := 1', 'go'));
+  t.snapshot(highlight(`
+package main
+
+func foo(s string) string {
+  return "foo" + s
+}
+
+func main() {
+  fmt.Println(foo("bar"))
+}`, 'go'));
+})
+
+test('js', (t) => {
+  t.snapshot(highlight('console.info("test")', 'js'));
+})
+
+test('ts', (t) => {
+  t.snapshot(highlight('console.info("test")', 'ts'));
 })

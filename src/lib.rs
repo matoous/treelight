@@ -1,15 +1,19 @@
+use std::path::PathBuf;
+
 use lazy_static::lazy_static;
 use napi::bindgen_prelude::*;
 use napi_derive::napi;
 use tree_sitter_highlight::{HighlightConfiguration, HighlightEvent, Highlighter, HtmlRenderer};
 
-#[napi]
+#[napi(string_enum)]
+#[allow(non_camel_case_types)]
 pub enum Language {
-  JS,
-  JSX,
-  TS,
-  TSX,
-  GO,
+  c,
+  go,
+  js,
+  jsx,
+  ts,
+  tsx,
 }
 
 lazy_static! {
@@ -78,15 +82,31 @@ lazy_static! {
     (config, html_attrs, class_names)
   };
   static ref GO_CONFIG: (HighlightConfiguration, Vec<String>, Vec<String>,) = {
-    let mut highlights = tree_sitter_go::HIGHLIGHT_QUERY.to_owned();
-    highlights.push_str(tree_sitter_go::HIGHLIGHT_QUERY);
+    let highlights = load_file("go", "highlights.scm");
+    let injections = load_file("go", "injections.scm");
 
     let mut config =
-      HighlightConfiguration::new(tree_sitter_go::language(), &highlights, "", "").unwrap();
+      HighlightConfiguration::new(tree_sitter_go::language(), &highlights, &injections, "")
+        .unwrap();
 
     let (html_attrs, class_names) = build_config_with_regex(&mut config);
     (config, html_attrs, class_names)
   };
+  static ref C_CONFIG: (HighlightConfiguration, Vec<String>, Vec<String>,) = {
+    let highlights = load_file("c", "highlights.scm");
+    let injections = load_file("c", "injections.scm");
+
+    let mut config =
+      HighlightConfiguration::new(tree_sitter_c::language(), &highlights, &injections, "").unwrap();
+
+    let (html_attrs, class_names) = build_config_with_regex(&mut config);
+    (config, html_attrs, class_names)
+  };
+}
+
+fn load_file(language: &str, filename: &str) -> String {
+  let path = &PathBuf::new().join("queries").join(language).join(filename);
+  std::fs::read_to_string(path).unwrap()
 }
 
 fn add_highlight_names(config: &HighlightConfiguration, highlight_names: &mut Vec<String>) {
@@ -100,7 +120,7 @@ fn add_highlight_names(config: &HighlightConfiguration, highlight_names: &mut Ve
 fn get_attrs(highlight_names: &Vec<String>) -> (Vec<String>, Vec<String>) {
   let html_attrs: Vec<String> = highlight_names
     .iter()
-    .map(|s| format!("class=\"{}\"", s.replace('.', " ")))
+    .map(|s| format!("class=\"{}\"", s.replace('.', "-")))
     .collect();
 
   let class_names: Vec<String> = highlight_names
@@ -125,11 +145,12 @@ fn load_language<'a>(
   language: Language,
 ) -> (&'a HighlightConfiguration, &'a Vec<String>, &'a Vec<String>) {
   let (config, html_attrs, class_names) = match language {
-    Language::JS => &*JS_CONFIG,
-    Language::JSX => &*JSX_CONFIG,
-    Language::TS => &*TS_CONFIG,
-    Language::TSX => &*TSX_CONFIG,
-    Language::GO => &*GO_CONFIG,
+    Language::c => &*C_CONFIG,
+    Language::go => &*GO_CONFIG,
+    Language::js => &*JS_CONFIG,
+    Language::jsx => &*JSX_CONFIG,
+    Language::ts => &*TS_CONFIG,
+    Language::tsx => &*TSX_CONFIG,
   };
 
   (&config, &html_attrs, &class_names)
