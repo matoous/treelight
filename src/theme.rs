@@ -1,7 +1,23 @@
 use anyhow::Result;
+use lazy_static::lazy_static;
 use log::warn;
 use std::{collections::HashMap, fmt::Display, path::PathBuf, str};
 use toml::{map::Map, Value};
+
+lazy_static! {
+  static ref THEME_DEFAULT: Theme = Theme::from("default");
+  static ref THEME_GITHUB_DARK: Theme = Theme::from("github_dark");
+  static ref THEME_GITHUB_LIGHT: Theme = Theme::from("github_light");
+}
+
+pub fn load_theme<'a>(theme: &str) -> &'a Theme {
+  match theme {
+    "github-dark" => &*THEME_GITHUB_DARK,
+    "github-light" => &*THEME_GITHUB_LIGHT,
+    "default" => &*THEME_DEFAULT,
+    _ => &*THEME_DEFAULT,
+  }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Color {

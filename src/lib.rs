@@ -1,157 +1,96 @@
 use std::path::PathBuf;
 
 use lazy_static::lazy_static;
-use napi::bindgen_prelude::*;
 use napi_derive::napi;
+use once_cell::sync::Lazy;
+use regex::Regex;
 use tree_sitter_highlight::{HighlightConfiguration, Highlighter, HtmlRenderer};
 
-use crate::theme::{Color, Theme};
+use crate::theme::{load_theme, Color};
 
 pub mod theme;
 
-lazy_static! {
-  static ref THEME_DEFAULT: Theme = Theme::from("default");
-  static ref THEME_GITHUB_DARK: Theme = Theme::from("github_dark");
-  static ref THEME_GITHUB_LIGHT: Theme = Theme::from("github_light");
+macro_rules! generate_configs {
+    ($(($name:ident, $lang:literal, $language:expr)),*) => {
+        lazy_static! {
+          $(
+              static ref $name: HighlightConfiguration = {
+                let highlights = read_query($lang, "highlights.scm");
+                let injections = read_query($lang, "injections.scm");
+                let locals = read_query($lang, "locals.scm");
+
+                let mut config = HighlightConfiguration::new(
+                  $language,
+                  &highlights,
+                  &injections,
+                  &locals,
+                )
+                .unwrap();
+
+                let capture_names = config
+                  .query
+                  .capture_names()
+                  .into_iter()
+                  .map(|c| c.clone())
+                  .collect::<Vec<String>>();
+
+                config.configure(&capture_names);
+
+                config
+              };
+          )*
+        }
+    };
 }
 
-#[napi(string_enum)]
-#[allow(non_camel_case_types)]
-pub enum Language {
-  c,
-  go,
-  js,
-  jsx,
-  ts,
-  tsx,
+generate_configs! {
+  (GO_CONFIG, "go", tree_sitter_go::language()),
+  (C_CONFIG, "c", tree_sitter_c::language()),
+  (JS_CONFIG, "javascript", tree_sitter_javascript::language()),
+  (TS_CONFIG, "typescript", tree_sitter_typescript::language_typescript()),
+  (JSX_CONFIG, "jsx", tree_sitter_javascript::language()),
+  (TSX_CONFIG, "tsx", tree_sitter_typescript::language_tsx()),
+  (PYTHON_CONFIG, "python", tree_sitter_python::language()),
+  (RUBY_CONFIG, "ruby", tree_sitter_ruby::language())
 }
 
-lazy_static! {
-  static ref JS_CONFIG: (HighlightConfiguration, Vec<String>) = {
-    let mut config = HighlightConfiguration::new(
-      tree_sitter_javascript::language(),
-      tree_sitter_javascript::HIGHLIGHT_QUERY,
-      tree_sitter_javascript::INJECTION_QUERY,
-      tree_sitter_javascript::LOCALS_QUERY,
-    )
-    .unwrap();
+#[allow(dead_code)]
+fn load_language<'a>(language: String) -> Option<&'a HighlightConfiguration> {
+  match language.as_str() {
+    "go" => Some(&*GO_CONFIG),
+    "c" => Some(&*C_CONFIG),
+    "js" => Some(&*JS_CONFIG),
+    "ts" => Some(&*TS_CONFIG),
+    "jsx" => Some(&*JSX_CONFIG),
+    "tsx" => Some(&*TSX_CONFIG),
+    "py" => Some(&*PYTHON_CONFIG),
+    "rb" => Some(&*RUBY_CONFIG),
+    _ => None,
+  }
+}
 
-    let html_attrs = build_config_with_regex(&mut config);
-    (config, html_attrs)
-  };
-  static ref JSX_CONFIG: (HighlightConfiguration, Vec<String>) = {
-    let mut highlights = tree_sitter_javascript::JSX_HIGHLIGHT_QUERY.to_owned();
-    highlights.push_str(tree_sitter_javascript::HIGHLIGHT_QUERY);
+pub fn read_query(language: &str, filename: &str) -> String {
+  static INHERITS_REGEX: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r";+\s*inherits\s*:?\s*([a-z_,()-]+)\s*").unwrap());
 
-    let mut config = HighlightConfiguration::new(
-      tree_sitter_javascript::language(),
-      &highlights,
-      tree_sitter_javascript::INJECTION_QUERY,
-      tree_sitter_javascript::LOCALS_QUERY,
-    )
-    .unwrap();
+  let query =
+    std::fs::read_to_string(&PathBuf::new().join("queries").join(language).join(filename))
+      .unwrap_or_default();
 
-    let html_attrs = build_config_with_regex(&mut config);
-    (config, html_attrs)
-  };
-  static ref TS_CONFIG: (HighlightConfiguration, Vec<String>) = {
-    let mut highlights = tree_sitter_typescript::HIGHLIGHT_QUERY.to_owned();
-    highlights.push_str(tree_sitter_javascript::HIGHLIGHT_QUERY);
-
-    let mut locals = tree_sitter_typescript::LOCALS_QUERY.to_owned();
-    locals.push_str(tree_sitter_javascript::LOCALS_QUERY);
-
-    let mut config = HighlightConfiguration::new(
-      tree_sitter_typescript::language_typescript(),
-      &highlights,
-      tree_sitter_javascript::INJECTION_QUERY,
-      &locals,
-    )
-    .unwrap();
-
-    let html_attrs = build_config_with_regex(&mut config);
-    (config, html_attrs)
-  };
-  static ref TSX_CONFIG: (HighlightConfiguration, Vec<String>) = {
-    let mut highlights = tree_sitter_javascript::JSX_HIGHLIGHT_QUERY.to_owned();
-    highlights.push_str(tree_sitter_typescript::HIGHLIGHT_QUERY);
-    highlights.push_str(tree_sitter_javascript::HIGHLIGHT_QUERY);
-
-    let mut locals = tree_sitter_typescript::LOCALS_QUERY.to_owned();
-    locals.push_str(tree_sitter_javascript::LOCALS_QUERY);
-
-    let mut config = HighlightConfiguration::new(
-      tree_sitter_typescript::language_tsx(),
-      &highlights,
-      tree_sitter_javascript::INJECTION_QUERY,
-      &locals,
-    )
-    .unwrap();
-
-    let html_attrs = build_config_with_regex(&mut config);
-    (config, html_attrs)
-  };
-  static ref GO_CONFIG: (HighlightConfiguration, Vec<String>) = {
-    let highlights = load_file("go", "highlights.scm");
-    let injections = load_file("go", "injections.scm");
-
-    let mut config =
-      HighlightConfiguration::new(tree_sitter_go::language(), &highlights, &injections, "")
-        .unwrap();
-
-    let html_attrs = build_config_with_regex(&mut config);
-    (config, html_attrs)
-  };
-  static ref C_CONFIG: (HighlightConfiguration, Vec<String>) = {
-    let highlights = load_file("c", "highlights.scm");
-    let injections = load_file("c", "injections.scm");
-
-    let mut config =
-      HighlightConfiguration::new(tree_sitter_c::language(), &highlights, &injections, "").unwrap();
-
-    let html_attrs = build_config_with_regex(&mut config);
-    (config, html_attrs)
-  };
+  // replaces all "; inherits <language>(,<language>)*" with the queries of the given language(s)
+  INHERITS_REGEX
+    .replace_all(&query, |captures: &regex::Captures| {
+      captures[1]
+        .split(',')
+        .map(|language| format!("\n{}\n", read_query(language, filename)))
+        .collect::<String>()
+    })
+    .to_string()
 }
 
 fn load_file(language: &str, filename: &str) -> String {
   let path = &PathBuf::new().join("queries").join(language).join(filename);
   std::fs::read_to_string(path).unwrap()
-}
-
-fn add_highlight_names(config: &HighlightConfiguration, highlight_names: &mut Vec<String>) {
-  for name in config.query.capture_names() {
-    if !highlight_names.contains(name) {
-      highlight_names.push(name.clone());
-    }
-  }
-}
-
-fn build_config_with_regex(config: &mut HighlightConfiguration) -> Vec<String> {
-  let mut highlight_names = Vec::new();
-  add_highlight_names(config, &mut highlight_names);
-
-  config.configure(&highlight_names);
-
-  let html_attrs: Vec<String> = highlight_names
-    .iter()
-    .map(|s| format!("class=\"{}\"", s.replace('.', "-")))
-    .collect();
-
-  html_attrs
-}
-
-fn load_language<'a>(language: Language) -> (&'a HighlightConfiguration, &'a Vec<String>) {
-  let (config, html_attrs) = match language {
-    Language::c => &*C_CONFIG,
-    Language::go => &*GO_CONFIG,
-    Language::js => &*JS_CONFIG,
-    Language::jsx => &*JSX_CONFIG,
-    Language::ts => &*TS_CONFIG,
-    Language::tsx => &*TSX_CONFIG,
-  };
-
-  (&config, &html_attrs)
 }
 
 #[napi(object)]
@@ -161,23 +100,30 @@ pub struct Options {
   pub theme: Option<String>,
 }
 
-fn load_theme<'a>(theme: &str) -> &'a theme::Theme {
-  match theme {
-    "github-dark" => &*THEME_GITHUB_DARK,
-    "github-light" => &*THEME_GITHUB_LIGHT,
-    "default" => &*THEME_DEFAULT,
-    _ => &*THEME_DEFAULT,
-  }
-}
-
 #[napi]
-fn highlight(code: String, language: Language, options: Option<Options>) -> String {
+fn highlight(
+  code: String,
+  #[napi(ts_arg_type = "\"js\" | \"jsx\" | \"ts\"| \"tsx\" | \"go\" | \"c\" | \"py\" | \"rb\"")]
+  language: String,
+  options: Option<Options>,
+) -> String {
   let theme_valid = options
     .and_then(|opt| opt.theme)
     .unwrap_or("default".into());
   let theme = load_theme(theme_valid.as_str());
 
-  let (config, _) = load_language(language);
+  let config = load_language(language);
+  if config.is_none() {
+    return format!(
+      "<pre class=\"treelight\" style=\"background-color: {}; color: {}\"><code>{}</code></pre>",
+      theme.get("ui.background").unwrap_or(Color::White),
+      theme.get("ui.foreground").unwrap_or(Color::Black),
+      code
+    );
+  }
+
+  let config = config.unwrap();
+
   let mut highlighter = Highlighter::new();
   let highlights = highlighter
     .highlight(&config, code.as_bytes(), None, |_| None)

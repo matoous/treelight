@@ -14,3 +14,13 @@ Install `treelight` using `npm`:
 ```sh
 npm i treelight
 ```
+
+In your code:
+
+```ts
+import { highlight } from 'treelight';
+
+const code = highlight(`console.info("Hello World!")`, 'ts');
+
+console.info(code);
+```
