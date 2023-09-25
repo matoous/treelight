@@ -11,18 +11,7 @@ export const enum Language {
   ts = 'ts',
   tsx = 'tsx'
 }
-export function highlight(code: string, language: Language): string
-export interface HastProperties {
-  className: string
+export interface Options {
+  theme?: "default" | "github-light" | "github-dark"
 }
-export interface HastNode {
-  type: string
-  tagName: string
-  properties: HastProperties
-  children: Array<HastNode | HastTextNode>
-}
-export interface HastTextNode {
-  type: string
-  value: string
-}
-export function highlightHast(code: string, language: Language): HastNode
+export function highlight(code: string, language: Language, options?: Options | undefined | null): string

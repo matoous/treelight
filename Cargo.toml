@@ -10,6 +10,9 @@ crate-type = ["cdylib"]
 napi = { version = "2.12.2" }
 napi-derive = "2.12.2"
 lazy_static = "1.4.0"
+anyhow = "1.0.75"
+toml = "0.8.0"
+log = "0.4.20"
 
 # grammars
 tree-sitter-highlight = "0.20"

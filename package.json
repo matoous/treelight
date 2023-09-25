@@ -26,6 +26,7 @@
     "build:debug": "napi build --platform",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
+    "test:update": "ava --update-snapshots",
     "universal": "napi universal",
     "version": "napi version",
     "bench": "tsx bench.js"

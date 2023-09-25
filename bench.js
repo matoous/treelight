@@ -38,13 +38,8 @@ func main() {
 let suite = new Benchmark({iterations: 50});
 
 suite.add('html', () => {
-  ts.highlight(input, ts.Language.JSX);
-  ts.highlight(go, ts.Language.GO);
-});
-
-suite.add('hast', () => {
-  ts.highlightHast(input, ts.Language.JSX);
-  ts.highlightHast(go, ts.Language.GO);
+  ts.highlight(input, ts.Language.jsx);
+  ts.highlight(go, ts.Language.go);
 });
 
 suite.run();

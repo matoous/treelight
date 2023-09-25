@@ -252,8 +252,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { Language, highlight, highlightHast } = nativeBinding
+const { Language, highlight } = nativeBinding
 
 module.exports.Language = Language
 module.exports.highlight = highlight
-module.exports.highlightHast = highlightHast
