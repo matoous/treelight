@@ -1,142 +1,81 @@
+(identifier) @variable
+
+((identifier) @constant
+ (#match? @constant "^[A-Z][A-Z\\d_]*$"))
+
+"break" @keyword
+"case" @keyword
+"const" @keyword
+"continue" @keyword
+"default" @keyword
+"do" @keyword
+"else" @keyword
+"enum" @keyword
+"extern" @keyword
+"for" @keyword
+"if" @keyword
+"inline" @keyword
+"return" @keyword
 "sizeof" @keyword
+"static" @keyword
+"struct" @keyword
+"switch" @keyword
+"typedef" @keyword
+"union" @keyword
+"volatile" @keyword
+"while" @keyword
 
-[
-  "enum"
-  "struct"
-  "typedef"
-  "union"
-] @keyword.storage.type
+"#define" @keyword
+"#elif" @keyword
+"#else" @keyword
+"#endif" @keyword
+"#if" @keyword
+"#ifdef" @keyword
+"#ifndef" @keyword
+"#include" @keyword
+(preproc_directive) @keyword
 
-[
-  "extern"
-  "register"
-  (type_qualifier)
-  (storage_class_specifier)
-] @keyword.storage.modifier
+"--" @operator
+"-" @operator
+"-=" @operator
+"->" @operator
+"=" @operator
+"!=" @operator
+"*" @operator
+"&" @operator
+"&&" @operator
+"+" @operator
+"++" @operator
+"+=" @operator
+"<" @operator
+"==" @operator
+">" @operator
+"||" @operator
 
-[
-  "goto"
-  "break"
-  "continue"
-] @keyword.control
-
-[
-  "do"
-  "for"
-  "while"
-] @keyword.control.repeat
-
-[
-  "if"
-  "else"
-  "switch"
-  "case"
-  "default"
-] @keyword.control.conditional
-
-"return" @keyword.control.return
-
-[
-  "defined"
-  "#define"
-  "#elif"
-  "#else"
-  "#endif"
-  "#if"
-  "#ifdef"
-  "#ifndef"
-  "#include"
-  (preproc_directive)
-] @keyword.directive
-
-(pointer_declarator "*" @type.builtin)
-(abstract_pointer_declarator "*" @type.builtin)
-
-[
-  "+"
-  "-"
-  "*"
-  "/"
-  "++"
-  "--"
-  "%"
-  "=="
-  "!="
-  ">"
-  "<"
-  ">="
-  "<="
-  "&&"
-  "||"
-  "!"
-  "&"
-  "|"
-  "^"
-  "~"
-  "<<"
-  ">>"
-  "="
-  "+="
-  "-="
-  "*="
-  "/="
-  "%="
-  "<<="
-  ">>="
-  "&="
-  "^="
-  "|="
-  "?"
-] @operator
-
-(conditional_expression ":" @operator)
-
-"..." @punctuation
-
-["," "." ":" ";" "->" "::"] @punctuation.delimiter
-
-["(" ")" "[" "]" "{" "}"] @punctuation.bracket
-
-[(true) (false)] @constant.builtin.boolean
-
-(enumerator name: (identifier) @type.enum.variant)
+"." @delimiter
+";" @delimiter
 
 (string_literal) @string
 (system_lib_string) @string
 
 (null) @constant
-(number_literal) @constant.numeric
-(char_literal) @constant.character
-(escape_sequence) @constant.character.escape
+(number_literal) @number
+(char_literal) @number
+
+(field_identifier) @property
+(statement_identifier) @label
+(type_identifier) @type
+(primitive_type) @type
+(sized_type_specifier) @type
 
 (call_expression
   function: (identifier) @function)
 (call_expression
   function: (field_expression
     field: (field_identifier) @function))
-(call_expression (argument_list (identifier) @variable))
 (function_declarator
-  declarator: [(identifier) (field_identifier)] @function)
-(parameter_declaration
-  declarator: (identifier) @variable.parameter)
-(parameter_declaration
-  (pointer_declarator
-    declarator: (identifier) @variable.parameter))
+  declarator: (identifier) @function)
 (preproc_function_def
   name: (identifier) @function.special)
-
-(attribute
-  name: (identifier) @attribute)
-
-(field_identifier) @variable.other.member
-(statement_identifier) @label
-(type_identifier) @type
-(primitive_type) @type.builtin
-(sized_type_specifier) @type.builtin
-
-((identifier) @constant
-  (#match? @constant "^[A-Z][A-Z\\d_]*$"))
-
-(identifier) @variable
 
 (comment) @comment

@@ -21,6 +21,7 @@ macro_rules! generate_configs {
 
                 let mut config = HighlightConfiguration::new(
                   $language,
+                  $lang,
                   &highlights,
                   &injections,
                   &locals,
@@ -31,7 +32,7 @@ macro_rules! generate_configs {
                   .query
                   .capture_names()
                   .into_iter()
-                  .map(|c| c.clone())
+                  .map(|c| c.to_string())
                   .collect::<Vec<String>>();
 
                 config.configure(&capture_names);
@@ -44,14 +45,14 @@ macro_rules! generate_configs {
 }
 
 generate_configs! {
-  (GO_CONFIG, "go", tree_sitter_go::language()),
-  (C_CONFIG, "c", tree_sitter_c::language()),
-  (JS_CONFIG, "javascript", tree_sitter_javascript::language()),
-  (TS_CONFIG, "typescript", tree_sitter_typescript::language_typescript()),
-  (JSX_CONFIG, "jsx", tree_sitter_javascript::language()),
-  (TSX_CONFIG, "tsx", tree_sitter_typescript::language_tsx()),
-  (PYTHON_CONFIG, "python", tree_sitter_python::language()),
-  (RUBY_CONFIG, "ruby", tree_sitter_ruby::language())
+  (GO_CONFIG, "go", tree_sitter_go::LANGUAGE.into()),
+  (C_CONFIG, "c", tree_sitter_c::LANGUAGE.into()),
+  (JS_CONFIG, "javascript", tree_sitter_javascript::LANGUAGE.into()),
+  (TS_CONFIG, "typescript", tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into()),
+  (JSX_CONFIG, "jsx", tree_sitter_javascript::LANGUAGE.into()),
+  (TSX_CONFIG, "tsx", tree_sitter_typescript::LANGUAGE_TSX.into()),
+  (PYTHON_CONFIG, "python", tree_sitter_python::LANGUAGE.into()),
+  (RUBY_CONFIG, "ruby", tree_sitter_ruby::LANGUAGE.into())
 }
 
 #[allow(dead_code)]
@@ -74,7 +75,7 @@ pub fn read_query(language: &str, filename: &str) -> String {
     Lazy::new(|| Regex::new(r";+\s*inherits\s*:?\s*([a-z_,()-]+)\s*").unwrap());
 
   let query =
-    std::fs::read_to_string(&PathBuf::new().join("queries").join(language).join(filename))
+    std::fs::read_to_string(PathBuf::new().join("queries").join(language).join(filename))
       .unwrap_or_default();
 
   // replaces all "; inherits <language>(,<language>)*" with the queries of the given language(s)
@@ -88,10 +89,7 @@ pub fn read_query(language: &str, filename: &str) -> String {
     .to_string()
 }
 
-fn load_file(language: &str, filename: &str) -> String {
-  let path = &PathBuf::new().join("queries").join(language).join(filename);
-  std::fs::read_to_string(path).unwrap()
-}
+
 
 #[napi(object)]
 #[derive(Debug)]
@@ -126,7 +124,7 @@ fn highlight(
 
   let mut highlighter = Highlighter::new();
   let highlights = highlighter
-    .highlight(&config, code.as_bytes(), None, |_| None)
+    .highlight(config, code.as_bytes(), None, |_| None)
     .unwrap();
 
   let capn = config.query.capture_names();
@@ -145,8 +143,8 @@ fn highlight(
 
   let mut renderer = HtmlRenderer::new();
   renderer
-    .render(highlights, code.as_bytes(), &|highlight| {
-      html_attrs[highlight.0].as_bytes()
+    .render(highlights, code.as_bytes(), &|highlight, out| {
+      out.extend_from_slice(html_attrs[highlight.0].as_bytes())
     })
     .unwrap();
   let html = unsafe { String::from_utf8_unchecked(renderer.html) };

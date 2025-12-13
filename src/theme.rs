@@ -12,10 +12,10 @@ lazy_static! {
 
 pub fn load_theme<'a>(theme: &str) -> &'a Theme {
   match theme {
-    "github-dark" => &*THEME_GITHUB_DARK,
-    "github-light" => &*THEME_GITHUB_LIGHT,
-    "default" => &*THEME_DEFAULT,
-    _ => &*THEME_DEFAULT,
+    "github-dark" => &THEME_GITHUB_DARK,
+    "github-light" => &THEME_GITHUB_LIGHT,
+    "default" => &THEME_DEFAULT,
+    _ => &THEME_DEFAULT,
   }
 }
 
@@ -145,6 +145,7 @@ impl TryFrom<Value> for Palette {
 
 #[derive(Clone, Debug, Default)]
 pub struct Theme {
+  #[allow(dead_code)]
   name: String,
 
   // UI styles are stored in a HashMap
@@ -185,7 +186,7 @@ impl Theme {
 impl From<&str> for Theme {
   fn from(name: &str) -> Self {
     let theme = Self {
-      name: name.clone().into(),
+      name: name.into(),
       styles: HashMap::new(),
     };
 
@@ -225,13 +226,10 @@ fn build_theme_values(mut values: Map<String, Value>) -> HashMap<String, Color> 
   for (name, style_value) in values {
     if let Value::Table(entries) = style_value {
       for (kind, value) in entries {
-        match kind.as_str() {
-          "fg" => {
-            let color = palette.parse_color(value);
+        if kind.as_str() == "fg" {
+          let color = palette.parse_color(value);
 
-            styles.insert(name.clone(), color.unwrap());
-          }
-          _ => {}
+          styles.insert(name.clone(), color.unwrap());
         }
       }
     } else {
