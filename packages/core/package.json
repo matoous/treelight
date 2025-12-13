@@ -1,0 +1,48 @@
+{
+  "name": "@treelight/core",
+  "version": "0.0.2",
+  "description": "Tree-sitter based syntax highlighter.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "engines": {
+    "node": ">= 18"
+  },
+  "scripts": {
+    "build": "rslib build",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github"
+  },
+  "dependencies": {
+    "@treelight/theme-github-dark": "0.0.2",
+    "web-tree-sitter": "^0.25.10"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.18.0",
+    "@types/node": "^22.19.2",
+    "rsbuild-plugin-publint": "^0.3.0",
+    "typescript": "^5.7.3"
+  }
+}

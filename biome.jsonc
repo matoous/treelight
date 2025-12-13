@@ -1,0 +1,48 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "includes": [
+      "**",
+      "!dist/**",
+      "!packages/**/dist/**",
+      "!node_modules/**",
+      "!packages/**/src/wasm/*.wasm"
+    ]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    },
+    "includes": [
+      "**",
+      "!dist/**",
+      "!packages/**/dist/**",
+      "!node_modules/**",
+      "!packages/**/src/wasm/*.wasm"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteProperties": "preserve",
+      "quoteStyle": "single"
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/package.json"],
+      "formatter": {
+        "lineWidth": 1,
+        "indentStyle": "space"
+      }
+    }
+  ]
+}

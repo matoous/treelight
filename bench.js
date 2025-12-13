@@ -1,7 +1,15 @@
-const {Benchmark} = require("tiny-benchy");
-const ts = require('./');
+import tinyBenchy from 'tiny-benchy';
+import goLanguageModule from '@treelight/go';
+import tsxLanguageModule from '@treelight/tsx';
+import treelight from '@treelight/core/dist/index.js';
 
-let input = `
+const { Benchmark } = tinyBenchy;
+const resolveLanguage = (language) => language.default ?? language;
+
+treelight.registerLanguage('tsx', resolveLanguage(tsxLanguageModule));
+treelight.registerLanguage('go', resolveLanguage(goLanguageModule));
+
+const input = `
 function Example() {
   let alertDismiss = (close) => {
     close();
@@ -24,7 +32,7 @@ function Example() {
 }
 `;
 
-let go = `
+const go = `
 package main
 
 func main() {
@@ -33,13 +41,13 @@ func main() {
     fmt.Println(x)
   }
 }
-`
+`;
 
-let suite = new Benchmark({iterations: 50});
+const suite = new Benchmark({ iterations: 50 });
 
-suite.add('html', () => {
-  ts.highlight(input, ts.Language.jsx);
-  ts.highlight(go, ts.Language.go);
+suite.add('html', async () => {
+  await treelight.highlight(input, 'tsx');
+  await treelight.highlight(go, 'go');
 });
 
 suite.run();

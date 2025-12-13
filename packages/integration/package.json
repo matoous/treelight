@@ -1,0 +1,23 @@
+{
+  "name": "@treelight/integration",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "ava",
+    "test:update": "ava --update-snapshots",
+    "lint": "biome ci --diagnostic-level=error --reporter=github"
+  },
+  "dependencies": {
+    "@treelight/core": "file:../core",
+    "@treelight/go": "file:../languages/go",
+    "@treelight/javascript": "file:../languages/javascript",
+    "@treelight/typescript": "file:../languages/typescript"
+  },
+  "devDependencies": {
+    "ava": "^6.4.1"
+  },
+  "ava": {
+    "timeout": "3m"
+  }
+}
