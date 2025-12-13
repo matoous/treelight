@@ -31,6 +31,5 @@
     "version": "napi version",
     "bench": "tsx bench.js"
   },
-  "packageManager": "yarn@3.6.3",
   "repository": "https://github.com/matoous/treelight"
 }
