@@ -97,6 +97,9 @@ const theme = {
     'ui.background': {
       'bg': '#ffffff',
     },
+    'ui.foreground': {
+      'fg': '#24292f',
+    },
     'ui.background.separator': {
       'fg': '#6e7781',
     },
