@@ -1,0 +1,53 @@
+{
+  "name": "@treelight/php",
+  "version": "0.0.2",
+  "description": "Treelight language module for php.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "keywords": [
+    "treelight",
+    "tree-sitter",
+    "language",
+    "php"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github",
+    "update": "node ../../../scripts/update-language-wasm.mjs"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.18.0",
+    "@types/node": "^22.19.2",
+    "rsbuild-plugin-publint": "^0.3.0",
+    "typescript": "^5.7.3"
+  },
+  "treelightLanguage": {
+    "repo": "tree-sitter/tree-sitter-php",
+    "version": "v0.24.2",
+    "artifact": "tree-sitter-php.wasm"
+  }
+}

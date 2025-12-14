@@ -1,0 +1,162 @@
+:root {
+  font-family:
+    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #0f172a;
+  background-color: #f5f7fb;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hero {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  color: #475569;
+  margin: 0 0 0.25rem;
+}
+
+.hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+}
+
+.hero p {
+  margin: 0;
+  color: #475569;
+  max-width: 60ch;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.field select {
+  padding: 0.65rem 0.8rem;
+  border-radius: 0.6rem;
+  border: 1px solid #cbd5f5;
+  font-size: 1rem;
+  font-family: inherit;
+  color: inherit;
+  background: white;
+}
+
+.editor,
+.preview {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow:
+    0 20px 45px rgba(15, 23, 42, 0.08),
+    0 4px 10px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.editor-header,
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.pill {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.75rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #334155;
+}
+
+textarea {
+  font-family:
+    "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+    monospace;
+  font-size: 0.95rem;
+  border: 1px solid #d9e2ff;
+  border-radius: 0.75rem;
+  min-height: 220px;
+  padding: 1rem;
+  resize: vertical;
+  width: 100%;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+textarea:focus {
+  outline: 2px solid #6366f1;
+  background: #fff;
+}
+
+.preview-output {
+  overflow: auto;
+  border-radius: 0.75rem;
+}
+
+.preview-output pre {
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border-radius: 0.75rem;
+}
+
+.note.error {
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .editor,
+  .preview {
+    padding: 0.75rem;
+  }
+}

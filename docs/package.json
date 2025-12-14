@@ -1,0 +1,40 @@
+{
+  "name": "@treelight/docs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@treelight/core": "0.0.2",
+    "@treelight/go": "0.0.2",
+    "@treelight/javascript": "0.0.2",
+    "@treelight/php": "0.0.2",
+    "@treelight/python": "0.0.2",
+    "@treelight/rust": "0.0.2",
+    "@treelight/theme-github-dark": "0.0.2",
+    "@treelight/theme-github-dark-colorblind": "0.0.2",
+    "@treelight/theme-github-dark-dimmed": "0.0.2",
+    "@treelight/theme-github-dark-high-contrast": "0.0.2",
+    "@treelight/theme-github-dark-tritanopia": "0.0.2",
+    "@treelight/theme-github-light": "0.0.2",
+    "@treelight/theme-github-light-colorblind": "0.0.2",
+    "@treelight/theme-github-light-high-contrast": "0.0.2",
+    "@treelight/theme-github-light-tritanopia": "0.0.2",
+    "@treelight/tsx": "0.0.2",
+    "@treelight/typescript": "0.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "web-tree-sitter": "^0.25.10"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  }
+}

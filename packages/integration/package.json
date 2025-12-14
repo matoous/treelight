@@ -12,6 +12,9 @@
     "@treelight/core": "file:../core",
     "@treelight/go": "file:../languages/go",
     "@treelight/javascript": "file:../languages/javascript",
+    "@treelight/php": "file:../languages/php",
+    "@treelight/python": "file:../languages/python",
+    "@treelight/rust": "file:../languages/rust",
     "@treelight/typescript": "file:../languages/typescript"
   },
   "devDependencies": {

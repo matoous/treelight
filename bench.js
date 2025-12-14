@@ -1,7 +1,7 @@
-import tinyBenchy from 'tiny-benchy';
+import treelight from '@treelight/core/dist/index.js';
 import goLanguageModule from '@treelight/go';
 import tsxLanguageModule from '@treelight/tsx';
-import treelight from '@treelight/core/dist/index.js';
+import tinyBenchy from 'tiny-benchy';
 
 const { Benchmark } = tinyBenchy;
 const resolveLanguage = (language) => language.default ?? language;

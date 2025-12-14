@@ -9,16 +9,20 @@
     "packages/core",
     "packages/integration",
     "packages/languages/*",
-    "packages/themes/*"
+    "packages/themes/*",
+    "docs"
   ],
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",
-    "turbo": "^2.3.3",
-    "tiny-benchy": "^2.1.0",
     "@treelight/go": "workspace:*",
     "@treelight/javascript": "workspace:*",
+    "@treelight/php": "workspace:*",
+    "@treelight/python": "workspace:*",
+    "@treelight/rust": "workspace:*",
     "@treelight/tsx": "workspace:*",
-    "@treelight/typescript": "workspace:*"
+    "@treelight/typescript": "workspace:*",
+    "tiny-benchy": "^2.1.0",
+    "turbo": "^2.3.3"
   },
   "engines": {
     "node": ">= 18"
@@ -35,6 +39,7 @@
     "bench": "node bench.js",
     "lint": "turbo run lint",
     "lint:repo": "biome ci --diagnostic-level=error --reporter=github",
+    "lint:fix": "biome lint --diagnostic-level=error --fix",
     "format": "biome format --write",
     "create:language": "node ./scripts/create-language-package.mjs",
     "create:theme": "node ./scripts/create-theme-package.mjs"
