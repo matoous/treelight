@@ -1,7 +1,7 @@
 {
-  "name": "@treelight/tsx",
+  "name": "@treelight/yaml",
   "version": "0.0.2",
-  "description": "Treelight language module for tsx.",
+  "description": "Treelight language module for yaml.",
   "type": "module",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
@@ -17,6 +17,9 @@
       }
     }
   },
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -26,10 +29,7 @@
     "treelight",
     "tree-sitter",
     "language",
-    "tsx"
-  ],
-  "files": [
-    "dist"
+    "yaml"
   ],
   "scripts": {
     "build": "rslib build",
@@ -37,11 +37,7 @@
     "inspect": "rslib inspect",
     "tsc": "tsc --noEmit",
     "lint": "biome ci --diagnostic-level=error --reporter=github",
-    "lint:fix": "biome check --write",
     "update": "node ../../../scripts/update-language-wasm.mjs"
-  },
-  "dependencies": {
-    "@treelight/ecma": "0.0.2"
   },
   "devDependencies": {
     "@rslib/core": "^0.18.0",
@@ -50,8 +46,8 @@
     "typescript": "^5.7.3"
   },
   "treelightLanguage": {
-    "repo": "tree-sitter/tree-sitter-typescript",
-    "version": "v0.23.2",
-    "artifact": "tree-sitter-tsx.wasm"
+    "repo": "tree-sitter-grammars/tree-sitter-yaml",
+    "version": "v0.7.2",
+    "artifact": "tree-sitter-yaml.wasm"
   }
 }

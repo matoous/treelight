@@ -45,6 +45,20 @@ async function run() {
 run();
 `;
 
+const jsonSample = `{
+  "title": "Treelight",
+  "version": 2,
+  "languages": [
+    "javascript",
+    "typescript",
+    "json"
+  ],
+  "settings": {
+    "prettify": true,
+    "lineNumbers": false
+  }
+}`;
+
 const phpSample = `<?php
 
 class Queue {
@@ -64,6 +78,22 @@ $queue->push('render');
 $queue->push('paint');
 
 echo $queue->pop();
+`;
+
+const yamlSample = `languages:
+  - id: javascript
+    enabled: true
+  - id: typescript
+    enabled: true
+  - id: json
+    enabled: false
+
+pipeline:
+  steps:
+    - name: fetch
+      retries: 2
+    - name: highlight
+      threads: 4
 `;
 
 const pythonSample = `from dataclasses import dataclass
@@ -131,6 +161,15 @@ export function Counter() {
 }
 `;
 
+const schemeSample = `;; Calculate factorial recursively.
+(define (factorial n)
+  (if (<= n 1)
+      1
+      (* n (factorial (- n 1)))))
+
+(display (factorial 5))
+`;
+
 export const languageOptions: LanguageOption[] = [
   {
     id: 'go',
@@ -143,6 +182,12 @@ export const languageOptions: LanguageOption[] = [
     label: 'JavaScript',
     loader: () => import('@treelight/javascript'),
     sample: javascriptSample,
+  },
+  {
+    id: 'json',
+    label: 'JSON',
+    loader: () => import('@treelight/json'),
+    sample: jsonSample,
   },
   {
     id: 'php',
@@ -163,6 +208,12 @@ export const languageOptions: LanguageOption[] = [
     sample: rustSample,
   },
   {
+    id: 'scheme',
+    label: 'Scheme (.scm)',
+    loader: () => import('@treelight/scheme'),
+    sample: schemeSample,
+  },
+  {
     id: 'typescript',
     label: 'TypeScript',
     loader: () => import('@treelight/typescript'),
@@ -173,5 +224,11 @@ export const languageOptions: LanguageOption[] = [
     label: 'TSX / JSX',
     loader: () => import('@treelight/tsx'),
     sample: tsxSample,
+  },
+  {
+    id: 'yaml',
+    label: 'YAML',
+    loader: () => import('@treelight/yaml'),
+    sample: yamlSample,
   },
 ];

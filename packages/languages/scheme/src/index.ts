@@ -1,18 +1,16 @@
-import { ecmaHighlightQuery } from '@treelight/ecma';
-import tsxHighlights from './queries/highlights.scm';
+import schemeHighlights from './queries/highlights.scm';
+import schemeBuiltins from './queries/highlights-builtins.scm';
 import injections from './queries/injections.scm';
 import locals from './queries/locals.scm';
-import typescriptHighlights from './queries/typescript-highlights.scm';
-import wasmDataUri from './wasm/tree-sitter-tsx.wasm';
+import wasmDataUri from './wasm/tree-sitter-lilypond_scheme.wasm';
 
 const wasmBase64 = wasmDataUri.split(',')[1] ?? wasmDataUri;
-
-const highlightQuery = [ecmaHighlightQuery, typescriptHighlights, tsxHighlights]
+const highlightQuery = [schemeHighlights, schemeBuiltins]
   .filter(Boolean)
   .join('\n');
 
 const language = {
-  id: 'tsx',
+  id: 'scheme',
   wasm: wasmBase64,
   queries: {
     highlights: highlightQuery,

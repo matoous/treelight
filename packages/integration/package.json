@@ -12,11 +12,14 @@
     "@treelight/core": "file:../core",
     "@treelight/go": "file:../languages/go",
     "@treelight/javascript": "file:../languages/javascript",
+    "@treelight/json": "file:../languages/json",
     "@treelight/php": "file:../languages/php",
     "@treelight/python": "file:../languages/python",
     "@treelight/rust": "file:../languages/rust",
+    "@treelight/scheme": "file:../languages/scheme",
     "@treelight/tsx": "file:../languages/tsx",
-    "@treelight/typescript": "file:../languages/typescript"
+    "@treelight/typescript": "file:../languages/typescript",
+    "@treelight/yaml": "file:../languages/yaml"
   },
   "devDependencies": {
     "ava": "^6.4.1"

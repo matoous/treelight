@@ -2,10 +2,10 @@
   font-family:
     "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
   color: #0f172a;
   background-color: #f5f7fb;
-  line-height: 1.5;
-  font-weight: 400;
 }
 
 * {
@@ -13,8 +13,8 @@
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
+  margin: 0;
 }
 
 #root {
@@ -22,12 +22,12 @@ body {
 }
 
 .page {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem 4rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-width: 960px;
+  padding: 3rem 1.5rem 4rem;
+  margin: 0 auto;
 }
 
 .hero {
@@ -37,11 +37,11 @@ body {
 }
 
 .eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  margin: 0 0 0.25rem;
   font-size: 0.85rem;
   color: #475569;
-  margin: 0 0 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .hero h1 {
@@ -50,9 +50,9 @@ body {
 }
 
 .hero p {
+  max-width: 60ch;
   margin: 0;
   color: #475569;
-  max-width: 60ch;
 }
 
 .controls {
@@ -72,57 +72,57 @@ body {
 
 .field select {
   padding: 0.65rem 0.8rem;
-  border-radius: 0.6rem;
-  border: 1px solid #cbd5f5;
-  font-size: 1rem;
   font-family: inherit;
+  font-size: 1rem;
   color: inherit;
   background: white;
+  border: 1px solid #cbd5f5;
+  border-radius: 0.6rem;
 }
 
 .editor,
 .preview {
-  background: white;
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow:
-    0 20px 45px rgba(15, 23, 42, 0.08),
-    0 4px 10px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow:
+    0 20px 45px rgba(15, 23, 42, 0.08),
+    0 4px 10px rgba(15, 23, 42, 0.04);
 }
 
 .editor-header,
 .preview-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   font-weight: 600;
   color: #0f172a;
 }
 
 .pill {
-  font-size: 0.75rem;
   padding: 0.1rem 0.75rem;
-  border-radius: 999px;
-  background: #e2e8f0;
+  font-size: 0.75rem;
   color: #334155;
+  background: #e2e8f0;
+  border-radius: 999px;
 }
 
 textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 1rem;
   font-family:
     "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
     monospace;
   font-size: 0.95rem;
+  color: #0f172a;
+  resize: vertical;
+  background: #f8fafc;
   border: 1px solid #d9e2ff;
   border-radius: 0.75rem;
-  min-height: 220px;
-  padding: 1rem;
-  resize: vertical;
-  width: 100%;
-  background: #f8fafc;
-  color: #0f172a;
 }
 
 textarea:focus {
@@ -136,18 +136,18 @@ textarea:focus {
 }
 
 .preview-output pre {
-  margin: 0;
   padding: 1rem;
+  margin: 0;
   overflow: auto;
   border-radius: 0.75rem;
 }
 
 .note.error {
   padding: 0.85rem 1rem;
-  border-radius: 0.75rem;
-  background: #fee2e2;
   color: #b91c1c;
+  background: #fee2e2;
   border: 1px solid #fecaca;
+  border-radius: 0.75rem;
 }
 
 @media (max-width: 640px) {
