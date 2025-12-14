@@ -14,7 +14,10 @@
   ],
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",
+    "@treelight/elixir": "workspace:*",
     "@treelight/go": "workspace:*",
+    "@treelight/html": "workspace:*",
+    "@treelight/java": "workspace:*",
     "@treelight/javascript": "workspace:*",
     "@treelight/json": "workspace:*",
     "@treelight/php": "workspace:*",

@@ -32,6 +32,21 @@ func process(id int, job Job) {
 }
 `;
 
+const htmlSample = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Treelight</title>
+  </head>
+  <body>
+    <main>
+      <h1 data-theme="dark">Hello, Treelight!</h1>
+      <button class="cta" disabled>Loading...</button>
+    </main>
+  </body>
+</html>
+`;
+
 const javascriptSample = `const greet = (name = 'friend') => {
   return \`Hello, \${name}!\`;
 };
@@ -43,6 +58,27 @@ async function run() {
 }
 
 run();
+`;
+
+const javaSample = `import java.util.List;
+
+public class Greeter {
+  private final List<String> names;
+
+  public Greeter(List<String> names) {
+    this.names = names;
+  }
+
+  public void greet() {
+    for (String name : names) {
+      System.out.println("Hello, " + name + "!");
+    }
+  }
+
+  public static void main(String[] args) {
+    new Greeter(List.of("Treelight", "Java")).greet();
+  }
+}
 `;
 
 const jsonSample = `{
@@ -78,6 +114,26 @@ $queue->push('render');
 $queue->push('paint');
 
 echo $queue->pop();
+`;
+
+const elixirSample = `defmodule Queue do
+  defstruct items: []
+
+  def push(%__MODULE__{items: items} = queue, item) do
+    %{queue | items: items ++ [item]}
+  end
+
+  def pop(%__MODULE__{items: [head | tail]} = queue) do
+    {head, %{queue | items: tail}}
+  end
+end
+
+queue =
+  %Queue{}
+  |> Queue.push("render")
+  |> Queue.push("paint")
+
+IO.inspect(queue)
 `;
 
 const yamlSample = `languages:
@@ -178,10 +234,22 @@ export const languageOptions: LanguageOption[] = [
     sample: goSample,
   },
   {
+    id: 'html',
+    label: 'HTML',
+    loader: () => import('@treelight/html'),
+    sample: htmlSample,
+  },
+  {
     id: 'javascript',
     label: 'JavaScript',
     loader: () => import('@treelight/javascript'),
     sample: javascriptSample,
+  },
+  {
+    id: 'java',
+    label: 'Java',
+    loader: () => import('@treelight/java'),
+    sample: javaSample,
   },
   {
     id: 'json',
@@ -200,6 +268,12 @@ export const languageOptions: LanguageOption[] = [
     label: 'Python',
     loader: () => import('@treelight/python'),
     sample: pythonSample,
+  },
+  {
+    id: 'elixir',
+    label: 'Elixir',
+    loader: () => import('@treelight/elixir'),
+    sample: elixirSample,
   },
   {
     id: 'rust',

@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@treelight/core": "file:../core",
+    "@treelight/elixir": "file:../languages/elixir",
     "@treelight/go": "file:../languages/go",
+    "@treelight/html": "file:../languages/html",
+    "@treelight/java": "file:../languages/java",
     "@treelight/javascript": "file:../languages/javascript",
     "@treelight/json": "file:../languages/json",
     "@treelight/php": "file:../languages/php",

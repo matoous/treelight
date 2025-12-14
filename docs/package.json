@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@treelight/core": "0.0.2",
+    "@treelight/elixir": "0.0.2",
     "@treelight/go": "0.0.2",
+    "@treelight/html": "0.0.2",
+    "@treelight/java": "0.0.2",
     "@treelight/javascript": "0.0.2",
     "@treelight/json": "0.0.2",
     "@treelight/php": "0.0.2",

@@ -40,7 +40,7 @@ async function ensureDirDoesNotExist(target) {
   try {
     await access(target, fsConstants.F_OK);
     throw new Error(`Directory ${target} already exists.`);
-  } catch (_error) {
+  } catch (error) {
     if (error.code === 'ENOENT') {
       return;
     }
