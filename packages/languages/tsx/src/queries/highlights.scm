@@ -1,35 +1,43 @@
-; Types
+; Punctuation
+; -----------
 
-(type_identifier) @type
-(predefined_type) @type.builtin
+; Handle attribute delimiter (<Component color="red"/>)
+(jsx_attribute "=" @punctuation.delimiter)
 
-((identifier) @type
- (#match? @type "^[A-Z]"))
+; <Component>
+(jsx_opening_element ["<" ">"] @punctuation.bracket)
 
-(type_arguments
-  "<" @punctuation.bracket
-  ">" @punctuation.bracket)
+; </Component>
+(jsx_closing_element ["</" ">"] @punctuation.bracket)
 
-; Variables
+; <Component />
+(jsx_self_closing_element ["<" "/>"] @punctuation.bracket)
 
-(required_parameter (identifier) @variable.parameter)
-(optional_parameter (identifier) @variable.parameter)
+; Attributes
+; ----------
 
-; Keywords
+(jsx_attribute (property_identifier) @attribute)
 
-[ "abstract"
-  "declare"
-  "enum"
-  "export"
-  "implements"
-  "interface"
-  "keyof"
-  "namespace"
-  "private"
-  "protected"
-  "public"
-  "type"
-  "readonly"
-  "override"
-  "satisfies"
-] @keyword
+; Opening elements
+; ----------------
+
+(jsx_opening_element (identifier) @tag)
+
+(jsx_opening_element ((identifier) @constructor
+ (#match? @constructor "^[A-Z]")))
+
+; Closing elements
+; ----------------
+
+(jsx_closing_element (identifier) @tag)
+
+(jsx_closing_element ((identifier) @constructor
+ (#match? @constructor "^[A-Z]")))
+
+; Self-closing elements
+; ---------------------
+
+(jsx_self_closing_element (identifier) @tag)
+
+(jsx_self_closing_element ((identifier) @constructor
+ (#match? @constructor "^[A-Z]")))

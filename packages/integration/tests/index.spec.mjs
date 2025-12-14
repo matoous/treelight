@@ -3,6 +3,7 @@ import javascriptLanguage from '@treelight/javascript';
 import phpLanguage from '@treelight/php';
 import pythonLanguage from '@treelight/python';
 import rustLanguage from '@treelight/rust';
+import tsxLanguage from '@treelight/tsx';
 import typescriptLanguage from '@treelight/typescript';
 import test from 'ava';
 import treelight from '../../core/dist/index.js';
@@ -16,6 +17,7 @@ test.before(() => {
   registerLanguage('php', resolveLanguage(phpLanguage));
   registerLanguage('python', resolveLanguage(pythonLanguage));
   registerLanguage('rust', resolveLanguage(rustLanguage));
+  registerLanguage('tsx', resolveLanguage(tsxLanguage));
   registerLanguage('typescript', resolveLanguage(typescriptLanguage));
 });
 
@@ -89,4 +91,15 @@ fn main() {
 
 test('typescript', async (t) => {
   t.snapshot(await highlight('console.info("test")', 'typescript'));
+});
+
+test('tsx', async (t) => {
+  t.snapshot(
+    await highlight(
+      `<Title message="hello">
+  <Button disabled={state.loading}>Submit</Button>
+</Title>`,
+      'tsx',
+    ),
+  );
 });

@@ -1,204 +1,36 @@
-; Variables
-;----------
+; Function and method parameters
+;-------------------------------
 
-(identifier) @variable
+; Javascript and Typescript Treesitter grammars deviate when defining the
+; tree structure for parameters, so we need to address them in each specific
+; language instead of ecma.
 
-; Properties
-;-----------
+; (p)
+(formal_parameters 
+  (identifier) @variable.parameter)
 
-(property_identifier) @property
+; (...p)
+(formal_parameters
+  (rest_pattern
+    (identifier) @variable.parameter))
 
-; Function and method definitions
-;--------------------------------
+; ({ p })
+(formal_parameters
+  (object_pattern
+    (shorthand_property_identifier_pattern) @variable.parameter))
 
-(function_expression
-  name: (identifier) @function)
-(function_declaration
-  name: (identifier) @function)
-(method_definition
-  name: (property_identifier) @function.method)
+; ({ a: p })
+(formal_parameters
+  (object_pattern
+    (pair_pattern
+      value: (identifier) @variable.parameter)))
 
-(pair
-  key: (property_identifier) @function.method
-  value: [(function_expression) (arrow_function)])
+; ([ p ])
+(formal_parameters
+  (array_pattern
+    (identifier) @variable.parameter))
 
-(assignment_expression
-  left: (member_expression
-    property: (property_identifier) @function.method)
-  right: [(function_expression) (arrow_function)])
-
-(variable_declarator
-  name: (identifier) @function
-  value: [(function_expression) (arrow_function)])
-
-(assignment_expression
-  left: (identifier) @function
-  right: [(function_expression) (arrow_function)])
-
-; Function and method calls
-;--------------------------
-
-(call_expression
-  function: (identifier) @function)
-
-(call_expression
-  function: (member_expression
-    property: (property_identifier) @function.method))
-
-; Special identifiers
-;--------------------
-
-((identifier) @constructor
- (#match? @constructor "^[A-Z]"))
-
-([
-    (identifier)
-    (shorthand_property_identifier)
-    (shorthand_property_identifier_pattern)
- ] @constant
- (#match? @constant "^[A-Z_][A-Z\\d_]+$"))
-
-((identifier) @variable.builtin
- (#match? @variable.builtin "^(arguments|module|console|window|document)$")
- (#is-not? local))
-
-((identifier) @function.builtin
- (#eq? @function.builtin "require")
- (#is-not? local))
-
-; Literals
-;---------
-
-(this) @variable.builtin
-(super) @variable.builtin
-
-[
-  (true)
-  (false)
-  (null)
-  (undefined)
-] @constant.builtin
-
-(comment) @comment
-
-[
-  (string)
-  (template_string)
-] @string
-
-(regex) @string.special
-(number) @number
-
-; Tokens
-;-------
-
-[
-  ";"
-  (optional_chain)
-  "."
-  ","
-] @punctuation.delimiter
-
-[
-  "-"
-  "--"
-  "-="
-  "+"
-  "++"
-  "+="
-  "*"
-  "*="
-  "**"
-  "**="
-  "/"
-  "/="
-  "%"
-  "%="
-  "<"
-  "<="
-  "<<"
-  "<<="
-  "="
-  "=="
-  "==="
-  "!"
-  "!="
-  "!=="
-  "=>"
-  ">"
-  ">="
-  ">>"
-  ">>="
-  ">>>"
-  ">>>="
-  "~"
-  "^"
-  "&"
-  "|"
-  "^="
-  "&="
-  "|="
-  "&&"
-  "||"
-  "??"
-  "&&="
-  "||="
-  "??="
-] @operator
-
-[
-  "("
-  ")"
-  "["
-  "]"
-  "{"
-  "}"
-]  @punctuation.bracket
-
-(template_substitution
-  "\${" @punctuation.special
-  "}" @punctuation.special) @embedded
-
-[
-  "as"
-  "async"
-  "await"
-  "break"
-  "case"
-  "catch"
-  "class"
-  "const"
-  "continue"
-  "debugger"
-  "default"
-  "delete"
-  "do"
-  "else"
-  "export"
-  "extends"
-  "finally"
-  "for"
-  "from"
-  "function"
-  "get"
-  "if"
-  "import"
-  "in"
-  "instanceof"
-  "let"
-  "new"
-  "of"
-  "return"
-  "set"
-  "static"
-  "switch"
-  "target"
-  "throw"
-  "try"
-  "typeof"
-  "var"
-  "void"
-  "while"
-  "with"
-  "yield"
-] @keyword
+; (p = 1)
+(formal_parameters
+  (assignment_pattern
+    left: (identifier) @variable.parameter))

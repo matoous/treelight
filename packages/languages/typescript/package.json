@@ -39,6 +39,9 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github",
     "update": "node ../../../scripts/update-language-wasm.mjs"
   },
+  "dependencies": {
+    "@treelight/ecma": "0.0.2"
+  },
   "devDependencies": {
     "@rslib/core": "^0.18.0",
     "@types/node": "^22.19.2",
