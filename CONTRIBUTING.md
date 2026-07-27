@@ -25,4 +25,12 @@ npm run changeset -- --empty
 
 On `main`, the release workflow opens a version PR when changesets are present. Merging that PR publishes the public workspace packages to npm with `npm run release`.
 
-The workflow needs an `NPM_TOKEN` repository secret with publish access to the `@treelight` scope. It also sets `NPM_CONFIG_PROVENANCE=true`, so npm publishes include provenance from GitHub Actions.
+Publishing uses npm trusted publishing from GitHub Actions, so the workflow does not need an `NPM_TOKEN` repository secret. npm requires a trusted publisher configuration for each published package. For a package that already exists, open the package on npmjs.com, then use **Settings -> Trusted Publisher** and add:
+
+- provider: GitHub Actions
+- organization or user: `matoous`
+- repository: `treelight`
+- workflow filename: `CI.yml`
+- allowed action: `npm publish`
+
+npm trusted publishing is package-level, not scope-level. For brand-new packages, publish the initial version manually from an npm account that can publish to `@treelight`, then configure the trusted publisher in each package's settings before relying on CI for subsequent releases.

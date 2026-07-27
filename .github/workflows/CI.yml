@@ -86,6 +86,3 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           publish: npm run release
           version: npm run version-packages
-        env:
-          NPM_CONFIG_PROVENANCE: true
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
