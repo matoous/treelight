@@ -37,29 +37,22 @@ npm requires a trusted publisher configuration for each published package. For a
 
 npm trusted publishing is package-level, not scope-level. The package must already exist before you can configure trusted publishing. For brand-new packages, publish an initial version manually from an npm account that can publish to `@treelight`, then configure the trusted publisher before relying on CI for subsequent releases.
 
+When adding a new public package, bootstrap it locally before merging the release PR that should include it:
+
+```sh
+npm login
+npm ci
+npm run build
+cd packages/languages/<name>
+npm publish --access public
+```
+
+For non-language packages, publish from that package directory instead. After the first local publish succeeds, configure trusted publishing for that package. Future versions should then go through the normal Changesets release workflow on `main`.
+
 The npm CLI can configure trusted publishing in bulk after the packages exist. It requires npm `11.15.0` or newer, account-level 2FA, and interactive npm authentication; granular access tokens with bypass 2FA are not supported for `npm trust`.
 
 ```sh
-for package in \
-  @treelight/browser \
-  @treelight/core \
-  @treelight/ecma \
-  @treelight/elixir \
-  @treelight/go \
-  @treelight/html \
-  @treelight/java \
-  @treelight/javascript \
-  @treelight/json \
-  @treelight/php \
-  @treelight/python \
-  @treelight/rust \
-  @treelight/scheme \
-  @treelight/theme-github-dark \
-  @treelight/theme-github-light \
-  @treelight/tsx \
-  @treelight/typescript \
-  @treelight/yaml
-do
+for package in $(npm run --silent list:public-packages); do
   npm trust github "$package" --repo matoous/treelight --file CI.yml --allow-publish --yes
   sleep 2
 done

@@ -52,6 +52,7 @@
     "check:languages": "node ./scripts/check-language-metadata.mjs",
     "create:language": "node ./scripts/create-language-package.mjs",
     "create:theme": "node ./scripts/create-theme-package.mjs",
+    "list:public-packages": "node ./scripts/list-public-packages.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "npm run build && changeset publish"
