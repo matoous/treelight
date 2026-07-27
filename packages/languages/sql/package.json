@@ -1,0 +1,65 @@
+{
+  "name": "@treelight/sql",
+  "version": "0.0.0",
+  "description": "Treelight language module for sql.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "keywords": [
+    "treelight",
+    "tree-sitter",
+    "language",
+    "sql"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github",
+    "update": "node ../../../scripts/update-language-wasm.mjs"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "rsbuild-plugin-publint": "^1.0.0",
+    "typescript": "^7.0.2"
+  },
+  "treelightLanguage": {
+    "repo": "DerekStride/tree-sitter-sql",
+    "revision": "851e9cb257ba7c66cc8c14214a31c44d2f1e954e",
+    "version": "851e9cb257ba7c66cc8c14214a31c44d2f1e954e",
+    "artifact": "tree-sitter-sql.wasm",
+    "source": {
+      "git": "https://github.com/DerekStride/tree-sitter-sql.git"
+    },
+    "queries": {
+      "highlights": [
+        "queries/highlights.scm"
+      ]
+    }
+  }
+}

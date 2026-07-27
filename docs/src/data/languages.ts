@@ -32,6 +32,55 @@ func process(id int, job Job) {
 }
 `;
 
+const bashSample = `#!/usr/bin/env bash
+set -euo pipefail
+
+name="\${1:-Treelight}"
+echo "Hello, \${name}!"
+`;
+
+const cSample = `#include <stdio.h>
+
+int main(void) {
+  puts("Hello, Treelight!");
+  return 0;
+}
+`;
+
+const cppSample = `#include <iostream>
+#include <vector>
+
+int main() {
+  std::vector<std::string> names = {"Tree", "light"};
+  for (const auto& name : names) {
+    std::cout << name << "\\n";
+  }
+}
+`;
+
+const cssSample = `.callout {
+  display: grid;
+  gap: 0.5rem;
+  color: rebeccapurple;
+}
+`;
+
+const dockerfileSample = `FROM node:24-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+CMD ["npm", "run", "dev"]
+`;
+
+const graphqlSample = `query Repository($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    name
+    stargazerCount
+  }
+}
+`;
+
 const htmlSample = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -58,6 +107,21 @@ async function run() {
 }
 
 run();
+`;
+
+const luaSample = `local function greet(name)
+  return string.format("Hello, %s!", name)
+end
+
+print(greet("Treelight"))
+`;
+
+const markdownSample = `# Treelight
+
+Tree-sitter based syntax highlighting for JavaScript runtimes.
+
+- Accurate parsing
+- Runtime language registration
 `;
 
 const javaSample = `import java.util.List;
@@ -116,6 +180,25 @@ $queue->push('paint');
 echo $queue->pop();
 `;
 
+const rubySample = `class Greeter
+  def initialize(name)
+    @name = name
+  end
+
+  def call
+    puts "Hello, #{@name}!"
+  end
+end
+
+Greeter.new("Treelight").call
+`;
+
+const sqlSample = `select id, title, completed
+from tasks
+where completed = false
+order by created_at desc;
+`;
+
 const elixirSample = `defmodule Queue do
   defstruct items: []
 
@@ -150,6 +233,15 @@ pipeline:
       retries: 2
     - name: highlight
       threads: 4
+`;
+
+const tomlSample = `[package]
+name = "treelight"
+version = "0.1.0"
+
+[features]
+browser = true
+languages = ["rust", "typescript"]
 `;
 
 const pythonSample = `from dataclasses import dataclass
@@ -217,6 +309,13 @@ export function Counter() {
 }
 `;
 
+const zigSample = `const std = @import("std");
+
+pub fn main() void {
+    std.debug.print("Hello, Treelight!\\n", .{});
+}
+`;
+
 const schemeSample = `;; Calculate factorial recursively.
 (define (factorial n)
   (if (<= n 1)
@@ -227,6 +326,42 @@ const schemeSample = `;; Calculate factorial recursively.
 `;
 
 export const languageOptions: LanguageOption[] = [
+  {
+    id: 'bash',
+    label: 'Bash',
+    loader: () => import('@treelight/bash'),
+    sample: bashSample,
+  },
+  {
+    id: 'c',
+    label: 'C',
+    loader: () => import('@treelight/c'),
+    sample: cSample,
+  },
+  {
+    id: 'cpp',
+    label: 'C++',
+    loader: () => import('@treelight/cpp'),
+    sample: cppSample,
+  },
+  {
+    id: 'css',
+    label: 'CSS',
+    loader: () => import('@treelight/css'),
+    sample: cssSample,
+  },
+  {
+    id: 'dockerfile',
+    label: 'Dockerfile',
+    loader: () => import('@treelight/dockerfile'),
+    sample: dockerfileSample,
+  },
+  {
+    id: 'graphql',
+    label: 'GraphQL',
+    loader: () => import('@treelight/graphql'),
+    sample: graphqlSample,
+  },
   {
     id: 'go',
     label: 'Go',
@@ -246,6 +381,18 @@ export const languageOptions: LanguageOption[] = [
     sample: javascriptSample,
   },
   {
+    id: 'lua',
+    label: 'Lua',
+    loader: () => import('@treelight/lua'),
+    sample: luaSample,
+  },
+  {
+    id: 'markdown',
+    label: 'Markdown',
+    loader: () => import('@treelight/markdown'),
+    sample: markdownSample,
+  },
+  {
     id: 'java',
     label: 'Java',
     loader: () => import('@treelight/java'),
@@ -262,6 +409,12 @@ export const languageOptions: LanguageOption[] = [
     label: 'PHP',
     loader: () => import('@treelight/php'),
     sample: phpSample,
+  },
+  {
+    id: 'ruby',
+    label: 'Ruby',
+    loader: () => import('@treelight/ruby'),
+    sample: rubySample,
   },
   {
     id: 'python',
@@ -288,6 +441,18 @@ export const languageOptions: LanguageOption[] = [
     sample: schemeSample,
   },
   {
+    id: 'sql',
+    label: 'SQL',
+    loader: () => import('@treelight/sql'),
+    sample: sqlSample,
+  },
+  {
+    id: 'toml',
+    label: 'TOML',
+    loader: () => import('@treelight/toml'),
+    sample: tomlSample,
+  },
+  {
     id: 'typescript',
     label: 'TypeScript',
     loader: () => import('@treelight/typescript'),
@@ -304,5 +469,11 @@ export const languageOptions: LanguageOption[] = [
     label: 'YAML',
     loader: () => import('@treelight/yaml'),
     sample: yamlSample,
+  },
+  {
+    id: 'zig',
+    label: 'Zig',
+    loader: () => import('@treelight/zig'),
+    sample: zigSample,
   },
 ];

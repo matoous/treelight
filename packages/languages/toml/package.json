@@ -1,0 +1,68 @@
+{
+  "name": "@treelight/toml",
+  "version": "0.0.0",
+  "description": "Treelight language module for toml.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "keywords": [
+    "treelight",
+    "tree-sitter",
+    "language",
+    "toml"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github",
+    "update": "node ../../../scripts/update-language-wasm.mjs"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "rsbuild-plugin-publint": "^1.0.0",
+    "typescript": "^7.0.2"
+  },
+  "treelightLanguage": {
+    "repo": "tree-sitter-grammars/tree-sitter-toml",
+    "revision": "64b56832c2cffe41758f28e05c756a3a98d16f41",
+    "version": "64b56832c2cffe41758f28e05c756a3a98d16f41",
+    "artifact": "tree-sitter-toml.wasm",
+    "source": {
+      "git": "https://github.com/tree-sitter-grammars/tree-sitter-toml.git"
+    },
+    "queries": {
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
+      ]
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "name": "@treelight/markdown",
+  "version": "0.0.0",
+  "description": "Treelight language module for markdown.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "keywords": [
+    "treelight",
+    "tree-sitter",
+    "language",
+    "markdown"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github",
+    "update": "node ../../../scripts/update-language-wasm.mjs"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "rsbuild-plugin-publint": "^1.0.0",
+    "typescript": "^7.0.2"
+  },
+  "treelightLanguage": {
+    "repo": "tree-sitter-grammars/tree-sitter-markdown",
+    "revision": "f969cd3ae3f9fbd4e43205431d0ae286014c05b5",
+    "version": "f969cd3ae3f9fbd4e43205431d0ae286014c05b5",
+    "artifact": "tree-sitter-markdown.wasm",
+    "source": {
+      "git": "https://github.com/tree-sitter-grammars/tree-sitter-markdown.git",
+      "subpath": "tree-sitter-markdown"
+    },
+    "queries": {
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
+      ]
+    }
+  }
+}
