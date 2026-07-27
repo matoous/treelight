@@ -58,5 +58,8 @@
         "php/src/injections.scm"
       ]
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

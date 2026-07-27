@@ -15,6 +15,7 @@
   ],
   "devDependencies": {
     "@biomejs/biome": "^2.5.5",
+    "@changesets/cli": "^2.31.1",
     "@treelight/browser": "workspace:*",
     "@treelight/elixir": "workspace:*",
     "@treelight/go": "workspace:*",
@@ -50,7 +51,10 @@
     "lint:fix": "biome check --write",
     "check:languages": "node ./scripts/check-language-metadata.mjs",
     "create:language": "node ./scripts/create-language-package.mjs",
-    "create:theme": "node ./scripts/create-theme-package.mjs"
+    "create:theme": "node ./scripts/create-theme-package.mjs",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "npm run build && changeset publish"
   },
   "packageManager": "npm@10.9.4",
   "repository": {

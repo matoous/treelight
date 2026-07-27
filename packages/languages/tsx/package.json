@@ -74,5 +74,8 @@
         "path": "../typescript/src/queries/highlights.scm"
       }
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

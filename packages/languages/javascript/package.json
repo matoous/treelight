@@ -69,5 +69,8 @@
         "package": "@treelight/ecma"
       }
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

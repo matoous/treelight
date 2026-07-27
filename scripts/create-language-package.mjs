@@ -97,6 +97,9 @@ async function main() {
       },
     },
     files: ['dist'],
+    publishConfig: {
+      access: 'public',
+    },
     license: 'MIT',
     repository: {
       type: 'git',

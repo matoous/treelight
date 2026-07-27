@@ -1,0 +1,36 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [
+    [
+      "@treelight/browser",
+      "@treelight/core",
+      "@treelight/ecma",
+      "@treelight/elixir",
+      "@treelight/go",
+      "@treelight/html",
+      "@treelight/java",
+      "@treelight/javascript",
+      "@treelight/json",
+      "@treelight/php",
+      "@treelight/python",
+      "@treelight/rust",
+      "@treelight/scheme",
+      "@treelight/theme-github-dark",
+      "@treelight/theme-github-light",
+      "@treelight/tsx",
+      "@treelight/typescript",
+      "@treelight/yaml"
+    ]
+  ],
+  "ignore": ["@treelight/docs", "@treelight/integration"],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "privatePackages": {
+    "version": false,
+    "tag": false
+  }
+}

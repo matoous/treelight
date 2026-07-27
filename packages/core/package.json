@@ -44,5 +44,8 @@
     "@types/node": "^26.1.2",
     "rsbuild-plugin-publint": "^1.0.0",
     "typescript": "^7.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

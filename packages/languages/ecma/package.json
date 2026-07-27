@@ -53,5 +53,8 @@
       ]
     },
     "notes": "Shared ECMAScript query layer adapted from Helix runtime queries."
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

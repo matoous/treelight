@@ -68,11 +68,11 @@ async function main() {
     description: `Treelight theme module for ${themeId}.`,
     type: 'module',
     main: './dist/index.cjs',
-    types: './dist/index.d.ts',
+    types: './dist/index.d.cts',
     exports: {
       '.': {
         import: {
-          types: './dist/index.d.ts',
+          types: './dist/index.d.cts',
           default: './dist/index.js',
         },
         require: {
@@ -82,6 +82,9 @@ async function main() {
       },
     },
     files: ['dist'],
+    publishConfig: {
+      access: 'public',
+    },
     license: 'MIT',
     repository: {
       type: 'git',
@@ -93,12 +96,13 @@ async function main() {
       'build:watch': 'rslib build --watch',
       inspect: 'rslib inspect',
       tsc: 'tsc --noEmit',
+      lint: 'biome ci --diagnostic-level=error --reporter=github',
     },
     devDependencies: {
-      '@rslib/core': '^0.18.0',
-      '@types/node': '^22.19.2',
-      'rsbuild-plugin-publint': '^0.3.0',
-      typescript: '^5.7.3',
+      '@rslib/core': '^0.23.2',
+      '@types/node': '^26.1.2',
+      'rsbuild-plugin-publint': '^1.0.0',
+      typescript: '^7.0.2',
     },
   };
 
@@ -113,7 +117,7 @@ async function main() {
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -134,7 +138,7 @@ export default defineConfig({
   lib: [
     {
       format: 'esm',
-      dts: true,
+      dts: false,
     },
     {
       format: 'cjs',

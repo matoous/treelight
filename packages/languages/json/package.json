@@ -55,5 +55,8 @@
         "queries/highlights.scm"
       ]
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

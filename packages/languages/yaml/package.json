@@ -58,5 +58,8 @@
         "queries/injections.scm"
       ]
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

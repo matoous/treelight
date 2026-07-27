@@ -61,5 +61,8 @@
         "queries/locals.scm"
       ]
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

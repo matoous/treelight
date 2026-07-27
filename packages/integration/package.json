@@ -9,20 +9,20 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
-    "@treelight/core": "file:../core",
-    "@treelight/elixir": "file:../languages/elixir",
-    "@treelight/go": "file:../languages/go",
-    "@treelight/html": "file:../languages/html",
-    "@treelight/java": "file:../languages/java",
-    "@treelight/javascript": "file:../languages/javascript",
-    "@treelight/json": "file:../languages/json",
-    "@treelight/php": "file:../languages/php",
-    "@treelight/python": "file:../languages/python",
-    "@treelight/rust": "file:../languages/rust",
-    "@treelight/scheme": "file:../languages/scheme",
-    "@treelight/tsx": "file:../languages/tsx",
-    "@treelight/typescript": "file:../languages/typescript",
-    "@treelight/yaml": "file:../languages/yaml"
+    "@treelight/core": "0.0.2",
+    "@treelight/elixir": "0.0.2",
+    "@treelight/go": "0.0.2",
+    "@treelight/html": "0.0.2",
+    "@treelight/java": "0.0.2",
+    "@treelight/javascript": "0.0.2",
+    "@treelight/json": "0.0.2",
+    "@treelight/php": "0.0.2",
+    "@treelight/python": "0.0.2",
+    "@treelight/rust": "0.0.2",
+    "@treelight/scheme": "0.0.2",
+    "@treelight/tsx": "0.0.2",
+    "@treelight/typescript": "0.0.2",
+    "@treelight/yaml": "0.0.2"
   },
   "devDependencies": {
     "ava": "^8.0.1"
