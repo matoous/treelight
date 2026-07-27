@@ -47,7 +47,22 @@
   },
   "treelightLanguage": {
     "repo": "nwhetsell/tree-sitter-lilypond",
+    "revision": "v0.0.2",
     "version": "v0.0.2",
-    "artifact": "tree-sitter-lilypond_scheme.wasm"
+    "artifact": "tree-sitter-lilypond_scheme.wasm",
+    "queries": {
+      "highlights": [
+        "queries/scheme/highlights.scm"
+      ]
+    },
+    "querySources": {
+      "builtins": {
+        "repo": "helix-editor/helix",
+        "revision": "master",
+        "paths": [
+          "runtime/queries/scheme/highlights.scm"
+        ]
+      }
+    }
   }
 }

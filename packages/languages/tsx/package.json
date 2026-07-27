@@ -51,7 +51,28 @@
   },
   "treelightLanguage": {
     "repo": "tree-sitter/tree-sitter-typescript",
+    "revision": "v0.23.2",
     "version": "v0.23.2",
-    "artifact": "tree-sitter-tsx.wasm"
+    "artifact": "tree-sitter-tsx.wasm",
+    "grammarPath": "tsx",
+    "queries": {
+      "highlights": [
+        "tsx/queries/highlights.scm"
+      ],
+      "injections": [
+        "tsx/queries/injections.scm"
+      ],
+      "locals": [
+        "typescript/queries/locals.scm"
+      ]
+    },
+    "querySources": {
+      "sharedHighlights": {
+        "package": "@treelight/ecma"
+      },
+      "typescriptHighlights": {
+        "path": "../typescript/src/queries/highlights.scm"
+      }
+    }
   }
 }

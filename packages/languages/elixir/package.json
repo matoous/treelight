@@ -47,7 +47,16 @@
   },
   "treelightLanguage": {
     "repo": "elixir-lang/tree-sitter-elixir",
+    "revision": "v0.3.4",
     "version": "v0.3.4",
-    "artifact": "tree-sitter-elixir.wasm"
+    "artifact": "tree-sitter-elixir.wasm",
+    "queries": {
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
+      ]
+    }
   }
 }

@@ -50,7 +50,25 @@
   },
   "treelightLanguage": {
     "repo": "tree-sitter/tree-sitter-typescript",
+    "revision": "v0.23.2",
     "version": "v0.23.2",
-    "artifact": "tree-sitter-typescript.wasm"
+    "artifact": "tree-sitter-typescript.wasm",
+    "grammarPath": "typescript",
+    "queries": {
+      "highlights": [
+        "typescript/queries/highlights.scm"
+      ],
+      "injections": [
+        "typescript/queries/injections.scm"
+      ],
+      "locals": [
+        "typescript/queries/locals.scm"
+      ]
+    },
+    "querySources": {
+      "sharedHighlights": {
+        "package": "@treelight/ecma"
+      }
+    }
   }
 }

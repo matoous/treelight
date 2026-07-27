@@ -43,5 +43,15 @@
     "@types/node": "^26.1.2",
     "rsbuild-plugin-publint": "^1.0.0",
     "typescript": "^7.0.2"
+  },
+  "treelightLanguage": {
+    "repo": "helix-editor/helix",
+    "revision": "master",
+    "queries": {
+      "highlights": [
+        "runtime/queries/ecma/highlights.scm"
+      ]
+    },
+    "notes": "Shared ECMAScript query layer adapted from Helix runtime queries."
   }
 }

@@ -83,11 +83,11 @@ async function main() {
     description: `Treelight language module for ${languageId}.`,
     type: 'module',
     main: './dist/index.cjs',
-    types: './dist/index.d.ts',
+    types: './dist/index.d.cts',
     exports: {
       '.': {
         import: {
-          types: './dist/index.d.ts',
+          types: './dist/index.d.cts',
           default: './dist/index.js',
         },
         require: {
@@ -108,18 +108,25 @@ async function main() {
       'build:watch': 'rslib build --watch',
       inspect: 'rslib inspect',
       tsc: 'tsc --noEmit',
+      lint: 'biome ci --diagnostic-level=error --reporter=github',
       update: 'node ../../../scripts/update-language-wasm.mjs',
     },
     devDependencies: {
-      '@rslib/core': '^0.18.0',
-      '@types/node': '^22.19.2',
-      'rsbuild-plugin-publint': '^0.3.0',
-      typescript: '^5.7.3',
+      '@rslib/core': '^0.23.2',
+      '@types/node': '^26.1.2',
+      'rsbuild-plugin-publint': '^1.0.0',
+      typescript: '^7.0.2',
     },
     treelightLanguage: {
       repo: args.repo,
+      revision: args.version,
       version: args.version,
       artifact,
+      queries: {
+        highlights: ['queries/highlights.scm'],
+        injections: ['queries/injections.scm'],
+        locals: ['queries/locals.scm'],
+      },
     },
   };
 
@@ -134,7 +141,7 @@ async function main() {
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
@@ -193,7 +200,7 @@ export default defineConfig({
   lib: [
     {
       format: 'esm',
-      dts: true,
+      dts: false,
     },
     {
       format: 'cjs',

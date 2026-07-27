@@ -47,7 +47,16 @@
   },
   "treelightLanguage": {
     "repo": "tree-sitter/tree-sitter-php",
+    "revision": "v0.24.2",
     "version": "v0.24.2",
-    "artifact": "tree-sitter-php.wasm"
+    "artifact": "tree-sitter-php.wasm",
+    "queries": {
+      "highlights": [
+        "php/src/highlights.scm"
+      ],
+      "injections": [
+        "php/src/injections.scm"
+      ]
+    }
   }
 }

@@ -47,7 +47,16 @@
   },
   "treelightLanguage": {
     "repo": "tree-sitter-grammars/tree-sitter-yaml",
+    "revision": "v0.7.2",
     "version": "v0.7.2",
-    "artifact": "tree-sitter-yaml.wasm"
+    "artifact": "tree-sitter-yaml.wasm",
+    "queries": {
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
+      ]
+    }
   }
 }

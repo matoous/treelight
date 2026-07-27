@@ -203,7 +203,7 @@ async function loadLanguageModule(
   const language = await Language.load(wasmBinary);
   const parser = new Parser();
   parser.setLanguage(language);
-  if (!definition.queries || !definition.queries.highlights) {
+  if (!definition.queries?.highlights) {
     throw new Error('Language definition is missing highlight queries');
   }
   const highlightQuery = new Query(language, definition.queries.highlights);
@@ -286,7 +286,7 @@ export class Treelight {
       typeof nameOrDefinition === 'string'
         ? normalizeThemeName(nameOrDefinition)
         : normalizeThemeName(theme?.id);
-    if (!theme || !theme.styles) {
+    if (!theme?.styles) {
       throw new Error(
         'Invalid theme definition. A theme must provide a styles map.',
       );

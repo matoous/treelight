@@ -23,10 +23,11 @@ async function main() {
       `Package ${packageJson.name} is missing treelightLanguage metadata.`,
     );
   }
-  const { repo, version, artifact } = meta;
+  const { repo, revision, artifact } = meta;
+  const version = meta.version ?? revision;
   if (!repo || !version || !artifact) {
     throw new Error(
-      `treelightLanguage metadata must specify repo, version, and artifact. Received: ${JSON.stringify(meta)}`,
+      `treelightLanguage metadata must specify repo, revision/version, and artifact. Received: ${JSON.stringify(meta)}`,
     );
   }
   const url = `https://github.com/${repo}/releases/download/${version}/${artifact}`;

@@ -47,7 +47,19 @@
   },
   "treelightLanguage": {
     "repo": "tree-sitter/tree-sitter-go",
+    "revision": "v0.25.0",
     "version": "v0.25.0",
-    "artifact": "tree-sitter-go.wasm"
+    "artifact": "tree-sitter-go.wasm",
+    "queries": {
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
+      ],
+      "locals": [
+        "queries/locals.scm"
+      ]
+    }
   }
 }

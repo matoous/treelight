@@ -85,7 +85,7 @@ Treelight compiles Tree-sitter grammars to WebAssembly, loads their highlight qu
 
 Languages are published as standalone packages named `@treelight/<language>`. Each package contains the Tree-sitter highlight queries plus the compiled grammar WASM inlined into the package. Importing `@treelight/javascript` gives you a complete `LanguageDefinition` for JavaScript; no per-language network request is required by default.
 
-To add another language, copy one of the existing packages under `packages/languages/`, update the `id`, grammar WASM, and query strings, then publish the package or wire it into your workspace. The language id should match the upstream Tree-sitter grammar (`javascript`, `typescript`, `lua`, `rust`, ...) so that users can install it consistently:
+To add another language, copy one of the existing packages under `packages/languages/`, update the `id`, grammar WASM, query strings, and the `treelightLanguage` metadata in its `package.json`, then publish the package or wire it into your workspace. The language id should match the upstream Tree-sitter grammar (`javascript`, `typescript`, `lua`, `rust`, ...) so that users can install it consistently:
 
 ```sh
 npm i @treelight/core @treelight/typescript @treelight/javascript
@@ -108,3 +108,6 @@ Themes are plain objects that map Tree-sitter highlight names (e.g. `@function.c
 - `npm run build` runs `turbo run build`, compiling every workspace package.
 - `npm run lint` fans out Biome via Turborepo so each workspace is checked independently.
 - `npm run test` executes the integration test workspace (see `packages/integration`).
+- `npm run check:languages` validates each `@treelight/<language>` package's upstream grammar metadata and query file declarations.
+
+Each language package declares its upstream grammar in `package.json` under `treelightLanguage`. Keep `repo`, `revision`, `artifact`, and `queries` in sync with the checked-in WASM and query files so future automation can compare the local package against upstream and generate bumps.

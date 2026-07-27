@@ -47,7 +47,16 @@
   },
   "treelightLanguage": {
     "repo": "tree-sitter/tree-sitter-rust",
+    "revision": "v0.24.0",
     "version": "v0.24.0",
-    "artifact": "tree-sitter-rust.wasm"
+    "artifact": "tree-sitter-rust.wasm",
+    "queries": {
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
+      ]
+    }
   }
 }
