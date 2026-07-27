@@ -1,5 +1,7 @@
 # @treelight/theme-github-light
 
+[![npm version](https://img.shields.io/npm/v/@treelight/theme-github-light.svg)](https://www.npmjs.com/package/@treelight/theme-github-light) [![npm downloads](https://img.shields.io/npm/dm/@treelight/theme-github-light.svg)](https://www.npmjs.com/package/@treelight/theme-github-light)
+
 GitHub Light theme for Treelight.
 
 ## Install

@@ -1,5 +1,7 @@
 # @treelight/java
 
+[![npm version](https://img.shields.io/npm/v/@treelight/java.svg)](https://www.npmjs.com/package/@treelight/java) [![npm downloads](https://img.shields.io/npm/dm/@treelight/java.svg)](https://www.npmjs.com/package/@treelight/java)
+
 Java language definition for Treelight.
 
 ## Install

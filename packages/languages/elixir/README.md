@@ -1,5 +1,7 @@
 # @treelight/elixir
 
+[![npm version](https://img.shields.io/npm/v/@treelight/elixir.svg)](https://www.npmjs.com/package/@treelight/elixir) [![npm downloads](https://img.shields.io/npm/dm/@treelight/elixir.svg)](https://www.npmjs.com/package/@treelight/elixir)
+
 Elixir language definition for Treelight.
 
 ## Install

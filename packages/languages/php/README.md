@@ -1,5 +1,7 @@
 # @treelight/php
 
+[![npm version](https://img.shields.io/npm/v/@treelight/php.svg)](https://www.npmjs.com/package/@treelight/php) [![npm downloads](https://img.shields.io/npm/dm/@treelight/php.svg)](https://www.npmjs.com/package/@treelight/php)
+
 PHP language definition for Treelight.
 
 ## Install

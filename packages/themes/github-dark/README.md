@@ -1,5 +1,7 @@
 # @treelight/theme-github-dark
 
+[![npm version](https://img.shields.io/npm/v/@treelight/theme-github-dark.svg)](https://www.npmjs.com/package/@treelight/theme-github-dark) [![npm downloads](https://img.shields.io/npm/dm/@treelight/theme-github-dark.svg)](https://www.npmjs.com/package/@treelight/theme-github-dark)
+
 GitHub Dark theme for Treelight.
 
 ## Install

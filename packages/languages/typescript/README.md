@@ -1,5 +1,7 @@
 # @treelight/typescript
 
+[![npm version](https://img.shields.io/npm/v/@treelight/typescript.svg)](https://www.npmjs.com/package/@treelight/typescript) [![npm downloads](https://img.shields.io/npm/dm/@treelight/typescript.svg)](https://www.npmjs.com/package/@treelight/typescript)
+
 TypeScript language definition for Treelight.
 
 ## Install

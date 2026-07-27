@@ -1,5 +1,7 @@
 # @treelight/scheme
 
+[![npm version](https://img.shields.io/npm/v/@treelight/scheme.svg)](https://www.npmjs.com/package/@treelight/scheme) [![npm downloads](https://img.shields.io/npm/dm/@treelight/scheme.svg)](https://www.npmjs.com/package/@treelight/scheme)
+
 Scheme language definition for Treelight.
 
 ## Install

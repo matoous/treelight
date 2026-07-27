@@ -1,5 +1,7 @@
 # @treelight/html
 
+[![npm version](https://img.shields.io/npm/v/@treelight/html.svg)](https://www.npmjs.com/package/@treelight/html) [![npm downloads](https://img.shields.io/npm/dm/@treelight/html.svg)](https://www.npmjs.com/package/@treelight/html)
+
 HTML language definition for Treelight.
 
 ## Install

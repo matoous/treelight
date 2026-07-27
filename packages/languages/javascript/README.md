@@ -1,5 +1,7 @@
 # @treelight/javascript
 
+[![npm version](https://img.shields.io/npm/v/@treelight/javascript.svg)](https://www.npmjs.com/package/@treelight/javascript) [![npm downloads](https://img.shields.io/npm/dm/@treelight/javascript.svg)](https://www.npmjs.com/package/@treelight/javascript)
+
 JavaScript language definition for Treelight.
 
 ## Install

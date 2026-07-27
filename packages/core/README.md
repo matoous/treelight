@@ -1,5 +1,7 @@
 # @treelight/core
 
+[![npm version](https://img.shields.io/npm/v/@treelight/core.svg)](https://www.npmjs.com/package/@treelight/core) [![npm downloads](https://img.shields.io/npm/dm/@treelight/core.svg)](https://www.npmjs.com/package/@treelight/core)
+
 Core runtime for Treelight, a Tree-sitter based syntax highlighter for JavaScript runtimes.
 
 ## Install

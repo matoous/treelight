@@ -1,5 +1,7 @@
 # @treelight/python
 
+[![npm version](https://img.shields.io/npm/v/@treelight/python.svg)](https://www.npmjs.com/package/@treelight/python) [![npm downloads](https://img.shields.io/npm/dm/@treelight/python.svg)](https://www.npmjs.com/package/@treelight/python)
+
 Python language definition for Treelight.
 
 ## Install

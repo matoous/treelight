@@ -1,5 +1,7 @@
 # @treelight/yaml
 
+[![npm version](https://img.shields.io/npm/v/@treelight/yaml.svg)](https://www.npmjs.com/package/@treelight/yaml) [![npm downloads](https://img.shields.io/npm/dm/@treelight/yaml.svg)](https://www.npmjs.com/package/@treelight/yaml)
+
 YAML language definition for Treelight.
 
 ## Install

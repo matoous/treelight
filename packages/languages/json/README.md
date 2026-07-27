@@ -1,5 +1,7 @@
 # @treelight/json
 
+[![npm version](https://img.shields.io/npm/v/@treelight/json.svg)](https://www.npmjs.com/package/@treelight/json) [![npm downloads](https://img.shields.io/npm/dm/@treelight/json.svg)](https://www.npmjs.com/package/@treelight/json)
+
 JSON language definition for Treelight.
 
 ## Install

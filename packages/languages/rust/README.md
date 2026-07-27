@@ -1,5 +1,7 @@
 # @treelight/rust
 
+[![npm version](https://img.shields.io/npm/v/@treelight/rust.svg)](https://www.npmjs.com/package/@treelight/rust) [![npm downloads](https://img.shields.io/npm/dm/@treelight/rust.svg)](https://www.npmjs.com/package/@treelight/rust)
+
 Rust language definition for Treelight.
 
 ## Install

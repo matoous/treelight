@@ -1,5 +1,7 @@
 # @treelight/tsx
 
+[![npm version](https://img.shields.io/npm/v/@treelight/tsx.svg)](https://www.npmjs.com/package/@treelight/tsx) [![npm downloads](https://img.shields.io/npm/dm/@treelight/tsx.svg)](https://www.npmjs.com/package/@treelight/tsx)
+
 TSX language definition for Treelight.
 
 ## Install

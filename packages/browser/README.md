@@ -1,5 +1,7 @@
 # @treelight/browser
 
+[![npm version](https://img.shields.io/npm/v/@treelight/browser.svg)](https://www.npmjs.com/package/@treelight/browser) [![npm downloads](https://img.shields.io/npm/dm/@treelight/browser.svg)](https://www.npmjs.com/package/@treelight/browser)
+
 Browser runtime helpers for Treelight.
 
 ## Install

@@ -1,5 +1,7 @@
 # @treelight/go
 
+[![npm version](https://img.shields.io/npm/v/@treelight/go.svg)](https://www.npmjs.com/package/@treelight/go) [![npm downloads](https://img.shields.io/npm/dm/@treelight/go.svg)](https://www.npmjs.com/package/@treelight/go)
+
 Go language definition for Treelight.
 
 ## Install
