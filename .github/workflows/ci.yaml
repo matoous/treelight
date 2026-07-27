@@ -66,8 +66,19 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - name: Check Changesets token
+        env:
+          CHANGESETS_TOKEN: ${{ secrets.CHANGESETS_TOKEN }}
+        run: |
+          if [ -z "$CHANGESETS_TOKEN" ]; then
+            echo "::error::Configure a CHANGESETS_TOKEN repository secret with contents and pull requests write access."
+            exit 1
+          fi
+
       - name: Checkout code
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4.2.2
+        with:
+          token: ${{ secrets.CHANGESETS_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v4.1.0
@@ -87,6 +98,6 @@ jobs:
       - name: Create release PR or publish
         uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.CHANGESETS_TOKEN }}
           publish: npm run release
           version: npm run version-packages
