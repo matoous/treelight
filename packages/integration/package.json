@@ -25,7 +25,7 @@
     "@treelight/yaml": "file:../languages/yaml"
   },
   "devDependencies": {
-    "ava": "^6.4.1"
+    "ava": "^8.0.1"
   },
   "ava": {
     "timeout": "3m"

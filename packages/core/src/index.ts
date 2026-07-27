@@ -91,20 +91,20 @@ const api = {
 };
 
 export {
-  Treelight,
-  highlight,
-  registerLanguage,
-  registerTheme,
-  instance,
   createHighlighter,
   type HighlightOptions,
+  highlight,
+  instance,
   type LanguageDefinition,
   type LanguageLoader,
   type LanguageQueries,
   type ParserInitOptions,
+  registerLanguage,
+  registerTheme,
   type ThemeDefinition,
-  type ThemeStyle,
   type ThemeName,
+  type ThemeStyle,
+  Treelight,
   type TreelightOptions,
 };
 

@@ -5,7 +5,7 @@ export default defineConfig({
   lib: [
     {
       format: 'esm',
-      dts: true,
+      dts: false,
     },
     {
       format: 'cjs',

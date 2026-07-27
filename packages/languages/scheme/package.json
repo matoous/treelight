@@ -4,11 +4,11 @@
   "description": "Treelight language module for scheme.",
   "type": "module",
   "main": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/index.d.cts",
         "default": "./dist/index.js"
       },
       "require": {
@@ -40,10 +40,10 @@
     "update": "node ../../../scripts/update-language-wasm.mjs"
   },
   "devDependencies": {
-    "@rslib/core": "^0.18.0",
-    "@types/node": "^22.19.2",
-    "rsbuild-plugin-publint": "^0.3.0",
-    "typescript": "^5.7.3"
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "rsbuild-plugin-publint": "^1.0.0",
+    "typescript": "^7.0.2"
   },
   "treelightLanguage": {
     "repo": "nwhetsell/tree-sitter-lilypond",

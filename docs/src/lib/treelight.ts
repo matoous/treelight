@@ -1,5 +1,5 @@
 import { Treelight } from '@treelight/core';
-import parserWasmUrl from 'web-tree-sitter/tree-sitter.wasm?url';
+import parserWasmUrl from 'web-tree-sitter/web-tree-sitter.wasm?url';
 import { languageOptions } from '../data/languages';
 import { themeOptions } from '../data/themes';
 
