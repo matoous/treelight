@@ -9,20 +9,20 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
-    "@treelight/core": "0.0.2",
-    "@treelight/elixir": "0.0.2",
-    "@treelight/go": "0.0.2",
-    "@treelight/html": "0.0.2",
-    "@treelight/java": "0.0.2",
-    "@treelight/javascript": "0.0.2",
-    "@treelight/json": "0.0.2",
-    "@treelight/php": "0.0.2",
-    "@treelight/python": "0.0.2",
-    "@treelight/rust": "0.0.2",
-    "@treelight/scheme": "0.0.2",
-    "@treelight/tsx": "0.0.2",
-    "@treelight/typescript": "0.0.2",
-    "@treelight/yaml": "0.0.2"
+    "@treelight/core": "0.1.0",
+    "@treelight/elixir": "0.1.0",
+    "@treelight/go": "0.1.0",
+    "@treelight/html": "0.1.0",
+    "@treelight/java": "0.1.0",
+    "@treelight/javascript": "0.1.0",
+    "@treelight/json": "0.1.0",
+    "@treelight/php": "0.1.0",
+    "@treelight/python": "0.1.0",
+    "@treelight/rust": "0.1.0",
+    "@treelight/scheme": "0.1.0",
+    "@treelight/tsx": "0.1.0",
+    "@treelight/typescript": "0.1.0",
+    "@treelight/yaml": "0.1.0"
   },
   "devDependencies": {
     "ava": "^8.0.1"

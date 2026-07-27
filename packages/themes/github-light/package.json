@@ -1,6 +1,6 @@
 {
   "name": "@treelight/theme-github-light",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Treelight theme module for github-light.",
   "main": "./dist/index.cjs",
   "exports": {

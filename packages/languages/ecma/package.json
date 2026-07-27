@@ -1,6 +1,6 @@
 {
   "name": "@treelight/ecma",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Shared ECMAScript highlight queries for Treelight languages.",
   "type": "module",
   "main": "./dist/index.cjs",

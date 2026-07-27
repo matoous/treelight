@@ -1,6 +1,6 @@
 {
   "name": "@treelight/typescript",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Treelight language module for typescript.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -40,7 +40,7 @@
     "update": "node ../../../scripts/update-language-wasm.mjs"
   },
   "dependencies": {
-    "@treelight/ecma": "0.0.2"
+    "@treelight/ecma": "0.1.0"
   },
   "devDependencies": {
     "@rslib/core": "^0.23.2",

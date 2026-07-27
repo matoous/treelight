@@ -1,6 +1,6 @@
 {
   "name": "@treelight/php",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Treelight language module for php.",
   "type": "module",
   "main": "./dist/index.cjs",
