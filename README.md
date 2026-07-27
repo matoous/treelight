@@ -16,10 +16,10 @@ Treelight shines (pun intended) when you can prepare highlights ahead of time; i
 
 ## Usage
 
-Install `@treelight/core` using `npm`:
+Install the runtime, at least one language, and at least one theme using `npm`:
 
 ```sh
-npm i @treelight/core
+npm i @treelight/core @treelight/javascript @treelight/theme-github-dark
 ```
 
 In your code:
@@ -32,7 +32,7 @@ import javascript from '@treelight/javascript'
 import githubDark from '@treelight/theme-github-dark'
 
 const highlighter = await Highlighter.create({
-  languages: [['javascript', javascript]],
+  languages: [javascript],
   themes: [githubDark],
   theme: 'github-dark',
 })
@@ -41,7 +41,41 @@ const html = highlighter.highlight(`console.info("Hello World!")`, 'javascript')
 document.body.innerHTML = html
 ```
 
- `Highlighter.create` downloads and initializes every language you pass in, so the returned `highlighter.highlight` method is synchronous and ready to use inside render functions or server handlers. JavaScript constructors cannot be `async`, so the static `create` helper performs the asynchronous setup and returns a ready-to-use instance. Prefer the class directly if you need access to the underlying `Treelight` instance, or call the convenience `createHighlighter` helper which simply forwards to `Highlighter.create`.
+ `Highlighter.create` initializes every language you pass in, so the returned `highlighter.highlight` method is synchronous and ready to use inside render functions or server handlers. JavaScript constructors cannot be `async`, so the static `create` helper performs the asynchronous setup and returns a ready-to-use instance. Prefer the class directly if you need access to the underlying `Treelight` instance, or call the convenience `createHighlighter` helper which simply forwards to `Highlighter.create`.
+
+### Browser usage
+
+Browser apps also need the shared `web-tree-sitter` runtime WASM. Use `@treelight/browser` to configure that once:
+
+```sh
+npm i @treelight/browser @treelight/javascript @treelight/theme-github-dark
+```
+
+```ts
+import { createBrowserHighlighter } from '@treelight/browser'
+import javascript from '@treelight/javascript'
+import githubDark from '@treelight/theme-github-dark'
+
+const highlighter = await createBrowserHighlighter({
+  languages: [javascript],
+  themes: [githubDark],
+})
+```
+
+If an app lets users choose from many languages, register lazy imports instead:
+
+```ts
+import { createBrowserTreelight } from '@treelight/browser'
+
+const treelight = createBrowserTreelight()
+
+treelight.registerLanguage('javascript', () => import('@treelight/javascript'))
+treelight.registerLanguage('typescript', () => import('@treelight/typescript'))
+
+const html = await treelight.highlight(code, 'typescript')
+```
+
+The lazy form keeps each language package in its own browser chunk. The eager form is simpler, but every imported language becomes part of the initial bundle.
 
 ## How this works
 
@@ -49,9 +83,9 @@ Treelight compiles Tree-sitter grammars to WebAssembly, loads their highlight qu
 
 ### Languages
 
-Languages are published as standalone packages named `@treelight/<language>`. Each package contains the Tree-sitter highlight queries plus a `wasmUrl` that points at the official Tree-sitter WebAssembly artifact on GitHub (see [`tree-sitter/tree-sitter`](https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_web#from-github)). When you register the language, Treelight downloads that wasm at runtime (Node 18+ is required so that `fetch` is available).
+Languages are published as standalone packages named `@treelight/<language>`. Each package contains the Tree-sitter highlight queries plus the compiled grammar WASM inlined into the package. Importing `@treelight/javascript` gives you a complete `LanguageDefinition` for JavaScript; no per-language network request is required by default.
 
-To add another language, copy one of the existing packages under `packages/languages/`, update the `id`, `wasmUrl`, and query strings, then publish the package or wire it into your workspace. The language id should match the upstream Tree-sitter grammar (`javascript`, `typescript`, `lua`, `rust`, …) so that users can install it consistently:
+To add another language, copy one of the existing packages under `packages/languages/`, update the `id`, grammar WASM, and query strings, then publish the package or wire it into your workspace. The language id should match the upstream Tree-sitter grammar (`javascript`, `typescript`, `lua`, `rust`, ...) so that users can install it consistently:
 
 ```sh
 npm i @treelight/core @treelight/typescript @treelight/javascript

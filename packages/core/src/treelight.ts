@@ -33,10 +33,16 @@ export interface LanguageDefinition {
   queries: LanguageQueries;
 }
 
+export interface LanguageModule {
+  default: LanguageDefinition;
+}
+
+export type LanguageLoaderResult = LanguageDefinition | LanguageModule;
+
 export type LanguageLoader =
-  | (() => Promise<LanguageDefinition>)
-  | (() => LanguageDefinition)
-  | LanguageDefinition;
+  | (() => Promise<LanguageLoaderResult>)
+  | (() => LanguageLoaderResult)
+  | LanguageLoaderResult;
 
 interface LanguageState {
   parser: Parser;
@@ -214,6 +220,14 @@ function normalizeThemeName(name?: string | null) {
   return name.toLowerCase().replace(/_/g, '-');
 }
 
+function resolveLanguageDefinition(result: LanguageLoaderResult) {
+  const definition = 'default' in result ? result.default : result;
+  if (!definition.id) {
+    throw new Error('Language definition is missing an id.');
+  }
+  return definition;
+}
+
 export class Treelight {
   private readonly options: TreelightOptions;
 
@@ -237,8 +251,21 @@ export class Treelight {
     await this.parserInit;
   }
 
-  registerLanguage(name: string, loader: LanguageLoader) {
-    this.languages.set(name, loader);
+  registerLanguage(definition: LanguageDefinition): void;
+  registerLanguage(name: string, loader: LanguageLoader): void;
+  registerLanguage(
+    nameOrDefinition: string | LanguageDefinition,
+    maybeLoader?: LanguageLoader,
+  ) {
+    if (typeof nameOrDefinition === 'string') {
+      if (!maybeLoader) {
+        throw new Error('Language loader is required.');
+      }
+      this.languages.set(nameOrDefinition, maybeLoader);
+      return;
+    }
+    const definition = resolveLanguageDefinition(nameOrDefinition);
+    this.languages.set(definition.id, definition);
   }
 
   registerTheme(theme: ThemeDefinition): void;
@@ -289,7 +316,8 @@ export class Treelight {
       throw new Error(`Language "${name}" is not registered.`);
     }
     await this.ensureParser();
-    const definition = await (typeof loader === 'function' ? loader() : loader);
+    const result = await (typeof loader === 'function' ? loader() : loader);
+    const definition = resolveLanguageDefinition(result);
     const state = await loadLanguageModule(definition);
     this.languageCache.set(name, state);
     return state;

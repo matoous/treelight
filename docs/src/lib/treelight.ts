@@ -1,24 +1,11 @@
-import { Treelight } from '@treelight/core';
-import parserWasmUrl from 'web-tree-sitter/web-tree-sitter.wasm?url';
+import { createBrowserTreelight } from '@treelight/browser';
 import { languageOptions } from '../data/languages';
 import { themeOptions } from '../data/themes';
 
-const treelight = new Treelight({
-  parser: {
-    locateFile(scriptName: string) {
-      if (scriptName === 'tree-sitter.wasm') {
-        return parserWasmUrl;
-      }
-      return scriptName;
-    },
-  },
-});
+const treelight = createBrowserTreelight();
 
 languageOptions.forEach((option) => {
-  treelight.registerLanguage(option.id, async () => {
-    const module = await option.loader();
-    return module.default;
-  });
+  treelight.registerLanguage(option.id, option.loader);
 });
 
 const themeLoaders = new Map(

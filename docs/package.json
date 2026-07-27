@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@treelight/browser": "0.0.2",
     "@treelight/core": "0.0.2",
     "@treelight/elixir": "0.0.2",
     "@treelight/go": "0.0.2",
@@ -26,8 +27,7 @@
     "@treelight/typescript": "0.0.2",
     "@treelight/yaml": "0.0.2",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "web-tree-sitter": "^0.26.11"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",

@@ -6,6 +6,7 @@
   "type": "module",
   "license": "MIT",
   "workspaces": [
+    "packages/browser",
     "packages/core",
     "packages/integration",
     "packages/languages/*",
@@ -14,6 +15,7 @@
   ],
   "devDependencies": {
     "@biomejs/biome": "^2.5.5",
+    "@treelight/browser": "workspace:*",
     "@treelight/elixir": "workspace:*",
     "@treelight/go": "workspace:*",
     "@treelight/html": "workspace:*",
