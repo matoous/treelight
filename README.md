@@ -2,29 +2,34 @@
 
 # Treelight
 
-[Tree-sitter](https://tree-sitter.github.io/tree-sitter/) based syntax highlighter for javascript runtimes.
+[Tree-sitter](https://tree-sitter.github.io/tree-sitter/) based syntax highlighter for JavaScript runtimes.
 
 </div>
 
-## When to use Treelight
+Treelight is a code-highlighter based on Tree-sitter grammars. It gives you the most accurate highlights and at cost of bundle size. It is split into small packages, so applications install the runtime plus only the languages and themes they use.
 
-- Ideal for pre-rendered code: docs sites, design systems, MDX/markdown pipelines, and server-side rendering where the wasm cost can be amortized.
-- Less suitable for latency-sensitive editors or client bundles that must stay tiny: the binaries are sizeable and each language requires an asynchronous setup step.
-- Works well when you can control the runtime (Node 18+, SSR frameworks, build scripts) and ship the final HTML rather than running the highlighter in every browser session.
+## When to Use Treelight
 
-Treelight shines (pun intended) when you can prepare highlights ahead of time; if you need an always-on client highlighter, consider a lighter, regex-based option.
+- Good fit for docs sites, design systems, MDX/markdown pipelines, static generation, SSR, and other flows where code blocks can be highlighted ahead of time.
+- Useful when you want Tree-sitter-quality parsing instead of regex-based highlighting.
+- Less suitable for latency-sensitive editors or very small client bundles: each language includes a grammar WASM payload and needs asynchronous setup.
 
-## Usage
+## Packages
 
-Install the runtime, at least one language, and at least one theme using `npm`:
+- `@treelight/core` provides the runtime, language/theme registration, and highlighter APIs.
+- `@treelight/browser` configures `web-tree-sitter` for browser bundlers and re-exports the core API.
+- `@treelight/<language>` packages provide language definitions with inlined grammar WASM and highlight queries.
+- `@treelight/theme-github-dark` and `@treelight/theme-github-light` provide bundled themes.
+
+## Node and SSR Usage
+
+Install the runtime, at least one language, and a theme:
 
 ```sh
 npm i @treelight/core @treelight/javascript @treelight/theme-github-dark
 ```
 
-In your code:
-
-The runtime is completely modular. Both languages and themes are optional add-ons, so browser bundles remain relatively small and you only ship what you use.
+Create a highlighter once, then reuse it for synchronous highlighting:
 
 ```ts
 import { Highlighter } from '@treelight/core'
@@ -38,14 +43,13 @@ const highlighter = await Highlighter.create({
 })
 
 const html = highlighter.highlight(`console.info("Hello World!")`, 'javascript')
-document.body.innerHTML = html
 ```
 
- `Highlighter.create` initializes every language you pass in, so the returned `highlighter.highlight` method is synchronous and ready to use inside render functions or server handlers. JavaScript constructors cannot be `async`, so the static `create` helper performs the asynchronous setup and returns a ready-to-use instance. Prefer the class directly if you need access to the underlying `Treelight` instance, or call the convenience `createHighlighter` helper which simply forwards to `Highlighter.create`.
+`Highlighter.create` loads every registered language up front. After that, `highlighter.highlight(...)` is synchronous and ready to use in render functions, server handlers, or build scripts.
 
-### Browser usage
+## Browser Usage
 
-Browser apps also need the shared `web-tree-sitter` runtime WASM. Use `@treelight/browser` to configure that once:
+Browser apps also need the shared `web-tree-sitter` runtime WASM. Use `@treelight/browser` so bundlers such as Vite can resolve that asset:
 
 ```sh
 npm i @treelight/browser @treelight/javascript @treelight/theme-github-dark
@@ -59,15 +63,42 @@ import githubDark from '@treelight/theme-github-dark'
 const highlighter = await createBrowserHighlighter({
   languages: [javascript],
   themes: [githubDark],
+  theme: 'github-dark',
+})
+
+document.body.innerHTML = highlighter.highlight(
+  `console.info("Hello World!")`,
+  'javascript',
+)
+```
+
+If your bundler cannot resolve `web-tree-sitter/web-tree-sitter.wasm?url`, pass `parserWasmUrl`:
+
+```ts
+import { createBrowserHighlighter } from '@treelight/browser'
+import javascript from '@treelight/javascript'
+import githubDark from '@treelight/theme-github-dark'
+
+const highlighter = await createBrowserHighlighter({
+  parserWasmUrl: '/assets/web-tree-sitter.wasm',
+  languages: [javascript],
+  themes: [githubDark],
+  theme: 'github-dark',
 })
 ```
 
-If an app lets users choose from many languages, register lazy imports instead:
+## Lazy Language Loading
+
+For applications where users can choose from many languages, register lazy imports so each language stays in its own browser chunk:
 
 ```ts
 import { createBrowserTreelight } from '@treelight/browser'
+import githubDark from '@treelight/theme-github-dark'
 
-const treelight = createBrowserTreelight()
+const treelight = createBrowserTreelight({
+  themes: [githubDark],
+  theme: 'github-dark',
+})
 
 treelight.registerLanguage('javascript', () => import('@treelight/javascript'))
 treelight.registerLanguage('typescript', () => import('@treelight/typescript'))
@@ -75,39 +106,36 @@ treelight.registerLanguage('typescript', () => import('@treelight/typescript'))
 const html = await treelight.highlight(code, 'typescript')
 ```
 
-The lazy form keeps each language package in its own browser chunk. The eager form is simpler, but every imported language becomes part of the initial bundle.
+Eager imports are simpler when the language list is small. Lazy imports are better for browser apps that expose many languages.
 
-## How this works
+## Themes
 
-Treelight compiles Tree-sitter grammars to WebAssembly, loads their highlight queries, and runs `tree_sitter_highlight` to produce tagged ranges. Those ranges are merged into HTML spans using the selected theme palette. Because wasm modules and queries are loaded once during `Highlighter.create`, every subsequent `highlight` call is synchronous and cheap.
-
-### Languages
-
-Languages are published as standalone packages named `@treelight/<language>`. Each package contains the Tree-sitter highlight queries plus the compiled grammar WASM inlined into the package. Importing `@treelight/javascript` gives you a complete `LanguageDefinition` for JavaScript; no per-language network request is required by default.
-
-To add another language, copy one of the existing packages under `packages/languages/`, update the `id`, grammar WASM, query strings, and the `treelightLanguage` metadata in its `package.json`, then publish the package or wire it into your workspace. The language id should match the upstream Tree-sitter grammar (`javascript`, `typescript`, `lua`, `rust`, ...) so that users can install it consistently:
-
-```sh
-npm i @treelight/core @treelight/typescript @treelight/javascript
-```
-
-### Themes and highlight scopes
-
-Treelight currently ships two GitHub-derived themes as workspace packages (`@treelight/theme-github-dark` and `@treelight/theme-github-light`). Register whichever one you need:
+Themes are plain objects that map Tree-sitter highlight captures, such as `@function.call` or `@variable.parameter`, to CSS classes and colors. Register a bundled theme during highlighter creation:
 
 ```ts
+import { Highlighter } from '@treelight/core'
+import javascript from '@treelight/javascript'
 import githubLight from '@treelight/theme-github-light'
 
-registerTheme(githubLight)
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [githubLight],
+  theme: 'github-light',
+})
 ```
 
-Themes are plain objects that map Tree-sitter highlight names (e.g. `@function.call`, `@variable.parameter`) to CSS classes and colors. Refer to the [Tree-sitter highlighting docs](https://tree-sitter.github.io/tree-sitter/syntax-highlighting#highlights) for the list of available scopes. If you need additional themes, duplicate one of the existing packages under `packages/themes/` and adjust the colors manually. The main package no longer builds themes automatically.
+The generated HTML uses the theme classes directly, so applications can render the returned string into their own markup pipeline.
 
-## Development
+## How It Works
 
-- `npm run build` runs `turbo run build`, compiling every workspace package.
-- `npm run lint` fans out Biome via Turborepo so each workspace is checked independently.
-- `npm run test` executes the integration test workspace (see `packages/integration`).
-- `npm run check:languages` validates each `@treelight/<language>` package's upstream grammar metadata and query file declarations.
+Language packages export a `LanguageDefinition` containing:
 
-Each language package declares its upstream grammar in `package.json` under `treelightLanguage`. Keep `repo`, `revision`, `artifact`, and `queries` in sync with the checked-in WASM and query files so future automation can compare the local package against upstream and generate bumps.
+- a language id, such as `javascript` or `rust`
+- compiled grammar WASM
+- Tree-sitter highlight queries
+
+Treelight loads those definitions into `web-tree-sitter`, runs Tree-sitter highlighting, and renders the captured ranges into themed HTML spans.
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for development, language-package maintenance, and publishing instructions.
