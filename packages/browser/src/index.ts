@@ -40,7 +40,10 @@ export function createBrowserParserOptions(
 ): ParserInitOptions {
   return {
     locateFile(scriptName: string) {
-      if (scriptName === 'tree-sitter.wasm') {
+      if (
+        scriptName === 'web-tree-sitter.wasm' ||
+        scriptName === 'tree-sitter.wasm'
+      ) {
         return parserWasmUrl;
       }
       return scriptName;
