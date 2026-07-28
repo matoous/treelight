@@ -76,7 +76,6 @@
 
 [
   (string_literal)
-  (text_block)
 ] @string
 
 [
