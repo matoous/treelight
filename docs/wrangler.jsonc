@@ -1,6 +1,7 @@
 {
   "$schema": "../node_modules/wrangler/config-schema.json",
   "name": "treelight",
+  "account_id": "63b8e64f90bbe4f59a59706725d32033",
   "main": "./worker.ts",
   "compatibility_date": "2026-07-28",
   "workers_dev": true,
@@ -17,5 +18,12 @@
       "enabled": true,
       "invocation_logs": true
     }
-  }
+  },
+  "routes": [
+    {
+      "pattern": "treelights.dzx.cz",
+      "zone_id": "dzx.cz",
+      "custom_domain": true
+    }
+  ]
 }
