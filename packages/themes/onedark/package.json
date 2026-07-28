@@ -1,6 +1,6 @@
 {
   "name": "@treelight/theme-onedark",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Treelight theme module for onedark.",
   "main": "./dist/index.cjs",
   "exports": {

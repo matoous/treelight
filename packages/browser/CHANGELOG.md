@@ -1,5 +1,15 @@
 # @treelight/browser
 
+## 0.3.0
+
+### Patch Changes
+
+- d7dbbf5: Polish package metadata by exposing ESM declaration files through `import.types` and declaring the supported Node.js engine range.
+- Updated dependencies [d7dbbf5]
+- Updated dependencies [60317eb]
+- Updated dependencies [e1e88aa]
+  - @treelight/core@0.3.0
+
 ## 0.2.0
 
 ### Patch Changes
