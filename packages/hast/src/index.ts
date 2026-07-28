@@ -233,17 +233,24 @@ export function resolveLineNumbers(
   meta: string | null | undefined,
 ): LineNumbersOption | undefined {
   const attributes = parseMetaAttributes(meta ?? '');
+  const lineNumbers = readMetaBoolean(attributes, 'lineNumbers');
+  if (lineNumbers === false) {
+    return false;
+  }
+
   const showLineNumbers = readMetaBoolean(attributes, 'showLineNumbers');
   if (showLineNumbers === false) {
     return false;
   }
 
-  const startLineNumber = readMetaNumber(attributes, 'startLineNumber');
+  const startLineNumber =
+    readMetaNumber(attributes, 'startLineNumber') ??
+    readMetaNumber(attributes, 'start');
   if (startLineNumber !== undefined) {
     return { startLineNumber };
   }
 
-  if (showLineNumbers === true) {
+  if (lineNumbers === true || showLineNumbers === true) {
     return typeof option === 'object' ? option : true;
   }
 
@@ -370,7 +377,8 @@ export function applyCodeBlockLineOptions(
   }
   code.children = lines.flatMap((children, index) => {
     const lineNumber = start + index;
-    const isHighlighted = highlightedLines.has(lineNumber);
+    const sourceLineNumber = index + 1;
+    const isHighlighted = highlightedLines.has(sourceLineNumber);
     const lineChildren: Element['children'] = [
       createElement(
         'span',
