@@ -23,6 +23,7 @@
       "@treelight/markdown",
       "@treelight/php",
       "@treelight/python",
+      "@treelight/rehype",
       "@treelight/ruby",
       "@treelight/rust",
       "@treelight/scheme",
