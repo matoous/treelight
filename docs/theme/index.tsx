@@ -46,7 +46,10 @@ function Explorer() {
           generated highlighted output.
         </p>
       </div>
-      <div className="showcase" aria-label="Interactive syntax highlighting demo">
+      <section
+        className="showcase"
+        aria-label="Interactive syntax highlighting demo"
+      >
         <BrowserOnly
           fallback={<div className="demo-loading">Loading highlighter...</div>}
         >
@@ -55,7 +58,7 @@ function Explorer() {
             return <Demo />;
           }}
         </BrowserOnly>
-      </div>
+      </section>
     </section>
   );
 }

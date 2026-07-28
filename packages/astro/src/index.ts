@@ -80,10 +80,7 @@ function treelight(options: AstroTreelightOptions = {}): AstroIntegration {
 
         updateConfig({
           markdown: {
-            rehypePlugins: [
-              ...(config.markdown.rehypePlugins ?? []),
-              plugin,
-            ],
+            rehypePlugins: [...(config.markdown.rehypePlugins ?? []), plugin],
             syntaxHighlight: false,
           },
         });
