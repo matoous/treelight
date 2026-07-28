@@ -35,3 +35,23 @@ console.info('hidden gutter');
 ````
 
 The `start` option key remains available as a compatibility alias for older local configurations, but new code should use `startLineNumber`.
+
+## Component
+
+Use the Astro component when you need to render a dynamic snippet outside Markdown:
+
+```astro
+---
+import Code from '@treelight/astro/components/Code.astro';
+import javascript from '@treelight/javascript';
+---
+
+<Code
+  code={`const greeting = 'hello';`}
+  lang="javascript"
+  languages={[javascript]}
+  lineNumbers
+/>
+```
+
+For pages with many dynamic snippets, create a highlighter once and pass it through the `highlighter` prop.

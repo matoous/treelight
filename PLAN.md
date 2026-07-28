@@ -34,5 +34,5 @@
 
 ## 6. Optional Astro Component
 
-- [ ] Consider an Astro `<Code>` component for rendering dynamic snippets outside Markdown.
-- [ ] Defer until the Markdown pipeline supports metadata and shared rendering utilities.
+- [x] Consider an Astro `<Code>` component for rendering dynamic snippets outside Markdown.
+- [x] Defer until the Markdown pipeline supports metadata and shared rendering utilities.

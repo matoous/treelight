@@ -15,9 +15,11 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
-    }
+    },
+    "./components/Code.astro": "./components/Code.astro"
   },
   "files": [
+    "components",
     "dist"
   ],
   "license": "MIT",
@@ -43,6 +45,8 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
+    "@treelight/core": "0.2.0",
+    "@treelight/hast": "0.1.0",
     "@treelight/rehype": "0.1.0"
   },
   "devDependencies": {

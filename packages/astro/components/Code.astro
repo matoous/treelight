@@ -1,0 +1,71 @@
+---
+import {
+  type CreateHighlighterOptions,
+  createHighlighter,
+  type Highlighter,
+  type HighlightOptions,
+} from '@treelight/core';
+import {
+  addClassName,
+  applyLineNumbers,
+  hastToHtml,
+  htmlFragmentToNodes,
+  type LineNumbersOption,
+  resolveLineNumbers,
+} from '@treelight/hast';
+import type { Element, Root } from 'hast';
+
+export interface Props extends CreateHighlighterOptions {
+  class?: string;
+  code: string;
+  highlighter?: Highlighter | Promise<Highlighter>;
+  lang?: string;
+  language?: string;
+  languageMap?: Record<string, string>;
+  lineNumbers?: LineNumbersOption;
+  meta?: string;
+}
+
+const {
+  class: className,
+  code,
+  highlighter,
+  lang,
+  language: languageProp,
+  languageMap,
+  lineNumbers,
+  meta = '',
+  ...highlighterOptions
+} = Astro.props;
+
+const requestedLanguage = languageProp || lang || 'text';
+const language = languageMap?.[requestedLanguage] || requestedLanguage;
+const resolvedHighlighter = await Promise.resolve(
+  highlighter || createHighlighter(highlighterOptions),
+);
+const html = await resolvedHighlighter.highlight(
+  code,
+  language,
+  highlighterOptions as HighlightOptions,
+);
+const renderedNodes = htmlFragmentToNodes(html);
+const renderedPre = renderedNodes.find(
+  (child): child is Element =>
+    child.type === 'element' && child.tagName === 'pre',
+);
+
+if (renderedPre) {
+  addClassName(renderedPre, `language-${language}`);
+  for (const name of className?.split(/\s+/g).filter(Boolean) ?? []) {
+    addClassName(renderedPre, name);
+  }
+  applyLineNumbers(renderedPre, resolveLineNumbers(lineNumbers, meta));
+}
+
+const renderedHtml = hastToHtml({
+  type: 'root',
+  children: renderedNodes,
+} satisfies Root);
+---
+
+<Fragment set:html={renderedHtml} />
