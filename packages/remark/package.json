@@ -1,6 +1,6 @@
 {
   "name": "@treelight/remark",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Remark plugin for rendering code blocks with Treelight.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -45,8 +45,8 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
-    "@treelight/core": "0.2.0",
-    "@treelight/hast": "0.1.0",
+    "@treelight/core": "0.3.0",
+    "@treelight/hast": "0.3.0",
     "@types/mdast": "^4.0.4",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0"

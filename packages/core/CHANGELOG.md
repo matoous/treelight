@@ -1,5 +1,15 @@
 # @treelight/core
 
+## 0.3.0
+
+### Patch Changes
+
+- d7dbbf5: Polish package metadata by exposing ESM declaration files through `import.types` and declaring the supported Node.js engine range.
+- 60317eb: Add integration smoke coverage for loading every renderable language package and every bundled theme package.
+- e1e88aa: Improve code block foreground color fallback for themes that define `ui.text` or foreground on `ui.background` instead of `ui.foreground`.
+- Updated dependencies [d7dbbf5]
+  - @treelight/theme-github-dark@0.3.0
+
 ## 0.2.0
 
 ### Patch Changes

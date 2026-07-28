@@ -1,6 +1,6 @@
 {
   "name": "@treelight/hast",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "HAST helpers for Treelight code block integrations.",
   "type": "module",
   "main": "./dist/index.cjs",
