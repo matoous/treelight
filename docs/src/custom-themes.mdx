@@ -1,0 +1,112 @@
+---
+title: Custom Themes
+description: Register custom capture colors and backgrounds with Treelight.
+---
+
+Treelight themes are plain objects. A custom theme can live next to your app code, inside a docs site, or in a reusable `@treelight/theme-*` package.
+
+## Theme Definition
+
+A theme needs an ID and a `styles` map keyed by Tree-sitter capture names:
+
+```ts title="src/treelight-themes/terminal.ts"
+import type { ThemeDefinition } from '@treelight/core';
+
+const terminalTheme: ThemeDefinition = {
+  id: 'terminal',
+  styles: {
+    'ui.background': { bg: '#101418' },
+    'ui.foreground': { fg: '#d7dde5' },
+    comment: { fg: '#7c8794' },
+    constant: { fg: '#d19a66' },
+    function: { fg: '#61afef' },
+    keyword: { fg: '#c678dd' },
+    string: { fg: '#98c379' },
+    type: { fg: '#e5c07b' },
+    variable: { fg: '#d7dde5' },
+  },
+};
+
+export default terminalTheme;
+```
+
+Style values can be either a foreground color string or an object with `fg` and `bg` channels:
+
+```ts
+const theme: ThemeDefinition = {
+  id: 'minimal',
+  styles: {
+    'ui.background': { bg: '#ffffff' },
+    'ui.foreground': '#24292f',
+    keyword: '#cf222e',
+  },
+};
+```
+
+## Capture Fallbacks
+
+Treelight resolves dotted capture names from most-specific to least-specific. If a query emits `function.method.call`, Treelight first checks `function.method.call`, then `function.method`, then `function`.
+
+```ts
+const theme: ThemeDefinition = {
+  id: 'fallbacks',
+  styles: {
+    function: '#0969da',
+    'function.method': '#8250df',
+  },
+};
+```
+
+This lets a theme stay small while still supporting grammars that emit detailed captures.
+
+## Register It
+
+Register the custom theme with the core highlighter:
+
+```ts title="src/highlighter.ts"
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import terminalTheme from './treelight-themes/terminal';
+
+export const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [terminalTheme],
+  theme: 'terminal',
+});
+```
+
+Markdown integrations accept the same theme object:
+
+```ts title="rspress.config.ts"
+import treelight from '@treelight/rspress';
+import javascript from '@treelight/javascript';
+import terminalTheme from './src/treelight-themes/terminal';
+
+export default {
+  plugins: [
+    treelight({
+      languages: [javascript],
+      themes: [terminalTheme],
+      theme: 'terminal',
+    }),
+  ],
+};
+```
+
+Set a per-block theme with fence metadata when multiple themes are registered:
+
+````md
+```ts theme=terminal
+console.info('custom theme');
+```
+````
+
+## Publish A Reusable Package
+
+Create a theme package when the theme should be versioned and installed independently:
+
+```sh
+npm run create:theme -- --name terminal --id terminal
+```
+
+Then replace the generated `src/index.ts` stub with the actual styles and test the theme against several languages. The most important baseline keys are `ui.background`, `ui.foreground`, `comment`, `keyword`, `string`, `function`, `constant`, `type`, and `variable`.

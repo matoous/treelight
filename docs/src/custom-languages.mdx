@@ -1,0 +1,116 @@
+---
+title: Custom Languages
+description: Register a custom Tree-sitter grammar and highlight queries with Treelight.
+---
+
+Treelight can render any language with a Tree-sitter grammar compiled to WASM and a highlight query. You do not need to publish a package when the language is private to your app or docs site.
+
+## Language Definition
+
+A language definition needs a stable ID, grammar WASM, and Tree-sitter queries:
+
+```ts title="src/treelight-languages/example.ts"
+import highlightQuery from './queries/example/highlights.scm';
+import wasmDataUri from './wasm/tree-sitter-example.wasm';
+import type { LanguageDefinition } from '@treelight/core';
+
+const wasm = wasmDataUri.split(',')[1] ?? wasmDataUri;
+
+const exampleLanguage: LanguageDefinition = {
+  id: 'example',
+  wasm,
+  queries: {
+    highlights: highlightQuery,
+  },
+};
+
+export default exampleLanguage;
+```
+
+The `wasm` field accepts a base64 string, an `ArrayBuffer`, or a `Uint8Array`. Use `wasmUrl` instead when your runtime should fetch the grammar from a public URL.
+
+## Queries
+
+Treelight uses the `highlights.scm` query to turn Tree-sitter captures into themed spans. Capture names should match the common Tree-sitter highlighting vocabulary when possible, because themes are keyed by capture name:
+
+```scheme title="queries/example/highlights.scm"
+(comment) @comment
+(string) @string
+(number) @constant.numeric
+(function_call
+  name: (identifier) @function.call)
+(keyword) @keyword
+```
+
+If your grammar ships upstream queries, start there and keep the file close to the grammar revision you compiled. Treelight also accepts optional `injections` and `locals` query strings in the definition, but syntax highlighting only requires `highlights`.
+
+## Register It
+
+Register the custom language the same way as bundled language packages:
+
+```ts title="src/highlighter.ts"
+import { Highlighter } from '@treelight/core';
+import githubDark from '@treelight/theme-github-dark';
+import exampleLanguage from './treelight-languages/example';
+
+export const highlighter = await Highlighter.create({
+  languages: [exampleLanguage],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight('print "hello"', 'example');
+```
+
+For markdown integrations, pass the same language definition through the integration options:
+
+```ts title="rspress.config.ts"
+import treelight from '@treelight/rspress';
+import githubDark from '@treelight/theme-github-dark';
+import exampleLanguage from './src/treelight-languages/example';
+
+export default {
+  plugins: [
+    treelight({
+      languages: [exampleLanguage],
+      themes: [githubDark],
+      theme: 'github-dark',
+    }),
+  ],
+};
+```
+
+Now Markdown fences using the language ID are rendered by Treelight:
+
+````md
+```example
+print "hello"
+```
+````
+
+Use `languageMap` when authors prefer aliases:
+
+```ts
+treelight({
+  languages: [exampleLanguage],
+  languageMap: {
+    ex: 'example',
+  },
+});
+```
+
+## Publish A Reusable Package
+
+Create a package when the language should be shared across projects:
+
+```sh
+npm run create:language -- --name example --repo tree-sitter/tree-sitter-example --revision main
+```
+
+Then replace the generated WASM and query files, fill in `treelightLanguage` metadata in `package.json`, and validate it:
+
+```sh
+npm run check:languages
+```
+
+Keep the package ID, grammar revision, WASM artifact, and query files aligned. That metadata is what lets Treelight update and smoke-test bundled language packages consistently.

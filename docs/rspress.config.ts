@@ -170,7 +170,9 @@ export default defineConfig({
           text: 'Extending Treelight',
           items: [
             { text: 'Language Packages', link: '/language-packages' },
+            { text: 'Custom Languages', link: '/custom-languages' },
             { text: 'Theme Packages', link: '/theme-packages' },
+            { text: 'Custom Themes', link: '/custom-themes' },
           ],
         },
       ],
