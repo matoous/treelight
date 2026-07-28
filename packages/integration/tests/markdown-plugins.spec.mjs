@@ -1,6 +1,7 @@
 import { createHighlighter } from '@treelight/core';
 import javascriptLanguage from '@treelight/javascript';
 import rehypeTreelight from '@treelight/rehype';
+import remarkTreelight from '@treelight/remark';
 import test from 'ava';
 import rehypeStringify from 'rehype-stringify';
 import remarkParse from 'remark-parse';
@@ -99,5 +100,49 @@ test('rehype plugin can render line numbers', async (t) => {
   t.true(html.includes('class="treelight-line-number"'));
   t.true(html.includes('>41</span>'));
   t.true(html.includes('>42</span>'));
+  t.true(html.includes('<span class="variable"'));
+});
+
+test('remark plugin renders code blocks with Treelight', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+    })
+    .use(rehypeStringify, {
+      allowDangerousHtml: true,
+    })
+    .process(markdown);
+
+  const html = String(file);
+  t.true(html.includes('<pre class="treelight github-dark"'));
+  t.true(html.includes('<span class="variable"'));
+  t.false(html.includes('class="language-javascript"'));
+});
+
+test('remark plugin can render line numbers', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkTreelight, {
+      highlighter: t.context.highlighter,
+      lineNumbers: true,
+    })
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+    })
+    .use(rehypeStringify, {
+      allowDangerousHtml: true,
+    })
+    .process(multilineMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('<pre class="treelight github-dark has-line-numbers"'));
+  t.true(html.includes('data-line-number-start="1"'));
+  t.true(html.includes('class="treelight-line-number"'));
+  t.true(html.includes('>1</span>'));
+  t.true(html.includes('>2</span>'));
   t.true(html.includes('<span class="variable"'));
 });

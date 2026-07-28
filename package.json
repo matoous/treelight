@@ -10,6 +10,7 @@
     "packages/core",
     "packages/integration",
     "packages/rehype",
+    "packages/remark",
     "packages/languages/*",
     "packages/themes/*",
     "docs"
@@ -35,6 +36,7 @@
     "@treelight/php": "workspace:*",
     "@treelight/python": "workspace:*",
     "@treelight/rehype": "workspace:*",
+    "@treelight/remark": "workspace:*",
     "@treelight/ruby": "workspace:*",
     "@treelight/rust": "workspace:*",
     "@treelight/scheme": "workspace:*",
