@@ -1,6 +1,6 @@
 {
   "name": "@treelight/lua",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Treelight language module for lua.",
   "type": "module",
   "main": "./dist/index.cjs",

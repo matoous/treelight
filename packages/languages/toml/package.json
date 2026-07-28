@@ -1,6 +1,6 @@
 {
   "name": "@treelight/toml",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Treelight language module for toml.",
   "type": "module",
   "main": "./dist/index.cjs",

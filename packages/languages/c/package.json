@@ -1,6 +1,6 @@
 {
   "name": "@treelight/c",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Treelight language module for c.",
   "type": "module",
   "main": "./dist/index.cjs",
