@@ -21,6 +21,10 @@ export type CodeBlockLineOptions = {
   lineNumbers?: LineNumbersOption;
 };
 
+export type CodeBlockFrameOptions = {
+  title?: string;
+};
+
 export function getClassNames(node: Element): string[] {
   const className = node.properties?.className as unknown;
   if (Array.isArray(className)) {
@@ -355,6 +359,40 @@ export function resolveTheme(
 ) {
   const theme = readMetaString(parseMetaAttributes(meta ?? ''), 'theme');
   return theme || option;
+}
+
+export function resolveTitle(
+  option: string | undefined,
+  meta: string | null | undefined,
+) {
+  const title = readMetaString(parseMetaAttributes(meta ?? ''), 'title');
+  return title || option;
+}
+
+export function wrapCodeBlockFrame(
+  pre: Element,
+  options: CodeBlockFrameOptions,
+) {
+  if (!options.title) {
+    return pre;
+  }
+  return createElement(
+    'figure',
+    {
+      className: ['treelight-frame'],
+      dataTitle: options.title,
+    },
+    [
+      createElement(
+        'figcaption',
+        {
+          className: ['treelight-title'],
+        },
+        [{ type: 'text', value: options.title }],
+      ),
+      pre,
+    ],
+  );
 }
 
 export function applyCodeBlockLineOptions(

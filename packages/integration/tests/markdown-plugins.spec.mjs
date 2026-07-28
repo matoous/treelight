@@ -63,6 +63,13 @@ const greeting = 'hello';
 \`\`\`
 `;
 
+const titledMarkdown = `# Example
+
+\`\`\`javascript title="src/app.js"
+const greeting = 'hello';
+\`\`\`
+`;
+
 test.before(async (t) => {
   t.context.highlighter = await createHighlighter({
     languages: [javascriptLanguage],
@@ -226,6 +233,29 @@ test('rehype plugin can select a theme from code metadata', async (t) => {
   t.true(html.includes('background-color: #282A36'));
 });
 
+test('rehype plugin can render a title from code metadata', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(rehypeStringify)
+    .process(titledMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('<figure class="treelight-frame"'));
+  t.true(html.includes('data-title="src/app.js"'));
+  t.true(
+    html.includes(
+      '<figcaption class="treelight-title">src/app.js</figcaption>',
+    ),
+  );
+  t.true(
+    html.includes('<pre class="treelight github-dark language-javascript"'),
+  );
+});
+
 test('remark plugin renders code blocks with Treelight', async (t) => {
   const file = await unified()
     .use(remarkParse)
@@ -370,4 +400,29 @@ test('remark plugin can select a theme from code metadata', async (t) => {
   const html = String(file);
   t.true(html.includes('<pre class="treelight dracula"'));
   t.true(html.includes('background-color: #282A36'));
+});
+
+test('remark plugin can render a title from code metadata', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+    })
+    .use(rehypeStringify, {
+      allowDangerousHtml: true,
+    })
+    .process(titledMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('<figure class="treelight-frame"'));
+  t.true(html.includes('data-title="src/app.js"'));
+  t.true(
+    html.includes(
+      '<figcaption class="treelight-title">src/app.js</figcaption>',
+    ),
+  );
+  t.true(html.includes('<pre class="treelight github-dark"'));
 });

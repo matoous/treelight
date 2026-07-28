@@ -13,8 +13,9 @@ import {
   resolveHighlightedLines,
   resolveLineNumbers,
   resolveTheme,
+  resolveTitle,
+  wrapCodeBlockFrame,
 } from '@treelight/hast';
-import type { Element } from 'hast';
 import type { Code, Html, Root } from 'mdast';
 import type { Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
@@ -26,6 +27,7 @@ export interface RemarkTreelightOptions extends CreateHighlighterOptions {
   languageMap?: Record<string, string>;
   lineNumbers?: LineNumbersOption;
   theme?: string;
+  title?: string;
 }
 
 type CodeBlockRef = {
@@ -52,18 +54,22 @@ function withLineOptions(
   options: {
     highlightedLines?: HighlightLinesOption;
     lineNumbers?: LineNumbersOption;
+    title?: string;
   },
 ) {
-  if (!options.lineNumbers && !options.highlightedLines) {
+  if (!options.lineNumbers && !options.highlightedLines && !options.title) {
     return html;
   }
   const root = htmlFragmentToRoot(html);
-  const pre = root.children.find(
-    (child): child is Element =>
-      child.type === 'element' && child.tagName === 'pre',
+  const preIndex = root.children.findIndex(
+    (child) => child.type === 'element' && child.tagName === 'pre',
   );
-  if (pre) {
+  const pre = root.children[preIndex];
+  if (pre?.type === 'element') {
     applyCodeBlockLineOptions(pre, options);
+    root.children[preIndex] = wrapCodeBlockFrame(pre, {
+      title: options.title,
+    });
   }
   return hastToHtml(root);
 }
@@ -81,14 +87,10 @@ const remarkTreelight: Plugin<[RemarkTreelightOptions?], Root> = (
     await Promise.all(
       collectCodeBlocks(tree).map(async ({ node }) => {
         const language = getLanguage(node, options);
-        const html = await resolvedHighlighter.highlight(
-          node.value,
-          language,
-          {
-            ...(options as HighlightOptions),
-            theme: resolveTheme(options.theme, node.meta),
-          },
-        );
+        const html = await resolvedHighlighter.highlight(node.value, language, {
+          ...(options as HighlightOptions),
+          theme: resolveTheme(options.theme, node.meta),
+        });
         const htmlNode = node as unknown as Html;
         htmlNode.type = 'html';
         htmlNode.value = withLineOptions(html, {
@@ -97,6 +99,7 @@ const remarkTreelight: Plugin<[RemarkTreelightOptions?], Root> = (
             node.meta,
           ),
           lineNumbers: resolveLineNumbers(options.lineNumbers, node.meta),
+          title: resolveTitle(options.title, node.meta),
         });
       }),
     );

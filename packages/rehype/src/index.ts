@@ -18,6 +18,8 @@ import {
   resolveHighlightedLines,
   resolveLineNumbers,
   resolveTheme,
+  resolveTitle,
+  wrapCodeBlockFrame,
 } from '@treelight/hast';
 import type { Element, Parent, Root } from 'hast';
 import type { Plugin } from 'unified';
@@ -30,6 +32,7 @@ export interface RehypeTreelightOptions extends CreateHighlighterOptions {
   languageMap?: Record<string, string>;
   lineNumbers?: LineNumbersOption;
   theme?: string;
+  title?: string;
 }
 
 type CodeBlockRef = {
@@ -116,6 +119,9 @@ const rehypeTreelight: Plugin<[RehypeTreelightOptions?], Root> = (
               meta,
             ),
             lineNumbers: resolveLineNumbers(options.lineNumbers, meta),
+          });
+          renderedNodes[0] = wrapCodeBlockFrame(renderedPre, {
+            title: resolveTitle(options.title, meta),
           });
         }
         parent.children.splice(index, 1, ...renderedNodes);

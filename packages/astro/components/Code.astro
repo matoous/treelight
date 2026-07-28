@@ -15,8 +15,10 @@ import {
   resolveHighlightedLines,
   resolveLineNumbers,
   resolveTheme,
+  resolveTitle,
+  wrapCodeBlockFrame,
 } from '@treelight/hast';
-import type { Element, Root } from 'hast';
+import type { Root } from 'hast';
 
 export interface Props extends CreateHighlighterOptions {
   class?: string;
@@ -28,6 +30,7 @@ export interface Props extends CreateHighlighterOptions {
   languageMap?: Record<string, string>;
   lineNumbers?: LineNumbersOption;
   meta?: string;
+  title?: string;
 }
 
 const {
@@ -40,6 +43,7 @@ const {
   languageMap,
   lineNumbers,
   meta = '',
+  title,
   ...highlighterOptions
 } = Astro.props;
 
@@ -48,21 +52,17 @@ const language = languageMap?.[requestedLanguage] || requestedLanguage;
 const resolvedHighlighter = await Promise.resolve(
   highlighter || createHighlighter(highlighterOptions),
 );
-const html = await resolvedHighlighter.highlight(
-  code,
-  language,
-  {
-    ...(highlighterOptions as HighlightOptions),
-    theme: resolveTheme(highlighterOptions.theme, meta),
-  },
-);
+const html = await resolvedHighlighter.highlight(code, language, {
+  ...(highlighterOptions as HighlightOptions),
+  theme: resolveTheme(highlighterOptions.theme, meta),
+});
 const renderedNodes = htmlFragmentToNodes(html);
-const renderedPre = renderedNodes.find(
-  (child): child is Element =>
-    child.type === 'element' && child.tagName === 'pre',
+const renderedPreIndex = renderedNodes.findIndex(
+  (child) => child.type === 'element' && child.tagName === 'pre',
 );
+const renderedPre = renderedNodes[renderedPreIndex];
 
-if (renderedPre) {
+if (renderedPre?.type === 'element') {
   addClassName(renderedPre, `language-${language}`);
   for (const name of className?.split(/\s+/g).filter(Boolean) ?? []) {
     addClassName(renderedPre, name);
@@ -70,6 +70,9 @@ if (renderedPre) {
   applyCodeBlockLineOptions(renderedPre, {
     highlightedLines: resolveHighlightedLines(highlightLines, meta),
     lineNumbers: resolveLineNumbers(lineNumbers, meta),
+  });
+  renderedNodes[renderedPreIndex] = wrapCodeBlockFrame(renderedPre, {
+    title: resolveTitle(title, meta),
   });
 }
 

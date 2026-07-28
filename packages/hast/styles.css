@@ -1,4 +1,5 @@
-.treelight {
+.treelight,
+.treelight-frame {
   --treelight-code-background: transparent;
   --treelight-code-border-color: transparent;
   --treelight-code-border-radius: 0.5rem;
@@ -6,6 +7,15 @@
   --treelight-code-padding-inline: 1rem;
   --treelight-code-font-size: 0.875em;
   --treelight-code-line-height: 1.6;
+  --treelight-title-background: color-mix(
+    in srgb,
+    currentColor 7%,
+    transparent
+  );
+  --treelight-title-border-color: var(--treelight-code-border-color);
+  --treelight-title-color: currentColor;
+  --treelight-title-font-size: 0.8125rem;
+  --treelight-title-font-weight: 600;
   --treelight-line-number-color: currentColor;
   --treelight-line-number-opacity: 0.55;
   --treelight-line-number-gap: 1em;
@@ -16,16 +26,41 @@
     transparent
   );
   --treelight-highlighted-line-border-color: currentColor;
+}
 
-  overflow-x: auto;
-  margin: 1rem 0;
-  border: 1px solid var(--treelight-code-border-color);
-  border-radius: var(--treelight-code-border-radius);
-  background: var(--treelight-code-background);
+.treelight {
   padding: var(--treelight-code-padding-block)
     var(--treelight-code-padding-inline);
+  margin: 1rem 0;
+  overflow-x: auto;
   font-size: var(--treelight-code-font-size);
   line-height: var(--treelight-code-line-height);
+  background: var(--treelight-code-background);
+  border: 1px solid var(--treelight-code-border-color);
+  border-radius: var(--treelight-code-border-radius);
+}
+
+.treelight-frame {
+  margin: 1rem 0;
+}
+
+.treelight-frame > .treelight {
+  margin: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.treelight-title {
+  padding: 0.625rem var(--treelight-code-padding-inline);
+  font-size: var(--treelight-title-font-size);
+  font-weight: var(--treelight-title-font-weight);
+  line-height: 1.4;
+  color: var(--treelight-title-color);
+  background: var(--treelight-title-background);
+  border: 1px solid var(--treelight-title-border-color);
+  border-bottom: 0;
+  border-top-left-radius: var(--treelight-code-border-radius);
+  border-top-right-radius: var(--treelight-code-border-radius);
 }
 
 .treelight code {
@@ -38,8 +73,8 @@
 }
 
 .treelight-line.is-highlighted {
-  margin-inline: calc(-1 * var(--treelight-code-padding-inline));
   padding-inline: var(--treelight-code-padding-inline);
+  margin-inline: calc(-1 * var(--treelight-code-padding-inline));
   background: var(--treelight-highlighted-line-background);
   box-shadow: inset 2px 0 0 var(--treelight-highlighted-line-border-color);
 }
@@ -50,8 +85,8 @@
   margin-right: var(--treelight-line-number-gap);
   color: var(--treelight-line-number-color);
   text-align: right;
-  opacity: var(--treelight-line-number-opacity);
   user-select: none;
+  opacity: var(--treelight-line-number-opacity);
 }
 
 .treelight-line-content {

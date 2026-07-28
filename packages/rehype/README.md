@@ -44,10 +44,15 @@ console.info('highlighted lines');
 ```js theme=github-light
 console.info('light theme');
 ```
+
+```js title="src/app.js"
+console.info('titled block');
+```
 ````
 
 The `start` option key remains available as a compatibility alias for older local configurations, but new code should use `startLineNumber`.
 The `theme` metadata value selects a registered theme for one block and falls back to the plugin's configured `theme` when omitted.
+The `title` metadata value wraps the block in a lightweight frame with a visible title bar.
 
 Import the stylesheet from your app entrypoint or layout:
 
