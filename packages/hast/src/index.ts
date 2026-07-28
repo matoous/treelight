@@ -349,6 +349,14 @@ export function resolveHighlightedLines(
   return option;
 }
 
+export function resolveTheme(
+  option: string | undefined,
+  meta: string | null | undefined,
+) {
+  const theme = readMetaString(parseMetaAttributes(meta ?? ''), 'theme');
+  return theme || option;
+}
+
 export function applyCodeBlockLineOptions(
   pre: Element,
   options: CodeBlockLineOptions,

@@ -17,6 +17,7 @@ import {
   type LineNumbersOption,
   resolveHighlightedLines,
   resolveLineNumbers,
+  resolveTheme,
 } from '@treelight/hast';
 import type { Element, Parent, Root } from 'hast';
 import type { Plugin } from 'unified';
@@ -28,6 +29,7 @@ export interface RehypeTreelightOptions extends CreateHighlighterOptions {
   highlightLines?: HighlightLinesOption;
   languageMap?: Record<string, string>;
   lineNumbers?: LineNumbersOption;
+  theme?: string;
 }
 
 type CodeBlockRef = {
@@ -99,7 +101,10 @@ const rehypeTreelight: Plugin<[RehypeTreelightOptions?], Root> = (
         const html = await resolvedHighlighter.highlight(
           getText(code),
           language,
-          options as HighlightOptions,
+          {
+            ...(options as HighlightOptions),
+            theme: resolveTheme(options.theme, meta),
+          },
         );
         const renderedNodes = htmlFragmentToNodes(html);
         const renderedPre = renderedNodes[0];

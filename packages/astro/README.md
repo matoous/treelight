@@ -36,9 +36,14 @@ console.info('hidden gutter');
 ```js {2,4-6}
 console.info('highlighted lines');
 ```
+
+```js theme=github-light
+console.info('light theme');
+```
 ````
 
 The `start` option key remains available as a compatibility alias for older local configurations, but new code should use `startLineNumber`.
+The `theme` metadata value selects a registered theme for one block and falls back to the integration's configured `theme` when omitted.
 
 Import the stylesheet from your layout:
 

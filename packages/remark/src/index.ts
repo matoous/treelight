@@ -12,6 +12,7 @@ import {
   type LineNumbersOption,
   resolveHighlightedLines,
   resolveLineNumbers,
+  resolveTheme,
 } from '@treelight/hast';
 import type { Element } from 'hast';
 import type { Code, Html, Root } from 'mdast';
@@ -24,6 +25,7 @@ export interface RemarkTreelightOptions extends CreateHighlighterOptions {
   highlightLines?: HighlightLinesOption;
   languageMap?: Record<string, string>;
   lineNumbers?: LineNumbersOption;
+  theme?: string;
 }
 
 type CodeBlockRef = {
@@ -82,7 +84,10 @@ const remarkTreelight: Plugin<[RemarkTreelightOptions?], Root> = (
         const html = await resolvedHighlighter.highlight(
           node.value,
           language,
-          options as HighlightOptions,
+          {
+            ...(options as HighlightOptions),
+            theme: resolveTheme(options.theme, node.meta),
+          },
         );
         const htmlNode = node as unknown as Html;
         htmlNode.type = 'html';
