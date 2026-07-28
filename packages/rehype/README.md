@@ -1,6 +1,8 @@
 # @treelight/rehype
 
-Rehype plugin for rendering Markdown and MDX code blocks with Treelight.
+Recommended Markdown and MDX integration for rendering code blocks with Treelight.
+
+Use this package when your site framework exposes rehype plugins, including Rspress, Astro's unified Markdown processor, MDX, and most unified-based static site pipelines. It runs after Markdown has been converted to HAST, so it can replace the final `<pre><code>` output without relying on dangerous raw HTML.
 
 ```js
 import rehypeTreelight from '@treelight/rehype';
@@ -21,8 +23,8 @@ export default {
 };
 ```
 
+Set `lineNumbers: true` to enable line numbers for every rendered code block.
 Use `lineNumbers: { startLineNumber: 10 }` to start numbering from a custom line.
-The shorter `start` key is also accepted as an alias.
 
 Code fence metadata can override the global setting per block:
 
@@ -35,3 +37,5 @@ console.info('hello');
 console.info('hidden gutter');
 ```
 ````
+
+The `start` option key remains available as a compatibility alias for older local configurations, but new code should use `startLineNumber`.

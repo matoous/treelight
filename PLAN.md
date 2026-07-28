@@ -28,9 +28,9 @@
 
 ## 5. Documentation Guidance
 
-- [ ] Document `@treelight/rehype` as the recommended Markdown/MDX integration.
-- [ ] Document `@treelight/remark` as compatibility-oriented for remark-stage transforms.
-- [ ] Add examples for global and per-block line numbers.
+- [x] Document `@treelight/rehype` as the recommended Markdown/MDX integration.
+- [x] Document `@treelight/remark` as compatibility-oriented for remark-stage transforms.
+- [x] Add examples for global and per-block line numbers.
 
 ## 6. Optional Astro Component
 
