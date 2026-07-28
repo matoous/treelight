@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { createHighlighter } from '@treelight/core';
 import { hastToHtml } from '@treelight/hast';
 import javascriptLanguage from '@treelight/javascript';
@@ -57,4 +58,23 @@ test('Rspress plugin appends a Treelight transformer', async (t) => {
 
   t.is(config.markdown.shiki.transformers[0], existingTransformer);
   t.is(config.markdown.shiki.transformers[1].name, '@treelight/rspress');
+});
+
+test('Rspress stylesheet resets Rspress code block chrome inside Treelight frames', async (t) => {
+  const css = await readFile(
+    new URL('../../rspress/styles.css', import.meta.url),
+    'utf8',
+  );
+
+  t.true(
+    css.includes(
+      '--treelight-title-background: var(--treelight-code-background)',
+    ),
+  );
+  t.true(css.includes('.treelight-frame > .rp-codeblock'));
+  t.true(css.includes('margin: 0'));
+  t.true(css.includes('border-top-left-radius: 0'));
+  t.true(css.includes('border-top-right-radius: 0'));
+  t.true(css.includes('.rp-codeblock__content .treelight code'));
+  t.true(css.includes('padding: 0'));
 });
