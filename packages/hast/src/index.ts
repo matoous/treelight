@@ -10,6 +10,17 @@ export type LineNumbersOption =
       start?: number;
     };
 
+export type HighlightLinesOption =
+  | false
+  | string
+  | number
+  | readonly (number | readonly [number, number])[];
+
+export type CodeBlockLineOptions = {
+  highlightedLines?: HighlightLinesOption;
+  lineNumbers?: LineNumbersOption;
+};
+
 export function getClassNames(node: Element): string[] {
   const className = node.properties?.className as unknown;
   if (Array.isArray(className)) {
@@ -34,9 +45,11 @@ export function setStyleProperty(
   value: string,
 ) {
   const existingStyle = getPropertyString(node, 'style');
-  const separator = existingStyle && !existingStyle.trimEnd().endsWith(';') ? ';' : '';
+  const separator =
+    existingStyle && !existingStyle.trimEnd().endsWith(';') ? ';' : '';
   node.properties ??= {};
-  node.properties.style = `${existingStyle ?? ''}${separator} ${property}: ${value}`.trim();
+  node.properties.style =
+    `${existingStyle ?? ''}${separator} ${property}: ${value}`.trim();
 }
 
 export function getPropertyString(
@@ -53,10 +66,7 @@ export function getPropertyString(
   return undefined;
 }
 
-export function getDataString(
-  node: Element,
-  name: string,
-): string | undefined {
+export function getDataString(node: Element, name: string): string | undefined {
   const data = node.data as Record<string, unknown> | undefined;
   const value = data?.[name];
   if (typeof value === 'string') {
@@ -168,6 +178,10 @@ function getLineNumberStart(option: LineNumbersOption) {
   return 1;
 }
 
+function getLineNumberStartFromOptions(options: CodeBlockLineOptions) {
+  return options.lineNumbers ? getLineNumberStart(options.lineNumbers) : 1;
+}
+
 export function parseMetaAttributes(meta: string) {
   const attributes = new Map<string, string | boolean>();
   const pattern =
@@ -236,51 +250,165 @@ export function resolveLineNumbers(
   return option;
 }
 
-export function applyLineNumbers(pre: Element, option?: LineNumbersOption) {
-  if (!option) {
+function parseHighlightLineSpec(spec: string) {
+  const lines = new Set<number>();
+  for (const part of spec.split(',')) {
+    const trimmed = part.trim();
+    if (!trimmed) {
+      continue;
+    }
+    const rangeMatch = trimmed.match(/^(\d+)-(\d+)$/);
+    if (rangeMatch) {
+      const start = Number.parseInt(rangeMatch[1], 10);
+      const end = Number.parseInt(rangeMatch[2], 10);
+      for (
+        let line = Math.min(start, end);
+        line <= Math.max(start, end);
+        line++
+      ) {
+        lines.add(line);
+      }
+      continue;
+    }
+    const line = Number.parseInt(trimmed, 10);
+    if (Number.isFinite(line)) {
+      lines.add(line);
+    }
+  }
+  return lines;
+}
+
+function parseHighlightLinesOption(option: HighlightLinesOption | undefined) {
+  if (option === undefined || option === false) {
+    return new Set<number>();
+  }
+  if (typeof option === 'string') {
+    return parseHighlightLineSpec(option);
+  }
+  if (typeof option === 'number') {
+    return new Set([option]);
+  }
+  const lines = new Set<number>();
+  for (const item of option) {
+    if (typeof item === 'number') {
+      lines.add(item);
+      continue;
+    }
+    const [start, end] = item;
+    for (
+      let line = Math.min(start, end);
+      line <= Math.max(start, end);
+      line++
+    ) {
+      lines.add(line);
+    }
+  }
+  return lines;
+}
+
+function readMetaString(
+  attributes: Map<string, string | boolean>,
+  name: string,
+) {
+  const value = attributes.get(name);
+  return typeof value === 'string' ? value : undefined;
+}
+
+function readBraceLineRange(meta: string) {
+  return meta.match(/\{([^}]+)\}/)?.[1];
+}
+
+export function resolveHighlightedLines(
+  option: HighlightLinesOption | undefined,
+  meta: string | null | undefined,
+): HighlightLinesOption | undefined {
+  const metadata = meta ?? '';
+  const attributes = parseMetaAttributes(metadata);
+  const highlightedLines = readMetaBoolean(attributes, 'highlightLines');
+  if (highlightedLines === false) {
+    return false;
+  }
+
+  const attributeRange = readMetaString(attributes, 'highlightLines');
+  if (attributeRange) {
+    return attributeRange;
+  }
+
+  const braceRange = readBraceLineRange(metadata);
+  if (braceRange) {
+    return braceRange;
+  }
+
+  return option;
+}
+
+export function applyCodeBlockLineOptions(
+  pre: Element,
+  options: CodeBlockLineOptions,
+) {
+  const highlightedLines = parseHighlightLinesOption(options.highlightedLines);
+  if (!options.lineNumbers && highlightedLines.size === 0) {
     return;
   }
   const code = findCodeElement(pre);
   if (!code) {
     return;
   }
-  const start = getLineNumberStart(option);
+  const start = getLineNumberStartFromOptions(options);
   const lines = splitElementChildrenByLine(code.children);
   const lastLineNumber = start + Math.max(lines.length - 1, 0);
   const gutterWidth = String(lastLineNumber).length;
-  addClassName(pre, 'has-line-numbers');
   pre.properties ??= {};
-  pre.properties.dataLineNumbers = 'true';
-  pre.properties.dataLineNumberStart = String(start);
-  setStyleProperty(pre, '--treelight-line-number-width', `${gutterWidth}ch`);
+  if (options.lineNumbers) {
+    addClassName(pre, 'has-line-numbers');
+    pre.properties.dataLineNumbers = 'true';
+    pre.properties.dataLineNumberStart = String(start);
+    setStyleProperty(pre, '--treelight-line-number-width', `${gutterWidth}ch`);
+  }
+  if (highlightedLines.size > 0) {
+    addClassName(pre, 'has-highlighted-lines');
+  }
   code.children = lines.flatMap((children, index) => {
-    const lineNumber = String(start + index);
-    const line = createElement(
-      'span',
-      {
-        className: ['treelight-line'],
-        dataLineNumber: lineNumber,
-      },
-      [
+    const lineNumber = start + index;
+    const isHighlighted = highlightedLines.has(lineNumber);
+    const lineChildren: Element['children'] = [
+      createElement(
+        'span',
+        {
+          className: ['treelight-line-content'],
+        },
+        children,
+      ),
+    ];
+    if (options.lineNumbers) {
+      lineChildren.unshift(
         createElement(
           'span',
           {
             ariaHidden: 'true',
             className: ['treelight-line-number'],
           },
-          [{ type: 'text', value: lineNumber }],
+          [{ type: 'text', value: String(lineNumber) }],
         ),
-        createElement(
-          'span',
-          {
-            className: ['treelight-line-content'],
-          },
-          children,
-        ),
-      ],
+      );
+    }
+    const line = createElement(
+      'span',
+      {
+        className: isHighlighted
+          ? ['treelight-line', 'is-highlighted']
+          : ['treelight-line'],
+        dataLineNumber: String(lineNumber),
+        ...(isHighlighted ? { dataHighlightedLine: 'true' } : {}),
+      },
+      lineChildren,
     );
     return index < lines.length - 1
       ? [line, { type: 'text', value: '\n' }]
       : [line];
   });
+}
+
+export function applyLineNumbers(pre: Element, option?: LineNumbersOption) {
+  applyCodeBlockLineOptions(pre, { lineNumbers: option });
 }

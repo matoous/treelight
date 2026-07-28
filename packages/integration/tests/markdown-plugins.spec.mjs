@@ -39,6 +39,22 @@ console.info(greeting);
 \`\`\`
 `;
 
+const highlightedLinesMarkdown = `# Example
+
+\`\`\`javascript {2}
+const greeting = 'hello';
+console.info(greeting);
+\`\`\`
+`;
+
+const metadataHighlightedLinesMarkdown = `# Example
+
+\`\`\`javascript highlightLines="1-2"
+const greeting = 'hello';
+console.info(greeting);
+\`\`\`
+`;
+
 test.before(async (t) => {
   t.context.highlighter = await createHighlighter({
     languages: [javascriptLanguage],
@@ -151,6 +167,41 @@ test('rehype plugin can disable global line numbers from code metadata', async (
   t.false(html.includes('treelight-line-number'));
 });
 
+test('rehype plugin can highlight lines from code metadata ranges', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(rehypeStringify)
+    .process(highlightedLinesMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('has-highlighted-lines'));
+  t.true(
+    html.includes(
+      'class="treelight-line is-highlighted" data-line-number="2" data-highlighted-line="true"',
+    ),
+  );
+  t.false(html.includes('treelight-line-number'));
+});
+
+test('rehype plugin can highlight lines from highlightLines metadata', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(rehypeStringify)
+    .process(metadataHighlightedLinesMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('data-line-number="1" data-highlighted-line="true"'));
+  t.true(html.includes('data-line-number="2" data-highlighted-line="true"'));
+});
+
 test('remark plugin renders code blocks with Treelight', async (t) => {
   const file = await unified()
     .use(remarkParse)
@@ -233,4 +284,47 @@ test('remark plugin can disable global line numbers from code metadata', async (
   const html = String(file);
   t.false(html.includes('has-line-numbers'));
   t.false(html.includes('treelight-line-number'));
+});
+
+test('remark plugin can highlight lines from code metadata ranges', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+    })
+    .use(rehypeStringify, {
+      allowDangerousHtml: true,
+    })
+    .process(highlightedLinesMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('has-highlighted-lines'));
+  t.true(
+    html.includes(
+      'class="treelight-line is-highlighted" data-line-number="2" data-highlighted-line="true"',
+    ),
+  );
+  t.false(html.includes('treelight-line-number'));
+});
+
+test('remark plugin can highlight lines from highlightLines metadata', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+    })
+    .use(rehypeStringify, {
+      allowDangerousHtml: true,
+    })
+    .process(metadataHighlightedLinesMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('data-line-number="1" data-highlighted-line="true"'));
+  t.true(html.includes('data-line-number="2" data-highlighted-line="true"'));
 });

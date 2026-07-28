@@ -19,5 +19,7 @@ The stylesheet defines the stable CSS contract for generated code blocks:
 - `.treelight-line-number`
 - `.treelight-line-content`
 - `.has-line-numbers`
+- `.has-highlighted-lines`
+- `.is-highlighted`
 
-You can customize spacing and colors with CSS variables such as `--treelight-code-background`, `--treelight-code-padding-inline`, `--treelight-line-number-color`, and `--treelight-line-number-gap`.
+You can customize spacing and colors with CSS variables such as `--treelight-code-background`, `--treelight-code-padding-inline`, `--treelight-line-number-color`, `--treelight-line-number-gap`, and `--treelight-highlighted-line-background`.

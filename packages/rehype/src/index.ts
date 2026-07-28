@@ -6,14 +6,16 @@ import {
 } from '@treelight/core';
 import {
   addClassName,
-  applyLineNumbers,
+  applyCodeBlockLineOptions,
   findCodeElement,
   getClassNames,
   getMetadata,
   getPropertyString,
   getText,
+  type HighlightLinesOption,
   htmlFragmentToNodes,
   type LineNumbersOption,
+  resolveHighlightedLines,
   resolveLineNumbers,
 } from '@treelight/hast';
 import type { Element, Parent, Root } from 'hast';
@@ -23,6 +25,7 @@ import { visit } from 'unist-util-visit';
 export interface RehypeTreelightOptions extends CreateHighlighterOptions {
   defaultLanguage?: string;
   highlighter?: Highlighter | Promise<Highlighter>;
+  highlightLines?: HighlightLinesOption;
   languageMap?: Record<string, string>;
   lineNumbers?: LineNumbersOption;
 }
@@ -102,10 +105,13 @@ const rehypeTreelight: Plugin<[RehypeTreelightOptions?], Root> = (
         const renderedPre = renderedNodes[0];
         if (renderedPre?.type === 'element') {
           addClassName(renderedPre, `language-${language}`);
-          applyLineNumbers(
-            renderedPre,
-            resolveLineNumbers(options.lineNumbers, meta),
-          );
+          applyCodeBlockLineOptions(renderedPre, {
+            highlightedLines: resolveHighlightedLines(
+              options.highlightLines,
+              meta,
+            ),
+            lineNumbers: resolveLineNumbers(options.lineNumbers, meta),
+          });
         }
         parent.children.splice(index, 1, ...renderedNodes);
       }),

@@ -5,10 +5,12 @@ import {
   type HighlightOptions,
 } from '@treelight/core';
 import {
-  applyLineNumbers,
+  applyCodeBlockLineOptions,
+  type HighlightLinesOption,
   hastToHtml,
   htmlFragmentToRoot,
   type LineNumbersOption,
+  resolveHighlightedLines,
   resolveLineNumbers,
 } from '@treelight/hast';
 import type { Element } from 'hast';
@@ -19,6 +21,7 @@ import { visit } from 'unist-util-visit';
 export interface RemarkTreelightOptions extends CreateHighlighterOptions {
   defaultLanguage?: string;
   highlighter?: Highlighter | Promise<Highlighter>;
+  highlightLines?: HighlightLinesOption;
   languageMap?: Record<string, string>;
   lineNumbers?: LineNumbersOption;
 }
@@ -42,8 +45,14 @@ function collectCodeBlocks(tree: Root): CodeBlockRef[] {
   return blocks;
 }
 
-function withLineNumbers(html: string, option?: LineNumbersOption) {
-  if (!option) {
+function withLineOptions(
+  html: string,
+  options: {
+    highlightedLines?: HighlightLinesOption;
+    lineNumbers?: LineNumbersOption;
+  },
+) {
+  if (!options.lineNumbers && !options.highlightedLines) {
     return html;
   }
   const root = htmlFragmentToRoot(html);
@@ -52,7 +61,7 @@ function withLineNumbers(html: string, option?: LineNumbersOption) {
       child.type === 'element' && child.tagName === 'pre',
   );
   if (pre) {
-    applyLineNumbers(pre, option);
+    applyCodeBlockLineOptions(pre, options);
   }
   return hastToHtml(root);
 }
@@ -77,10 +86,13 @@ const remarkTreelight: Plugin<[RemarkTreelightOptions?], Root> = (
         );
         const htmlNode = node as unknown as Html;
         htmlNode.type = 'html';
-        htmlNode.value = withLineNumbers(
-          html,
-          resolveLineNumbers(options.lineNumbers, node.meta),
-        );
+        htmlNode.value = withLineOptions(html, {
+          highlightedLines: resolveHighlightedLines(
+            options.highlightLines,
+            node.meta,
+          ),
+          lineNumbers: resolveLineNumbers(options.lineNumbers, node.meta),
+        });
       }),
     );
   };

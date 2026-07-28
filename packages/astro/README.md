@@ -32,6 +32,10 @@ console.info('hello');
 ```js showLineNumbers=false
 console.info('hidden gutter');
 ```
+
+```js {2,4-6}
+console.info('highlighted lines');
+```
 ````
 
 The `start` option key remains available as a compatibility alias for older local configurations, but new code should use `startLineNumber`.
@@ -60,6 +64,7 @@ import javascript from '@treelight/javascript';
   code={`const greeting = 'hello';`}
   lang="javascript"
   languages={[javascript]}
+  highlightLines="1"
   lineNumbers
 />
 ```

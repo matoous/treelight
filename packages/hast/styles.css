@@ -10,6 +10,12 @@
   --treelight-line-number-opacity: 0.55;
   --treelight-line-number-gap: 1em;
   --treelight-line-number-width: 1ch;
+  --treelight-highlighted-line-background: color-mix(
+    in srgb,
+    currentColor 10%,
+    transparent
+  );
+  --treelight-highlighted-line-border-color: currentColor;
 
   overflow-x: auto;
   margin: 1rem 0;
@@ -27,7 +33,15 @@
 }
 
 .treelight-line {
-  display: inline;
+  display: inline-block;
+  min-width: 100%;
+}
+
+.treelight-line.is-highlighted {
+  margin-inline: calc(-1 * var(--treelight-code-padding-inline));
+  padding-inline: var(--treelight-code-padding-inline);
+  background: var(--treelight-highlighted-line-background);
+  box-shadow: inset 2px 0 0 var(--treelight-highlighted-line-border-color);
 }
 
 .treelight-line-number {

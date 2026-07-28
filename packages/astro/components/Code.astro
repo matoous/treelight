@@ -7,10 +7,12 @@ import {
 } from '@treelight/core';
 import {
   addClassName,
-  applyLineNumbers,
+  applyCodeBlockLineOptions,
+  type HighlightLinesOption,
   hastToHtml,
   htmlFragmentToNodes,
   type LineNumbersOption,
+  resolveHighlightedLines,
   resolveLineNumbers,
 } from '@treelight/hast';
 import type { Element, Root } from 'hast';
@@ -19,6 +21,7 @@ export interface Props extends CreateHighlighterOptions {
   class?: string;
   code: string;
   highlighter?: Highlighter | Promise<Highlighter>;
+  highlightLines?: HighlightLinesOption;
   lang?: string;
   language?: string;
   languageMap?: Record<string, string>;
@@ -30,6 +33,7 @@ const {
   class: className,
   code,
   highlighter,
+  highlightLines,
   lang,
   language: languageProp,
   languageMap,
@@ -59,9 +63,13 @@ if (renderedPre) {
   for (const name of className?.split(/\s+/g).filter(Boolean) ?? []) {
     addClassName(renderedPre, name);
   }
-  applyLineNumbers(renderedPre, resolveLineNumbers(lineNumbers, meta));
+  applyCodeBlockLineOptions(renderedPre, {
+    highlightedLines: resolveHighlightedLines(highlightLines, meta),
+    lineNumbers: resolveLineNumbers(lineNumbers, meta),
+  });
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: Astro consumes this value in the template below.
 const renderedHtml = hastToHtml({
   type: 'root',
   children: renderedNodes,
