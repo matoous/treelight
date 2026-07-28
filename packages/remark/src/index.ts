@@ -26,6 +26,7 @@ type CodeBlockRef = {
 export type LineNumbersOption =
   | boolean
   | {
+      startLineNumber?: number;
       start?: number;
     };
 
@@ -123,9 +124,77 @@ function appendNodeLines(node: ElementContent, lines: Element['children'][]) {
 
 function getLineNumberStart(option: LineNumbersOption) {
   if (typeof option === 'object') {
-    return option.start ?? 1;
+    return option.startLineNumber ?? option.start ?? 1;
   }
   return 1;
+}
+
+function parseMetaAttributes(meta: string) {
+  const attributes = new Map<string, string | boolean>();
+  const pattern =
+    /(?:^|\s)([A-Za-z][\w-]*)(?:=(?:"([^"]*)"|'([^']*)'|([^\s]+)))?/g;
+  for (const match of meta.matchAll(pattern)) {
+    const [, key, doubleQuoted, singleQuoted, bare] = match;
+    attributes.set(key, doubleQuoted ?? singleQuoted ?? bare ?? true);
+  }
+  return attributes;
+}
+
+function readMetaBoolean(
+  attributes: Map<string, string | boolean>,
+  name: string,
+) {
+  if (!attributes.has(name)) {
+    return undefined;
+  }
+  const value = attributes.get(name);
+  if (value === true || value === '') {
+    return true;
+  }
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+  if (/^(true|1)$/i.test(value)) {
+    return true;
+  }
+  if (/^(false|0)$/i.test(value)) {
+    return false;
+  }
+  return undefined;
+}
+
+function readMetaNumber(
+  attributes: Map<string, string | boolean>,
+  name: string,
+) {
+  const value = attributes.get(name);
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+  const number = Number.parseInt(value, 10);
+  return Number.isFinite(number) ? number : undefined;
+}
+
+function resolveLineNumbers(
+  option: LineNumbersOption | undefined,
+  meta: string | null | undefined,
+): LineNumbersOption | undefined {
+  const attributes = parseMetaAttributes(meta ?? '');
+  const showLineNumbers = readMetaBoolean(attributes, 'showLineNumbers');
+  if (showLineNumbers === false) {
+    return false;
+  }
+
+  const startLineNumber = readMetaNumber(attributes, 'startLineNumber');
+  if (startLineNumber !== undefined) {
+    return { startLineNumber };
+  }
+
+  if (showLineNumbers === true) {
+    return typeof option === 'object' ? option : true;
+  }
+
+  return option;
 }
 
 function applyLineNumbers(pre: Element, option?: LineNumbersOption) {
@@ -212,7 +281,10 @@ const remarkTreelight: Plugin<[RemarkTreelightOptions?], Root> = (
         );
         const htmlNode = node as unknown as Html;
         htmlNode.type = 'html';
-        htmlNode.value = withLineNumbers(html, options.lineNumbers);
+        htmlNode.value = withLineNumbers(
+          html,
+          resolveLineNumbers(options.lineNumbers, node.meta),
+        );
       }),
     );
   };
