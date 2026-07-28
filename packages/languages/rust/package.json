@@ -8,7 +8,7 @@
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/index.d.cts",
+        "types": "./dist/index.d.mts",
         "default": "./dist/index.js"
       },
       "require": {
@@ -32,7 +32,7 @@
     "rust"
   ],
   "scripts": {
-    "build": "rslib build",
+    "build": "rslib build && cp dist/index.d.cts dist/index.d.mts && publint",
     "build:watch": "rslib build --watch",
     "inspect": "rslib inspect",
     "tsc": "tsc --noEmit",
@@ -42,8 +42,8 @@
   "devDependencies": {
     "@rslib/core": "^0.23.2",
     "@types/node": "^26.1.2",
-    "rsbuild-plugin-publint": "^1.0.0",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "publint": "^0.3.22"
   },
   "treelightLanguage": {
     "repo": "tree-sitter/tree-sitter-rust",
@@ -61,5 +61,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">= 18"
   }
 }

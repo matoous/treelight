@@ -87,7 +87,7 @@ async function main() {
     exports: {
       '.': {
         import: {
-          types: './dist/index.d.cts',
+          types: './dist/index.d.mts',
           default: './dist/index.js',
         },
         require: {
@@ -107,7 +107,7 @@ async function main() {
     },
     keywords: ['treelight', 'tree-sitter', 'language', languageId],
     scripts: {
-      build: 'rslib build',
+      build: 'rslib build && cp dist/index.d.cts dist/index.d.mts && publint',
       'build:watch': 'rslib build --watch',
       inspect: 'rslib inspect',
       tsc: 'tsc --noEmit',
@@ -117,7 +117,7 @@ async function main() {
     devDependencies: {
       '@rslib/core': '^0.23.2',
       '@types/node': '^26.1.2',
-      'rsbuild-plugin-publint': '^1.0.0',
+      publint: '^0.3.22',
       typescript: '^7.0.2',
     },
     treelightLanguage: {
@@ -197,7 +197,6 @@ export default language
 `;
 
   const rslibConfig = `import { defineConfig } from '@rslib/core'
-import { pluginPublint } from 'rsbuild-plugin-publint'
 
 export default defineConfig({
   lib: [
@@ -237,7 +236,6 @@ export default defineConfig({
       })
     },
   },
-  plugins: [pluginPublint()],
 })
 `;
 
