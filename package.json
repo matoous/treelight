@@ -9,6 +9,7 @@
     "packages/browser",
     "packages/core",
     "packages/integration",
+    "packages/rehype",
     "packages/languages/*",
     "packages/themes/*",
     "docs"
@@ -33,6 +34,7 @@
     "@treelight/markdown": "workspace:*",
     "@treelight/php": "workspace:*",
     "@treelight/python": "workspace:*",
+    "@treelight/rehype": "workspace:*",
     "@treelight/ruby": "workspace:*",
     "@treelight/rust": "workspace:*",
     "@treelight/scheme": "workspace:*",

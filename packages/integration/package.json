@@ -26,6 +26,7 @@
     "@treelight/markdown": "0.2.0",
     "@treelight/php": "0.2.0",
     "@treelight/python": "0.2.0",
+    "@treelight/rehype": "0.1.0",
     "@treelight/ruby": "0.2.0",
     "@treelight/rust": "0.2.0",
     "@treelight/scheme": "0.2.0",
@@ -46,7 +47,11 @@
     "@treelight/tsx": "0.2.0",
     "@treelight/typescript": "0.2.0",
     "@treelight/yaml": "0.2.0",
-    "@treelight/zig": "0.2.0"
+    "@treelight/zig": "0.2.0",
+    "rehype-stringify": "^10.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
     "ava": "^8.0.1"
