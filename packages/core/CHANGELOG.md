@@ -1,5 +1,13 @@
 # @treelight/core
 
+## 0.2.0
+
+### Patch Changes
+
+- 7a2e922: Add package README files for npm package pages.
+- Updated dependencies [7a2e922]
+  - @treelight/theme-github-dark@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes

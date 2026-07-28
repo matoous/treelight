@@ -1,6 +1,6 @@
 {
   "name": "@treelight/sql",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "Treelight language module for sql.",
   "type": "module",
   "main": "./dist/index.cjs",

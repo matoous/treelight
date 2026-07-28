@@ -1,6 +1,6 @@
 {
   "name": "@treelight/core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tree-sitter based syntax highlighter.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -36,7 +36,7 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
-    "@treelight/theme-github-dark": "0.1.0",
+    "@treelight/theme-github-dark": "0.2.0",
     "web-tree-sitter": "^0.26.11"
   },
   "devDependencies": {

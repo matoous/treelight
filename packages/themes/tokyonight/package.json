@@ -1,6 +1,6 @@
 {
   "name": "@treelight/theme-tokyonight",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "Treelight theme module for tokyonight.",
   "main": "./dist/index.cjs",
   "exports": {
