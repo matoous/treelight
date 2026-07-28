@@ -137,6 +137,7 @@ test.serial(
       t.true(html.includes(`<pre class="treelight ${id}"`), id);
       t.regex(html, /background-color: #[0-9a-fA-F]{3,8}/, id);
       t.regex(html, /color: #[0-9a-fA-F]{3,8}/, id);
+      t.false(html.includes('color: #000000'), id);
     }
   },
 );

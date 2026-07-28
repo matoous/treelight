@@ -191,6 +191,9 @@ function buildPreBlock(
   const foreground =
     getThemeColor(theme, 'ui.foreground', 'fg') ||
     getThemeColor(theme, 'ui.foreground') ||
+    getThemeColor(theme, 'ui.text', 'fg') ||
+    getThemeColor(theme, 'ui.background', 'fg') ||
+    getThemeColor(theme, 'variable', 'fg') ||
     '#000000';
 
   return `<pre class="treelight ${themeClass}" style="background-color: ${background}; color: ${foreground}"><code>${content}</code></pre>`;
