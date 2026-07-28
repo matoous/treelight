@@ -19,9 +19,11 @@ Treelight is a code-highlighter based on Tree-sitter grammars. It gives you the 
 - `@treelight/core` provides the runtime, language/theme registration, and highlighter APIs.
 - `@treelight/browser` configures `web-tree-sitter` for browser bundlers and re-exports the core API.
 - `@treelight/<language>` packages provide language definitions with inlined grammar WASM and highlight queries.
-- `@treelight/theme-github-dark` and `@treelight/theme-github-light` provide bundled themes.
+- `@treelight/theme-<theme>` packages provide bundled themes.
 
 Bundled language packages currently cover Bash, C, C++, CSS, Dockerfile, Elixir, Go, GraphQL, HTML, Java, JavaScript, JSON, Lua, Markdown, PHP, Python, Ruby, Rust, Scheme, SQL, TOML, TSX, TypeScript, YAML, and Zig.
+
+Bundled theme packages currently cover Ayu Dark, Catppuccin Mocha, Dracula, Everforest Dark, GitHub Dark, GitHub Light, Gruvbox, Gruvbox Material, Kanagawa, Nord, One Dark, Rose Pine, Solarized Light, and Tokyo Night.
 
 ## Node and SSR Usage
 

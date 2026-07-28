@@ -18,6 +18,18 @@ import rubyLanguage from '@treelight/ruby';
 import rustLanguage from '@treelight/rust';
 import schemeLanguage from '@treelight/scheme';
 import sqlLanguage from '@treelight/sql';
+import ayuDarkTheme from '@treelight/theme-ayu-dark';
+import catppuccinMochaTheme from '@treelight/theme-catppuccin-mocha';
+import draculaTheme from '@treelight/theme-dracula';
+import everforestDarkTheme from '@treelight/theme-everforest-dark';
+import gruvboxTheme from '@treelight/theme-gruvbox';
+import gruvboxMaterialTheme from '@treelight/theme-gruvbox-material';
+import kanagawaTheme from '@treelight/theme-kanagawa';
+import nordTheme from '@treelight/theme-nord';
+import onedarkTheme from '@treelight/theme-onedark';
+import rosePineTheme from '@treelight/theme-rose-pine';
+import solarizedLightTheme from '@treelight/theme-solarized-light';
+import tokyonightTheme from '@treelight/theme-tokyonight';
 import tomlLanguage from '@treelight/toml';
 import tsxLanguage from '@treelight/tsx';
 import typescriptLanguage from '@treelight/typescript';
@@ -26,8 +38,24 @@ import zigLanguage from '@treelight/zig';
 import test from 'ava';
 import treelight from '../../core/dist/index.js';
 
-const { highlight, registerLanguage } = treelight;
+const { highlight, registerLanguage, registerTheme } = treelight;
 const resolveLanguage = (module) => module.default ?? module;
+const resolveTheme = (module) => module.default ?? module;
+
+const themeCases = [
+  ['ayu-dark', ayuDarkTheme],
+  ['catppuccin-mocha', catppuccinMochaTheme],
+  ['dracula', draculaTheme],
+  ['everforest-dark', everforestDarkTheme],
+  ['gruvbox', gruvboxTheme],
+  ['gruvbox-material', gruvboxMaterialTheme],
+  ['kanagawa', kanagawaTheme],
+  ['nord', nordTheme],
+  ['onedark', onedarkTheme],
+  ['rose-pine', rosePineTheme],
+  ['solarized-light', solarizedLightTheme],
+  ['tokyonight', tokyonightTheme],
+];
 
 test.before(() => {
   registerLanguage('bash', resolveLanguage(bashLanguage));
@@ -55,6 +83,9 @@ test.before(() => {
   registerLanguage('typescript', resolveLanguage(typescriptLanguage));
   registerLanguage('yaml', resolveLanguage(yamlLanguage));
   registerLanguage('zig', resolveLanguage(zigLanguage));
+  for (const [id, theme] of themeCases) {
+    registerTheme(id, resolveTheme(theme));
+  }
 });
 
 test('bash', async (t) => {
@@ -399,3 +430,11 @@ pub fn main() void {
     ),
   );
 });
+
+for (const [theme] of themeCases) {
+  test(`theme ${theme}`, async (t) => {
+    t.snapshot(
+      await highlight('console.info("theme")', 'javascript', { theme }),
+    );
+  });
+}

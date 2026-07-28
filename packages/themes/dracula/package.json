@@ -1,0 +1,60 @@
+{
+  "name": "@treelight/theme-dracula",
+  "version": "0.0.1",
+  "description": "Treelight theme module for dracula.",
+  "main": "./dist/index.cjs",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "keywords": [
+    "treelight",
+    "tree-sitter",
+    "theme",
+    "dracula"
+  ],
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.cts",
+  "scripts": {
+    "build": "rslib build",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "rsbuild-plugin-publint": "^1.0.0",
+    "typescript": "^7.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "treelightTheme": {
+    "upstream": {
+      "name": "Dracula Theme",
+      "url": "https://github.com/dracula/dracula-theme",
+      "license": "MIT"
+    },
+    "helix": {
+      "source": "runtime/themes/dracula.toml"
+    }
+  }
+}
