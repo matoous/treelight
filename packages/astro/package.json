@@ -16,11 +16,13 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./components/Code.astro": "./components/Code.astro"
+    "./components/Code.astro": "./components/Code.astro",
+    "./styles.css": "./styles.css"
   },
   "files": [
     "components",
-    "dist"
+    "dist",
+    "styles.css"
   ],
   "license": "MIT",
   "repository": {

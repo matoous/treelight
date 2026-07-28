@@ -28,6 +28,17 @@ export function addClassName(node: Element, className: string) {
   node.properties.className = [...classNames];
 }
 
+export function setStyleProperty(
+  node: Element,
+  property: string,
+  value: string,
+) {
+  const existingStyle = getPropertyString(node, 'style');
+  const separator = existingStyle && !existingStyle.trimEnd().endsWith(';') ? ';' : '';
+  node.properties ??= {};
+  node.properties.style = `${existingStyle ?? ''}${separator} ${property}: ${value}`.trim();
+}
+
 export function getPropertyString(
   node: Element,
   name: string,
@@ -241,6 +252,7 @@ export function applyLineNumbers(pre: Element, option?: LineNumbersOption) {
   pre.properties ??= {};
   pre.properties.dataLineNumbers = 'true';
   pre.properties.dataLineNumberStart = String(start);
+  setStyleProperty(pre, '--treelight-line-number-width', `${gutterWidth}ch`);
   code.children = lines.flatMap((children, index) => {
     const lineNumber = String(start + index);
     const line = createElement(
@@ -255,7 +267,6 @@ export function applyLineNumbers(pre: Element, option?: LineNumbersOption) {
           {
             ariaHidden: 'true',
             className: ['treelight-line-number'],
-            style: `display: inline-block; min-width: ${gutterWidth}ch; margin-right: 1em; text-align: right; opacity: 0.55; user-select: none`,
           },
           [{ type: 'text', value: lineNumber }],
         ),

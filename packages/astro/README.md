@@ -36,6 +36,16 @@ console.info('hidden gutter');
 
 The `start` option key remains available as a compatibility alias for older local configurations, but new code should use `startLineNumber`.
 
+Import the stylesheet from your layout:
+
+```astro
+---
+import '@treelight/astro/styles.css';
+---
+```
+
+The stylesheet exposes stable classes and CSS variables for styling generated blocks. Override variables on `.treelight` to customize padding, borders, backgrounds, and line-number appearance.
+
 ## Component
 
 Use the Astro component when you need to render a dynamic snippet outside Markdown:

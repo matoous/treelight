@@ -1,0 +1,45 @@
+.treelight {
+  --treelight-code-background: transparent;
+  --treelight-code-border-color: transparent;
+  --treelight-code-border-radius: 0.5rem;
+  --treelight-code-padding-block: 1rem;
+  --treelight-code-padding-inline: 1rem;
+  --treelight-code-font-size: 0.875em;
+  --treelight-code-line-height: 1.6;
+  --treelight-line-number-color: currentColor;
+  --treelight-line-number-opacity: 0.55;
+  --treelight-line-number-gap: 1em;
+  --treelight-line-number-width: 1ch;
+
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid var(--treelight-code-border-color);
+  border-radius: var(--treelight-code-border-radius);
+  background: var(--treelight-code-background);
+  padding: var(--treelight-code-padding-block)
+    var(--treelight-code-padding-inline);
+  font-size: var(--treelight-code-font-size);
+  line-height: var(--treelight-code-line-height);
+}
+
+.treelight code {
+  font: inherit;
+}
+
+.treelight-line {
+  display: inline;
+}
+
+.treelight-line-number {
+  display: inline-block;
+  min-width: var(--treelight-line-number-width);
+  margin-right: var(--treelight-line-number-gap);
+  color: var(--treelight-line-number-color);
+  text-align: right;
+  opacity: var(--treelight-line-number-opacity);
+  user-select: none;
+}
+
+.treelight-line-content {
+  display: inline;
+}

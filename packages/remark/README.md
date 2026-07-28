@@ -41,3 +41,11 @@ console.info('hidden gutter');
 ````
 
 The `start` option key remains available as a compatibility alias for older local configurations, but new code should use `startLineNumber`.
+
+Import the stylesheet from your app entrypoint or layout:
+
+```js
+import '@treelight/remark/styles.css';
+```
+
+The stylesheet exposes stable classes and CSS variables for styling generated blocks. Override variables on `.treelight` to customize padding, borders, backgrounds, and line-number appearance.
