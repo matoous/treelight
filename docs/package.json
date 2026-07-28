@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build:markdown": "npm run --workspace=@treelight/hast build && npm run --workspace=@treelight/java build && npm run --workspace=@treelight/rspress build",
-    "dev": "npm run build:markdown && rspress dev",
-    "build": "npm run build:markdown && tsc --noEmit && rspress build",
+    "build:packages": "turbo run build --filter=@treelight/docs^...",
+    "dev": "npm run build:packages && rspress dev",
+    "build": "npm run build:packages && rspress build",
     "preview": "rspress preview",
     "worker:dev": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",

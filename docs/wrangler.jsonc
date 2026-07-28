@@ -22,7 +22,6 @@
   "routes": [
     {
       "pattern": "treelights.dzx.cz",
-      "zone_id": "dzx.cz",
       "custom_domain": true
     }
   ]
