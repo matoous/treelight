@@ -1,12 +1,14 @@
 import { BrowserOnly } from '@rspress/core/runtime';
-import { HomeLayout as OriginalHomeLayout } from '@rspress/core/theme-original';
 import type { HomeLayoutProps } from '@rspress/core/theme-original';
+import { HomeLayout as OriginalHomeLayout } from '@rspress/core/theme-original';
 
 function CodeSample() {
   return (
-    <section className="home-code-sample" aria-label="Quick install example">
+    <section
+      className="home-code-sample rp-doc"
+      aria-label="Quick install example"
+    >
       <div className="home-code-copy">
-        <p className="home-kicker">Quick setup</p>
         <h2>Small packages, reusable highlighters.</h2>
         <p>
           Install the runtime, add one language and one theme, then create the
@@ -36,9 +38,8 @@ const highlighter =
 
 function Explorer() {
   return (
-    <section className="home-explorer-section">
+    <section className="home-explorer-section rp-doc">
       <div className="home-explorer-heading">
-        <p className="home-kicker">Live preview</p>
         <h2>Try the runtime in place.</h2>
         <p>
           Edit the source, switch languages, and compare themes against the
