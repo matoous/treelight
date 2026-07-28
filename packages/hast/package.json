@@ -1,7 +1,7 @@
 {
-  "name": "@treelight/remark",
+  "name": "@treelight/hast",
   "version": "0.1.0",
-  "description": "Remark plugin for rendering code blocks with Treelight.",
+  "description": "HAST helpers for Treelight code block integrations.",
   "type": "module",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.cts",
@@ -30,8 +30,7 @@
   },
   "keywords": [
     "treelight",
-    "remark",
-    "unified",
+    "hast",
     "syntax-highlighting",
     "code-blocks"
   ],
@@ -43,11 +42,10 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
-    "@treelight/core": "0.2.0",
-    "@treelight/hast": "0.1.0",
-    "@types/mdast": "^4.0.4",
-    "unified": "^11.0.5",
-    "unist-util-visit": "^5.0.0"
+    "@types/hast": "^3.0.4",
+    "hast-util-from-parse5": "^8.0.3",
+    "hast-util-to-html": "^9.0.5",
+    "parse5": "^7.3.0"
   },
   "devDependencies": {
     "@rslib/core": "^0.23.2",

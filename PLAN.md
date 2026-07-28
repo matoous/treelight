@@ -17,8 +17,8 @@
 
 ## 3. Shared HAST Rendering Utilities
 
-- [ ] Move duplicated HTML parsing, class helpers, and line splitting logic out of the rehype and remark packages.
-- [ ] Keep the public package APIs unchanged while reducing implementation drift.
+- [x] Move duplicated HTML parsing, class helpers, and line splitting logic out of the rehype and remark packages.
+- [x] Keep the public package APIs unchanged while reducing implementation drift.
 
 ## 4. Astro Integration Hardening
 

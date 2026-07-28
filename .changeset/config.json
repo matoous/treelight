@@ -16,6 +16,7 @@
       "@treelight/elixir",
       "@treelight/go",
       "@treelight/graphql",
+      "@treelight/hast",
       "@treelight/html",
       "@treelight/java",
       "@treelight/javascript",

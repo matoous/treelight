@@ -18,6 +18,7 @@
     "@treelight/elixir": "0.2.0",
     "@treelight/go": "0.2.0",
     "@treelight/graphql": "0.2.0",
+    "@treelight/hast": "0.1.0",
     "@treelight/html": "0.2.0",
     "@treelight/java": "0.2.0",
     "@treelight/javascript": "0.2.0",
