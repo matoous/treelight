@@ -27,6 +27,7 @@ type CodeBlockRef = {
 export type LineNumbersOption =
   | boolean
   | {
+      startLineNumber?: number;
       start?: number;
     };
 
@@ -52,6 +53,30 @@ function getPropertyString(node: Element, name: string): string | undefined {
     return String(value);
   }
   return undefined;
+}
+
+function getDataString(node: Element, name: string): string | undefined {
+  const data = node.data as Record<string, unknown> | undefined;
+  const value = data?.[name];
+  if (typeof value === 'string') {
+    return value;
+  }
+  if (typeof value === 'number') {
+    return String(value);
+  }
+  return undefined;
+}
+
+function getMetadata(code: Element, pre: Element) {
+  return (
+    getDataString(code, 'meta') ||
+    getDataString(pre, 'meta') ||
+    getPropertyString(code, 'meta') ||
+    getPropertyString(pre, 'meta') ||
+    getPropertyString(code, 'metastring') ||
+    getPropertyString(pre, 'metastring') ||
+    ''
+  );
 }
 
 function getLanguage(
@@ -160,9 +185,77 @@ function appendNodeLines(node: ElementContent, lines: Element['children'][]) {
 
 function getLineNumberStart(option: LineNumbersOption) {
   if (typeof option === 'object') {
-    return option.start ?? 1;
+    return option.startLineNumber ?? option.start ?? 1;
   }
   return 1;
+}
+
+function parseMetaAttributes(meta: string) {
+  const attributes = new Map<string, string | boolean>();
+  const pattern =
+    /(?:^|\s)([A-Za-z][\w-]*)(?:=(?:"([^"]*)"|'([^']*)'|([^\s]+)))?/g;
+  for (const match of meta.matchAll(pattern)) {
+    const [, key, doubleQuoted, singleQuoted, bare] = match;
+    attributes.set(key, doubleQuoted ?? singleQuoted ?? bare ?? true);
+  }
+  return attributes;
+}
+
+function readMetaBoolean(
+  attributes: Map<string, string | boolean>,
+  name: string,
+) {
+  if (!attributes.has(name)) {
+    return undefined;
+  }
+  const value = attributes.get(name);
+  if (value === true || value === '') {
+    return true;
+  }
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+  if (/^(true|1)$/i.test(value)) {
+    return true;
+  }
+  if (/^(false|0)$/i.test(value)) {
+    return false;
+  }
+  return undefined;
+}
+
+function readMetaNumber(
+  attributes: Map<string, string | boolean>,
+  name: string,
+) {
+  const value = attributes.get(name);
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+  const number = Number.parseInt(value, 10);
+  return Number.isFinite(number) ? number : undefined;
+}
+
+function resolveLineNumbers(
+  option: LineNumbersOption | undefined,
+  meta: string,
+): LineNumbersOption | undefined {
+  const attributes = parseMetaAttributes(meta);
+  const showLineNumbers = readMetaBoolean(attributes, 'showLineNumbers');
+  if (showLineNumbers === false) {
+    return false;
+  }
+
+  const startLineNumber = readMetaNumber(attributes, 'startLineNumber');
+  if (startLineNumber !== undefined) {
+    return { startLineNumber };
+  }
+
+  if (showLineNumbers === true) {
+    return typeof option === 'object' ? option : true;
+  }
+
+  return option;
 }
 
 function applyLineNumbers(pre: Element, option?: LineNumbersOption) {
@@ -247,6 +340,7 @@ const rehypeTreelight: Plugin<[RehypeTreelightOptions?], Root> = (
     await Promise.all(
       collectCodeBlocks(tree).map(async ({ code, index, node, parent }) => {
         const language = getLanguage(code, node, options);
+        const meta = getMetadata(code, node);
         const html = await resolvedHighlighter.highlight(
           getText(code),
           language,
@@ -256,7 +350,10 @@ const rehypeTreelight: Plugin<[RehypeTreelightOptions?], Root> = (
         const renderedPre = renderedNodes[0];
         if (renderedPre?.type === 'element') {
           addClassName(renderedPre, `language-${language}`);
-          applyLineNumbers(renderedPre, options.lineNumbers);
+          applyLineNumbers(
+            renderedPre,
+            resolveLineNumbers(options.lineNumbers, meta),
+          );
         }
         parent.children.splice(index, 1, ...renderedNodes);
       }),

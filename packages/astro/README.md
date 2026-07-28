@@ -17,4 +17,17 @@ export default defineConfig({
 });
 ```
 
-Use `lineNumbers: { start: 10 }` to start numbering from a custom line.
+Use `lineNumbers: { startLineNumber: 10 }` to start numbering from a custom line.
+The shorter `start` key is also accepted as an alias.
+
+Code fence metadata can override the global setting per block:
+
+````md
+```js showLineNumbers startLineNumber=10
+console.info('hello');
+```
+
+```js showLineNumbers=false
+console.info('hidden gutter');
+```
+````

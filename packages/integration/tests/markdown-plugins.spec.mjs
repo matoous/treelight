@@ -23,6 +23,22 @@ console.info(greeting);
 \`\`\`
 `;
 
+const metadataLineNumbersMarkdown = `# Example
+
+\`\`\`javascript showLineNumbers startLineNumber=41
+const greeting = 'hello';
+console.info(greeting);
+\`\`\`
+`;
+
+const disabledLineNumbersMarkdown = `# Example
+
+\`\`\`javascript showLineNumbers=false
+const greeting = 'hello';
+console.info(greeting);
+\`\`\`
+`;
+
 test.before(async (t) => {
   t.context.highlighter = await createHighlighter({
     languages: [javascriptLanguage],
@@ -85,7 +101,7 @@ test('rehype plugin can render line numbers', async (t) => {
     .use(remarkRehype)
     .use(rehypeTreelight, {
       highlighter: t.context.highlighter,
-      lineNumbers: { start: 41 },
+      lineNumbers: { startLineNumber: 41 },
     })
     .use(rehypeStringify)
     .process(multilineMarkdown);
@@ -101,6 +117,38 @@ test('rehype plugin can render line numbers', async (t) => {
   t.true(html.includes('>41</span>'));
   t.true(html.includes('>42</span>'));
   t.true(html.includes('<span class="variable"'));
+});
+
+test('rehype plugin can render line numbers from code metadata', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(rehypeStringify)
+    .process(metadataLineNumbersMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('data-line-number-start="41"'));
+  t.true(html.includes('>41</span>'));
+  t.true(html.includes('>42</span>'));
+});
+
+test('rehype plugin can disable global line numbers from code metadata', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeTreelight, {
+      highlighter: t.context.highlighter,
+      lineNumbers: true,
+    })
+    .use(rehypeStringify)
+    .process(disabledLineNumbersMarkdown);
+
+  const html = String(file);
+  t.false(html.includes('has-line-numbers'));
+  t.false(html.includes('treelight-line-number'));
 });
 
 test('remark plugin renders code blocks with Treelight', async (t) => {
