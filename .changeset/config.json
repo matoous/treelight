@@ -24,6 +24,7 @@
       "@treelight/php",
       "@treelight/python",
       "@treelight/rehype",
+      "@treelight/remark",
       "@treelight/ruby",
       "@treelight/rust",
       "@treelight/scheme",

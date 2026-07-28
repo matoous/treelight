@@ -1,0 +1,64 @@
+{
+  "name": "@treelight/remark",
+  "version": "0.1.0",
+  "description": "Remark plugin for rendering code blocks with Treelight.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "engines": {
+    "node": ">= 18"
+  },
+  "keywords": [
+    "treelight",
+    "remark",
+    "unified",
+    "syntax-highlighting",
+    "code-blocks"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github"
+  },
+  "dependencies": {
+    "@treelight/core": "0.2.0",
+    "@types/hast": "^3.0.4",
+    "@types/mdast": "^4.0.4",
+    "hast-util-from-parse5": "^8.0.3",
+    "hast-util-to-html": "^9.0.5",
+    "parse5": "^7.3.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "rsbuild-plugin-publint": "^1.0.0",
+    "typescript": "^7.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

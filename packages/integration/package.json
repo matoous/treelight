@@ -27,6 +27,7 @@
     "@treelight/php": "0.2.0",
     "@treelight/python": "0.2.0",
     "@treelight/rehype": "0.1.0",
+    "@treelight/remark": "0.1.0",
     "@treelight/ruby": "0.2.0",
     "@treelight/rust": "0.2.0",
     "@treelight/scheme": "0.2.0",
