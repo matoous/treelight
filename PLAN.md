@@ -22,9 +22,9 @@
 
 ## 4. Astro Integration Hardening
 
-- [ ] Disable Astro's built-in Markdown syntax highlighter when the Treelight integration is installed.
-- [ ] Detect unsupported Markdown processor configurations and warn clearly.
-- [ ] Add Satteri support if Astro exposes the same processor shape used by current integrations.
+- [x] Disable Astro's built-in Markdown syntax highlighter when the Treelight integration is installed.
+- [x] Detect unsupported Markdown processor configurations and warn clearly.
+- [x] Add Satteri support if Astro exposes the same processor shape used by current integrations.
 
 ## 5. Documentation Guidance
 

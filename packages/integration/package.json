@@ -9,6 +9,7 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
+    "@treelight/astro": "0.1.0",
     "@treelight/bash": "0.2.0",
     "@treelight/c": "0.2.0",
     "@treelight/core": "0.2.0",
