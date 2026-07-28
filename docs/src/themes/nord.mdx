@@ -1,0 +1,55 @@
+---
+title: Nord
+description: Treelight theme package for Nord.
+---
+
+# Nord
+
+Use `@treelight/theme-nord` to register the Nord color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-nord` |
+| Theme ID | `nord` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-nord
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import nord from '@treelight/theme-nord';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [nord],
+  theme: 'nord',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-nord`:
+
+```ts theme=nord
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

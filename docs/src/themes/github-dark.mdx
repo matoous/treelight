@@ -1,0 +1,55 @@
+---
+title: GitHub Dark
+description: Treelight theme package for GitHub Dark.
+---
+
+# GitHub Dark
+
+Use `@treelight/theme-github-dark` to register the GitHub Dark color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-github-dark` |
+| Theme ID | `github-dark` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-github-dark`:
+
+```ts theme=github-dark
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

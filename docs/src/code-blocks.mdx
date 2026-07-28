@@ -1,0 +1,287 @@
+---
+title: Code Blocks
+description: Render Markdown, MDX, and Astro code blocks with Treelight.
+---
+
+Treelight ships integrations for Markdown and Astro code blocks. Prefer `@treelight/rehype` when your docs framework accepts rehype plugins. Use `@treelight/remark` only when you need to transform Markdown `code` nodes before the rehype stage.
+
+## This Docs Site
+
+This site uses Treelight for its own Markdown code blocks through Rspress's `markdown.shiki.transformers` option. Rspress runs its built-in Shiki pass before user rehype plugins, so the docs site bridges that Shiki transformer hook to Treelight's renderer and keeps fence metadata like `startLineNumber` and highlighted-line ranges intact.
+
+```ts {10-17}
+import { defineConfig } from '@rspress/core';
+import { markdownHighlighter } from './src/lib/markdown';
+import { createTreelightShikiTransformer } from './src/lib/treelight-shiki-transformer';
+
+const treelightCodeBlocks = createTreelightShikiTransformer({
+  highlighter: markdownHighlighter,
+  theme: 'github-dark',
+  lineNumbers: true,
+  languageMap: {
+    js: 'javascript',
+    md: 'markdown',
+    sh: 'bash',
+    ts: 'typescript',
+  },
+});
+
+export default defineConfig({
+  markdown: {
+    shiki: {
+      transformers: [treelightCodeBlocks],
+    },
+  },
+});
+```
+
+The block below is rendered by that same pipeline. It shows global line numbers, per-block `startLineNumber`, and highlighted-line metadata. Highlight ranges are source-line ranges, so `highlightLines="2-3"` highlights the second and third code lines even though the visible gutter starts at `41`.
+
+```ts showLineNumbers startLineNumber=41 highlightLines="2-3"
+type PackageName = `@treelight/${string}`;
+
+const integrations: PackageName[] = [
+  '@treelight/rehype',
+  '@treelight/remark',
+  '@treelight/astro',
+];
+```
+
+## Rehype
+
+Install the integration, the languages you want to highlight, and a theme:
+
+```sh
+npm i @treelight/rehype @treelight/javascript @treelight/theme-github-dark
+```
+
+Register the plugin in your Markdown pipeline:
+
+```ts
+import rehypeTreelight from '@treelight/rehype';
+import javascript from '@treelight/javascript';
+import githubDark from '@treelight/theme-github-dark';
+
+export default {
+  markdown: {
+    rehypePlugins: [
+      [
+        rehypeTreelight,
+        {
+          languages: [javascript],
+          themes: [githubDark],
+          theme: 'github-dark',
+        },
+      ],
+    ],
+  },
+};
+```
+
+Import the shared stylesheet from your app entrypoint or docs layout:
+
+```ts
+import '@treelight/rehype/styles.css';
+```
+
+## Astro
+
+Use the Astro integration when Treelight should own Markdown code blocks across an Astro site:
+
+```sh
+npm i @treelight/astro @treelight/javascript @treelight/theme-github-dark
+```
+
+```ts
+import treelight from '@treelight/astro';
+import javascript from '@treelight/javascript';
+import githubDark from '@treelight/theme-github-dark';
+import { defineConfig } from 'astro/config';
+
+export default defineConfig({
+  integrations: [
+    treelight({
+      languages: [javascript],
+      themes: [githubDark],
+      theme: 'github-dark',
+      lineNumbers: true,
+    }),
+  ],
+});
+```
+
+The integration disables Astro's built-in Markdown syntax highlighter and installs Treelight into supported Satteri and unified Markdown processors. If you use a custom processor shape, add `@treelight/rehype` to that processor manually.
+
+Import the stylesheet from an Astro layout:
+
+```tsx
+---
+import '@treelight/astro/styles.css';
+---
+```
+
+## Remark
+
+`@treelight/remark` is compatibility-oriented. Use it when your pipeline only exposes remark plugins or when highlighted HTML must be produced before `remark-rehype`.
+
+```ts
+import remarkTreelight from '@treelight/remark';
+import javascript from '@treelight/javascript';
+import githubDark from '@treelight/theme-github-dark';
+
+processor.use(remarkTreelight, {
+  languages: [javascript],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+```
+
+Because the remark plugin replaces Markdown code nodes with raw HTML, later HTML serialization must allow dangerous HTML.
+
+## Line Numbers
+
+Set `lineNumbers: true` to enable line numbers for every block:
+
+```ts
+rehypeTreelight({
+  languages: [javascript],
+  lineNumbers: true,
+});
+```
+
+Use `startLineNumber` when the first rendered line should not be `1`:
+
+```ts
+rehypeTreelight({
+  lineNumbers: {
+    startLineNumber: 41,
+  },
+});
+```
+
+Fence metadata can override the global setting:
+
+````md
+```ts showLineNumbers startLineNumber=41
+export const answer = 42;
+```
+
+```ts showLineNumbers=false
+export const quiet = true;
+```
+
+```ts lineNumbers=false
+export const alsoQuiet = true;
+```
+````
+
+The shorter `start` option and `lineNumbers` metadata are accepted as compatibility aliases, but new code should use `startLineNumber` and `showLineNumbers`.
+
+This block is rendered live with line numbers disabled:
+
+```ts showLineNumbers=false
+export const quiet = true;
+```
+
+## Highlighted Lines
+
+Use Expressive-Code-style ranges in code fence metadata:
+
+````md
+```ts {2,4-6}
+const first = 1;
+const second = 2;
+const third = 3;
+```
+````
+
+The explicit `highlightLines` metadata form is also supported:
+
+````md
+```ts highlightLines="1-2"
+const first = 1;
+const second = 2;
+```
+````
+
+You can set default highlighted lines from plugin options:
+
+```ts
+rehypeTreelight({
+  highlightLines: '2,4-6',
+});
+```
+
+Use `highlightLines=false` in fence metadata to disable a global default for one block.
+
+The following examples are rendered live by this docs site:
+
+```ts {2,4-5}
+const first = 1;
+const second = 2;
+const third = 3;
+const fourth = 4;
+const fifth = 5;
+```
+
+```ts highlightLines="1-2"
+const first = 1;
+const second = 2;
+const third = 3;
+```
+
+## CSS Contract
+
+The rendered code block stylesheet is exported by all Markdown integration packages:
+
+```ts
+import '@treelight/rehype/styles.css';
+import '@treelight/remark/styles.css';
+import '@treelight/astro/styles.css';
+```
+
+The stable classes are:
+
+- `.treelight`
+- `.treelight-line`
+- `.treelight-line-number`
+- `.treelight-line-content`
+- `.has-line-numbers`
+- `.has-highlighted-lines`
+- `.is-highlighted`
+
+Customize the generated blocks with CSS variables:
+
+```css
+.treelight {
+  --treelight-code-background: #111111;
+  --treelight-code-border-color: #2f2f2f;
+  --treelight-code-padding-inline: 1.25rem;
+  --treelight-line-number-color: #9ca3af;
+  --treelight-highlighted-line-background: rgba(255, 255, 255, 0.08);
+}
+```
+
+## Astro Code Component
+
+Use the Astro component for dynamic snippets outside Markdown:
+
+```tsx
+---
+import Code from '@treelight/astro/components/Code.astro';
+import javascript from '@treelight/javascript';
+import githubDark from '@treelight/theme-github-dark';
+---
+
+<Code
+  code={`const greeting = 'hello';`}
+  lang="javascript"
+  languages={[javascript]}
+  themes={[githubDark]}
+  theme="github-dark"
+  highlightLines="1"
+  lineNumbers
+/>
+```
+
+For pages with many dynamic snippets, create one highlighter and pass it through the `highlighter` prop.

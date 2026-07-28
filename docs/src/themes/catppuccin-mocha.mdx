@@ -1,0 +1,55 @@
+---
+title: Catppuccin Mocha
+description: Treelight theme package for Catppuccin Mocha.
+---
+
+# Catppuccin Mocha
+
+Use `@treelight/theme-catppuccin-mocha` to register the Catppuccin Mocha color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-catppuccin-mocha` |
+| Theme ID | `catppuccin-mocha` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-catppuccin-mocha
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import catppuccinMocha from '@treelight/theme-catppuccin-mocha';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [catppuccinMocha],
+  theme: 'catppuccin-mocha',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-catppuccin-mocha`:
+
+```ts theme=catppuccin-mocha
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

@@ -1,0 +1,64 @@
+---
+title: Python
+description: Treelight language package for Python.
+---
+
+# Python
+
+Use `@treelight/python` to register Python syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/python` |
+| Language ID | `python` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/python @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import python from '@treelight/python';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [python],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'python');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/python`:
+
+```python
+from dataclasses import dataclass
+from typing import Iterable
+
+
+@dataclass
+class Job:
+  id: int
+  label: str
+
+
+def run(queue: Iterable[Job]) -> None:
+  for job in queue:
+    print(f"running {job.label}#{job.id}")
+
+
+if __name__ == '__main__':
+  jobs = [Job(id=1, label='render'), Job(id=2, label='paint')]
+  run(jobs)
+```
+
+[Back to all languages](/languages)

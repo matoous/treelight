@@ -1,0 +1,57 @@
+---
+title: TSX
+description: Treelight language package for TSX.
+---
+
+# TSX
+
+Use `@treelight/tsx` to register TSX syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/tsx` |
+| Language ID | `tsx` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/tsx @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import tsx from '@treelight/tsx';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [tsx],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'tsx');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/tsx`:
+
+```tsx
+import { useState } from 'react';
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button className="cta" onClick={() => setCount((value) => value + 1)}>
+      Count: {count}
+    </button>
+  );
+}
+```
+
+[Back to all languages](/languages)

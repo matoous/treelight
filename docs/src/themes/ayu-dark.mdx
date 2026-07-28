@@ -1,0 +1,55 @@
+---
+title: Ayu Dark
+description: Treelight theme package for Ayu Dark.
+---
+
+# Ayu Dark
+
+Use `@treelight/theme-ayu-dark` to register the Ayu Dark color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-ayu-dark` |
+| Theme ID | `ayu-dark` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-ayu-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import ayuDark from '@treelight/theme-ayu-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [ayuDark],
+  theme: 'ayu-dark',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-ayu-dark`:
+
+```ts theme=ayu-dark
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

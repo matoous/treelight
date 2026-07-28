@@ -1,0 +1,60 @@
+---
+title: YAML
+description: Treelight language package for YAML.
+---
+
+# YAML
+
+Use `@treelight/yaml` to register YAML syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/yaml` |
+| Language ID | `yaml` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/yaml @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import yaml from '@treelight/yaml';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [yaml],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'yaml');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/yaml`:
+
+```yaml
+languages:
+  - id: javascript
+    enabled: true
+  - id: typescript
+    enabled: true
+  - id: json
+    enabled: false
+
+pipeline:
+  steps:
+    - name: fetch
+      retries: 2
+    - name: highlight
+      threads: 4
+```
+
+[Back to all languages](/languages)

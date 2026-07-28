@@ -1,0 +1,69 @@
+---
+title: Go
+description: Treelight language package for Go.
+---
+
+# Go
+
+Use `@treelight/go` to register Go syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/go` |
+| Language ID | `go` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/go @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import go from '@treelight/go';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [go],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'go');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/go`:
+
+```go
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+type Job struct {
+  ID int
+  Label string
+}
+
+func main() {
+  job := Job{ID: 42, Label: "render"}
+  for i := 0; i < 3; i++ {
+    go process(i, job)
+  }
+  time.Sleep(120 * time.Millisecond)
+}
+
+func process(id int, job Job) {
+  fmt.Printf("worker %d -> %s #%d\\n", id, job.Label, job.ID)
+}
+```
+
+[Back to all languages](/languages)

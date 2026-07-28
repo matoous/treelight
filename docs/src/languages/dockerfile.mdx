@@ -1,0 +1,52 @@
+---
+title: Dockerfile
+description: Treelight language package for Dockerfile.
+---
+
+# Dockerfile
+
+Use `@treelight/dockerfile` to register Dockerfile syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/dockerfile` |
+| Language ID | `dockerfile` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/dockerfile @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import dockerfile from '@treelight/dockerfile';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [dockerfile],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'dockerfile');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/dockerfile`:
+
+```dockerfile
+FROM node:24-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+CMD ["npm", "run", "dev"]
+```
+
+[Back to all languages](/languages)

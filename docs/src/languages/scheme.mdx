@@ -1,0 +1,53 @@
+---
+title: Scheme
+description: Treelight language package for Scheme.
+---
+
+# Scheme
+
+Use `@treelight/scheme` to register Scheme syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/scheme` |
+| Language ID | `scheme` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/scheme @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import scheme from '@treelight/scheme';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [scheme],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'scheme');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/scheme`:
+
+```scheme
+;; Calculate factorial recursively.
+(define (factorial n)
+  (if (<= n 1)
+      1
+      (* n (factorial (- n 1)))))
+
+(display (factorial 5))
+```
+
+[Back to all languages](/languages)

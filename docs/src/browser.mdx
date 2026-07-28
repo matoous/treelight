@@ -1,0 +1,45 @@
+---
+title: Browser Runtime
+description: Load languages lazily and render highlighted output in client-side applications.
+---
+
+The browser package is designed for interactive clients that cannot know every language up front.
+
+```sh
+npm i @treelight/browser @treelight/typescript @treelight/theme-github-dark
+```
+
+```ts
+import { createBrowserTreelight } from '@treelight/browser';
+import githubDark from '@treelight/theme-github-dark';
+
+const treelight = createBrowserTreelight({
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+treelight.registerLanguage('typescript', () => import('@treelight/typescript'));
+
+const html = await treelight.highlight('const ok: boolean = true;', 'typescript');
+```
+
+## Lazy Language Loading
+
+Register each language with a dynamic import:
+
+```ts
+treelight.registerLanguage('javascript', () => import('@treelight/javascript'));
+treelight.registerLanguage('rust', () => import('@treelight/rust'));
+treelight.registerLanguage('zig', () => import('@treelight/zig'));
+```
+
+This keeps each grammar in its own browser chunk. The first highlight for a language loads its grammar; later highlights reuse the registered parser.
+
+## Themes
+
+Themes are regular Treelight theme definitions. You can register them during initialization or load them when the user changes theme:
+
+```ts
+const theme = await import('@treelight/theme-tokyonight');
+treelight.registerTheme(theme.default);
+```

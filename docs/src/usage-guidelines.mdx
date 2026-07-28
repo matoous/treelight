@@ -1,0 +1,38 @@
+---
+title: Usage Guidelines
+description: Choose the right Treelight runtime strategy for docs, SSR, and browser apps.
+---
+
+Treelight is a good fit when highlight quality matters more than the smallest possible JavaScript payload. It uses Tree-sitter grammars, so each language carries a WASM parser and query files.
+
+## Best Fits
+
+- Documentation sites, design systems, blogs, and markdown pipelines that highlight code during build time.
+- Server-rendered pages where one highlighter instance can be reused for many requests.
+- Browser apps that expose language or theme switching and can load grammars on demand.
+
+## Tradeoffs
+
+- Grammar loading is asynchronous. Create and warm highlighters before rendering latency-sensitive views.
+- Browser bundles should avoid eager imports for every language. Register lazy language loaders instead.
+- Install only the language and theme packages you need for the surface you are building.
+- Keep generated HTML inside trusted rendering paths. Treelight highlights code, but your application still owns escaping and sanitization policy around user-provided input.
+
+## Recommended Strategies
+
+Use `@treelight/core` for static generation, server rendering, CLI tools, and scripts:
+
+```ts
+const highlighter = await Highlighter.create({ languages, themes, theme });
+const html = highlighter.highlight(code, language);
+```
+
+Use `@treelight/browser` for interactive browser experiences:
+
+```ts
+const treelight = createBrowserTreelight();
+treelight.registerLanguage('typescript', () => import('@treelight/typescript'));
+const html = await treelight.highlight(code, 'typescript');
+```
+
+Prefer eager imports when the language list is small and predictable. Prefer lazy imports when users can choose from many languages.

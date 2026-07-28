@@ -1,0 +1,59 @@
+---
+title: JSON
+description: Treelight language package for JSON.
+---
+
+# JSON
+
+Use `@treelight/json` to register JSON syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/json` |
+| Language ID | `json` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/json @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import json from '@treelight/json';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [json],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'json');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/json`:
+
+```json
+{
+  "title": "Treelight",
+  "version": 2,
+  "languages": [
+    "javascript",
+    "typescript",
+    "json"
+  ],
+  "settings": {
+    "prettify": true,
+    "lineNumbers": false
+  }
+}
+```
+
+[Back to all languages](/languages)

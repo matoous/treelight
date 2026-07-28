@@ -1,0 +1,51 @@
+---
+title: Zig
+description: Treelight language package for Zig.
+---
+
+# Zig
+
+Use `@treelight/zig` to register Zig syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/zig` |
+| Language ID | `zig` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/zig @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import zig from '@treelight/zig';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [zig],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'zig');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/zig`:
+
+```zig
+const std = @import("std");
+
+pub fn main() void {
+    std.debug.print("Hello, Treelight!\\n", .{});
+}
+```
+
+[Back to all languages](/languages)

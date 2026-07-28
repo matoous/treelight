@@ -12,12 +12,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": ["@cloudflare/workers-types"],
     "strict": true
   },
-  "include": ["src"],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
+  "include": ["src", "theme", "rspress.config.ts", "worker.ts"]
 }

@@ -1,0 +1,52 @@
+---
+title: GraphQL
+description: Treelight language package for GraphQL.
+---
+
+# GraphQL
+
+Use `@treelight/graphql` to register GraphQL syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/graphql` |
+| Language ID | `graphql` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/graphql @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import graphql from '@treelight/graphql';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [graphql],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'graphql');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/graphql`:
+
+```graphql
+query Repository($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    name
+    stargazerCount
+  }
+}
+```
+
+[Back to all languages](/languages)

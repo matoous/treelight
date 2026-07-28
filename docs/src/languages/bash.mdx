@@ -1,0 +1,51 @@
+---
+title: Bash
+description: Treelight language package for Bash.
+---
+
+# Bash
+
+Use `@treelight/bash` to register Bash syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/bash` |
+| Language ID | `bash` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/bash @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import bash from '@treelight/bash';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [bash],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'bash');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/bash`:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+name="\${1:-Treelight}"
+echo "Hello, \${name}!"
+```
+
+[Back to all languages](/languages)

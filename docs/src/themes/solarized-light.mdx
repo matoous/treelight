@@ -1,0 +1,55 @@
+---
+title: Solarized Light
+description: Treelight theme package for Solarized Light.
+---
+
+# Solarized Light
+
+Use `@treelight/theme-solarized-light` to register the Solarized Light color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-solarized-light` |
+| Theme ID | `solarized-light` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-solarized-light
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import solarizedLight from '@treelight/theme-solarized-light';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [solarizedLight],
+  theme: 'solarized-light',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-solarized-light`:
+
+```ts theme=solarized-light
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

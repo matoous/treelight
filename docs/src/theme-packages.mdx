@@ -1,0 +1,21 @@
+---
+title: Theme Packages
+description: How bundled Treelight themes are packaged and when to create custom themes.
+---
+
+Theme packages export a Treelight theme definition. A theme has an ID and a map of Tree-sitter capture names to display styles.
+
+Create a new theme package with:
+
+```sh
+npm run create:theme -- --name github-midnight --id github-midnight
+```
+
+Then replace the generated `src/index.ts` stub with the actual capture styles.
+
+## Custom Theme Guidance
+
+- Start from an existing bundled theme when porting a known editor theme.
+- Keep the package name and theme ID stable; user configuration will often persist the ID.
+- Prefer capture names from Tree-sitter highlight queries, such as `function`, `function.call`, `variable.parameter`, `keyword`, and `string`.
+- Test across several language samples before publishing, because not every grammar emits the same capture set.

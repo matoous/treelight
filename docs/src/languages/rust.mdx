@@ -1,0 +1,62 @@
+---
+title: Rust
+description: Treelight language package for Rust.
+---
+
+# Rust
+
+Use `@treelight/rust` to register Rust syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/rust` |
+| Language ID | `rust` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/rust @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import rust from '@treelight/rust';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [rust],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'rust');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/rust`:
+
+```rust
+use std::collections::HashMap;
+
+fn tally(values: &[&str]) -> HashMap<&str, usize> {
+  let mut counts = HashMap::new();
+  for value in values.iter() {
+    *counts.entry(value).or_insert(0) += 1;
+  }
+  counts
+}
+
+fn main() {
+  let counts = tally(&["rust", "treelight", "rust"]);
+  for (value, total) in counts {
+    println!("{value}: {total}");
+  }
+}
+```
+
+[Back to all languages](/languages)

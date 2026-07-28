@@ -1,0 +1,59 @@
+---
+title: HTML
+description: Treelight language package for HTML.
+---
+
+# HTML
+
+Use `@treelight/html` to register HTML syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/html` |
+| Language ID | `html` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/html @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import html from '@treelight/html';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [html],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'html');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Treelight</title>
+  </head>
+  <body>
+    <main>
+      <h1 data-theme="dark">Hello, Treelight!</h1>
+      <button class="cta" disabled>Loading...</button>
+    </main>
+  </body>
+</html>
+```
+
+[Back to all languages](/languages)

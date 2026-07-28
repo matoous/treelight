@@ -1,0 +1,55 @@
+---
+title: C++
+description: Treelight language package for C++.
+---
+
+# C++
+
+Use `@treelight/cpp` to register C++ syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/cpp` |
+| Language ID | `cpp` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/cpp @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import cpp from '@treelight/cpp';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [cpp],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'cpp');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/cpp`:
+
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+  std::vector<std::string> names = {"Tree", "light"};
+  for (const auto& name : names) {
+    std::cout << name << "\\n";
+  }
+}
+```
+
+[Back to all languages](/languages)

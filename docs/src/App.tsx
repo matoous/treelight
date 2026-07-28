@@ -1,3 +1,5 @@
+import { useDark } from '@rspress/core/runtime';
+import { Badge, Callout } from '@rspress/core/theme';
 import { useEffect, useMemo, useState } from 'react';
 import { languageOptions } from './data/languages';
 import { themeOptions } from './data/themes';
@@ -6,7 +8,8 @@ import { ensureTheme, treelight } from './lib/treelight';
 type Status = 'idle' | 'loading';
 
 const defaultLanguage = languageOptions[0]?.id ?? 'javascript';
-const defaultTheme = themeOptions[0]?.id ?? 'github-dark';
+const fallbackTheme = themeOptions[0]?.id ?? 'github-dark';
+const siteAwareThemes = new Set(['github-dark', 'github-light']);
 
 const initialSnippets = languageOptions.reduce<Record<string, string>>(
   (acc, option) => {
@@ -17,8 +20,10 @@ const initialSnippets = languageOptions.reduce<Record<string, string>>(
 );
 
 function App() {
+  const isDark = useDark();
   const [language, setLanguage] = useState(defaultLanguage);
-  const [theme, setTheme] = useState(defaultTheme);
+  const [theme, setTheme] = useState(fallbackTheme);
+  const [hasCustomTheme, setHasCustomTheme] = useState(false);
   const [highlighted, setHighlighted] = useState('');
   const [status, setStatus] = useState<Status>('loading');
   const [error, setError] = useState<string | null>(null);
@@ -71,6 +76,16 @@ function App() {
     };
   }, [code, language, theme]);
 
+  useEffect(() => {
+    setTheme((currentTheme) => {
+      if (hasCustomTheme || !siteAwareThemes.has(currentTheme)) {
+        return currentTheme;
+      }
+
+      return isDark ? 'github-dark' : 'github-light';
+    });
+  }, [hasCustomTheme, isDark]);
+
   function handleSnippetChange(value: string) {
     setSnippets((current) => ({
       ...current,
@@ -79,15 +94,8 @@ function App() {
   }
 
   return (
-    <div className="page">
-      <header className="hero">
-        <div>
-          <h1>Treelight Showcase</h1>
-          <p className="eyebrow">Explore every bundled language and theme.</p>
-        </div>
-      </header>
-
-      <section className="controls">
+    <div className="demo">
+      <section className="controls" aria-label="Demo settings">
         <label className="field">
           <span>Language</span>
           <select
@@ -106,7 +114,10 @@ function App() {
           <span>Theme</span>
           <select
             value={theme}
-            onChange={(event) => setTheme(event.target.value)}
+            onChange={(event) => {
+              setHasCustomTheme(true);
+              setTheme(event.target.value);
+            }}
           >
             {themeOptions.map((option) => (
               <option key={option.id} value={option.id}>
@@ -117,35 +128,45 @@ function App() {
         </label>
       </section>
 
-      <section className="editor">
-        <div className="editor-header">
-          <p>{selectedLanguage?.label ?? 'Language'} snippet</p>
-          {status === 'loading' ? (
-            <span className="pill">Fetching grammars…</span>
-          ) : null}
-        </div>
-        <textarea
-          spellCheck={false}
-          value={code}
-          onChange={(event) => handleSnippetChange(event.target.value)}
-        />
-      </section>
-
-      <section className="preview">
-        <div className="preview-header">
-          <p>Highlighted output</p>
-          <span className="pill">{selectedTheme?.label ?? theme}</span>
-        </div>
-        {error ? (
-          <div className="note error">{error}</div>
-        ) : (
-          <div
-            className="preview-output"
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: Necessary until we have components library
-            dangerouslySetInnerHTML={{ __html: highlighted }}
+      <div className="demo-grid">
+        <section className="editor rp-home-feature__card">
+          <div className="editor-header">
+            <h3 className="rp-home-feature__title">
+              {selectedLanguage?.label ?? 'Language'} snippet
+            </h3>
+            {status === 'loading' ? (
+              <Badge type="info" outline>
+                Fetching grammars
+              </Badge>
+            ) : null}
+          </div>
+          <textarea
+            spellCheck={false}
+            value={code}
+            onChange={(event) => handleSnippetChange(event.target.value)}
           />
-        )}
-      </section>
+        </section>
+
+        <section className="preview rp-home-feature__card">
+          <div className="preview-header">
+            <h3 className="rp-home-feature__title">Highlighted output</h3>
+            <Badge type="tip" outline>
+              {selectedTheme?.label ?? theme}
+            </Badge>
+          </div>
+          {error ? (
+            <Callout type="danger" title="Highlighting failed">
+              {error}
+            </Callout>
+          ) : (
+            <div
+              className="preview-output"
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: Treelight returns highlighted HTML for rendering.
+              dangerouslySetInnerHTML={{ __html: highlighted }}
+            />
+          )}
+        </section>
+      </div>
     </div>
   );
 }

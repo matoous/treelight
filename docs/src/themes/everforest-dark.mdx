@@ -1,0 +1,55 @@
+---
+title: Everforest Dark
+description: Treelight theme package for Everforest Dark.
+---
+
+# Everforest Dark
+
+Use `@treelight/theme-everforest-dark` to register the Everforest Dark color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-everforest-dark` |
+| Theme ID | `everforest-dark` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-everforest-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import everforestDark from '@treelight/theme-everforest-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [everforestDark],
+  theme: 'everforest-dark',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-everforest-dark`:
+
+```ts theme=everforest-dark
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

@@ -1,0 +1,53 @@
+---
+title: TOML
+description: Treelight language package for TOML.
+---
+
+# TOML
+
+Use `@treelight/toml` to register TOML syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/toml` |
+| Language ID | `toml` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/toml @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import toml from '@treelight/toml';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [toml],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'toml');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/toml`:
+
+```toml
+[package]
+name = "treelight"
+version = "0.1.0"
+
+[features]
+browser = true
+languages = ["rust", "typescript"]
+```
+
+[Back to all languages](/languages)

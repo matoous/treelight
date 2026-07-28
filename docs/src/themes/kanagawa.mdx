@@ -1,0 +1,55 @@
+---
+title: Kanagawa
+description: Treelight theme package for Kanagawa.
+---
+
+# Kanagawa
+
+Use `@treelight/theme-kanagawa` to register the Kanagawa color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-kanagawa` |
+| Theme ID | `kanagawa` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-kanagawa
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import kanagawa from '@treelight/theme-kanagawa';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [kanagawa],
+  theme: 'kanagawa',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-kanagawa`:
+
+```ts theme=kanagawa
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

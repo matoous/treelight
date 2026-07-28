@@ -1,0 +1,58 @@
+---
+title: TypeScript
+description: Treelight language package for TypeScript.
+---
+
+# TypeScript
+
+Use `@treelight/typescript` to register TypeScript syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/typescript` |
+| Language ID | `typescript` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/typescript @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import typescript from '@treelight/typescript';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [typescript],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'typescript');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/typescript`:
+
+```typescript
+type Task = {
+  id: string;
+  title: string;
+  completed?: boolean;
+};
+
+function toggleTask(task: Task, completed: boolean = !task.completed) {
+  return { ...task, completed };
+}
+
+const task: Task = { id: crypto.randomUUID(), title: 'Ship docs' };
+console.log(toggleTask(task));
+```
+
+[Back to all languages](/languages)

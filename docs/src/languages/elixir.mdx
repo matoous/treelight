@@ -1,0 +1,64 @@
+---
+title: Elixir
+description: Treelight language package for Elixir.
+---
+
+# Elixir
+
+Use `@treelight/elixir` to register Elixir syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/elixir` |
+| Language ID | `elixir` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/elixir @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import elixir from '@treelight/elixir';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [elixir],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'elixir');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/elixir`:
+
+```elixir
+defmodule Queue do
+  defstruct items: []
+
+  def push(%__MODULE__{items: items} = queue, item) do
+    %{queue | items: items ++ [item]}
+  end
+
+  def pop(%__MODULE__{items: [head | tail]} = queue) do
+    {head, %{queue | items: tail}}
+  end
+end
+
+queue =
+  %Queue{}
+  |> Queue.push("render")
+  |> Queue.push("paint")
+
+IO.inspect(queue)
+```
+
+[Back to all languages](/languages)

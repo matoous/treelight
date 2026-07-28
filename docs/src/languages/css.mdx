@@ -1,0 +1,51 @@
+---
+title: CSS
+description: Treelight language package for CSS.
+---
+
+# CSS
+
+Use `@treelight/css` to register CSS syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/css` |
+| Language ID | `css` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/css @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import css from '@treelight/css';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [css],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'css');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/css`:
+
+```css
+.callout {
+  display: grid;
+  gap: 0.5rem;
+  color: rebeccapurple;
+}
+```
+
+[Back to all languages](/languages)

@@ -1,0 +1,50 @@
+---
+title: SQL
+description: Treelight language package for SQL.
+---
+
+# SQL
+
+Use `@treelight/sql` to register SQL syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/sql` |
+| Language ID | `sql` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/sql @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import sql from '@treelight/sql';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [sql],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'sql');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/sql`:
+
+```sql
+select id, title, completed
+from tasks
+where completed = false
+order by created_at desc;
+```
+
+[Back to all languages](/languages)

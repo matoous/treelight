@@ -1,0 +1,65 @@
+---
+title: Java
+description: Treelight language package for Java.
+---
+
+# Java
+
+Use `@treelight/java` to register Java syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/java` |
+| Language ID | `java` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/java @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import java from '@treelight/java';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [java],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'java');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/java`:
+
+```java
+import java.util.List;
+
+public class Greeter {
+  private final List<String> names;
+
+  public Greeter(List<String> names) {
+    this.names = names;
+  }
+
+  public void greet() {
+    for (String name : names) {
+      System.out.println("Hello, " + name + "!");
+    }
+  }
+
+  public static void main(String[] args) {
+    new Greeter(List.of("Treelight", "Java")).greet();
+  }
+}
+```
+
+[Back to all languages](/languages)

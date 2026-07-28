@@ -1,0 +1,65 @@
+---
+title: PHP
+description: Treelight language package for PHP.
+---
+
+# PHP
+
+Use `@treelight/php` to register PHP syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/php` |
+| Language ID | `php` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/php @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import php from '@treelight/php';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [php],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'php');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/php`:
+
+```php
+<?php
+
+class Queue {
+  public function __construct(private array $items = []) {}
+
+  public function push(string $item): void {
+    $this->items[] = $item;
+  }
+
+  public function pop(): ?string {
+    return array_shift($this->items);
+  }
+}
+
+$queue = new Queue();
+$queue->push('render');
+$queue->push('paint');
+
+echo $queue->pop();
+```
+
+[Back to all languages](/languages)

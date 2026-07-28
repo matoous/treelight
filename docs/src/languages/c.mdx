@@ -1,0 +1,52 @@
+---
+title: C
+description: Treelight language package for C.
+---
+
+# C
+
+Use `@treelight/c` to register C syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/c` |
+| Language ID | `c` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/c @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import c from '@treelight/c';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [c],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'c');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/c`:
+
+```c
+#include <stdio.h>
+
+int main(void) {
+  puts("Hello, Treelight!");
+  return 0;
+}
+```
+
+[Back to all languages](/languages)

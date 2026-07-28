@@ -4,9 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "build:markdown": "npm run --workspace=@treelight/hast build && npm run --workspace=@treelight/java build",
+    "dev": "npm run build:markdown && rspress dev",
+    "build": "npm run build:markdown && tsc --noEmit && rspress build",
+    "preview": "rspress preview",
+    "worker:dev": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "deploy:dry-run": "npm run build && wrangler deploy --dry-run",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@treelight/bash": "0.2.0",
@@ -19,6 +24,7 @@
     "@treelight/elixir": "0.2.0",
     "@treelight/go": "0.2.0",
     "@treelight/graphql": "0.2.0",
+    "@treelight/hast": "0.1.0",
     "@treelight/html": "0.2.0",
     "@treelight/java": "0.2.0",
     "@treelight/javascript": "0.2.0",
@@ -27,6 +33,7 @@
     "@treelight/markdown": "0.2.0",
     "@treelight/php": "0.2.0",
     "@treelight/python": "0.2.0",
+    "@treelight/rehype": "0.1.0",
     "@treelight/ruby": "0.2.0",
     "@treelight/rust": "0.2.0",
     "@treelight/scheme": "0.2.0",
@@ -54,10 +61,11 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260728.1",
+    "@rspress/core": "^2.0.18",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.4",
-    "typescript": "^7.0.2",
-    "vite": "^8.1.5"
+    "typescript": "^5.9.3",
+    "wrangler": "^4.114.0"
   }
 }

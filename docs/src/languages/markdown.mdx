@@ -1,0 +1,52 @@
+---
+title: Markdown
+description: Treelight language package for Markdown.
+---
+
+# Markdown
+
+Use `@treelight/markdown` to register Markdown syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/markdown` |
+| Language ID | `markdown` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/markdown @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import markdown from '@treelight/markdown';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [markdown],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'markdown');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/markdown`:
+
+```markdown
+# Treelight
+
+Tree-sitter based syntax highlighting for JavaScript runtimes.
+
+- Accurate parsing
+- Runtime language registration
+```
+
+[Back to all languages](/languages)

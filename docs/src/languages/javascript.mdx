@@ -1,0 +1,48 @@
+---
+title: JavaScript
+description: Treelight language package for JavaScript.
+---
+
+# JavaScript
+
+Use `@treelight/javascript` to register JavaScript syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/javascript` |
+| Language ID | `javascript` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'javascript');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/javascript`:
+
+```javascript
+const greet = (name = 'friend') => {
+  return `Hello, \${name}!\
+```
+
+[Back to all languages](/languages)

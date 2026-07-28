@@ -1,0 +1,55 @@
+---
+title: Rose Pine
+description: Treelight theme package for Rose Pine.
+---
+
+# Rose Pine
+
+Use `@treelight/theme-rose-pine` to register the Rose Pine color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-rose-pine` |
+| Theme ID | `rose-pine` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-rose-pine
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import rosePine from '@treelight/theme-rose-pine';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [rosePine],
+  theme: 'rose-pine',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-rose-pine`:
+
+```ts theme=rose-pine
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

@@ -1,0 +1,57 @@
+---
+title: Ruby
+description: Treelight language package for Ruby.
+---
+
+# Ruby
+
+Use `@treelight/ruby` to register Ruby syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/ruby` |
+| Language ID | `ruby` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/ruby @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import ruby from '@treelight/ruby';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [ruby],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'ruby');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/ruby`:
+
+```ruby
+class Greeter
+  def initialize(name)
+    @name = name
+  end
+
+  def call
+    puts "Hello, #{@name}!"
+  end
+end
+
+Greeter.new("Treelight").call
+```
+
+[Back to all languages](/languages)

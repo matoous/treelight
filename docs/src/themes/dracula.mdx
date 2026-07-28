@@ -1,0 +1,55 @@
+---
+title: Dracula
+description: Treelight theme package for Dracula.
+---
+
+# Dracula
+
+Use `@treelight/theme-dracula` to register the Dracula color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-dracula` |
+| Theme ID | `dracula` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-dracula
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import dracula from '@treelight/theme-dracula';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [dracula],
+  theme: 'dracula',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-dracula`:
+
+```ts theme=dracula
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

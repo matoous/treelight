@@ -1,0 +1,51 @@
+---
+title: Lua
+description: Treelight language package for Lua.
+---
+
+# Lua
+
+Use `@treelight/lua` to register Lua syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/lua` |
+| Language ID | `lua` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/lua @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import lua from '@treelight/lua';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [lua],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'lua');
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/lua`:
+
+```lua
+local function greet(name)
+  return string.format("Hello, %s!", name)
+end
+
+print(greet("Treelight"))
+```
+
+[Back to all languages](/languages)

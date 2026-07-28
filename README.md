@@ -18,6 +18,9 @@ Treelight is a code-highlighter based on Tree-sitter grammars. It gives you the 
 
 - `@treelight/core` provides the runtime, language/theme registration, and highlighter APIs.
 - `@treelight/browser` configures `web-tree-sitter` for browser bundlers and re-exports the core API.
+- `@treelight/astro` installs Treelight as an Astro Markdown/MDX code block integration.
+- `@treelight/rehype` renders HTML AST code blocks with Treelight in unified pipelines.
+- `@treelight/remark` renders Markdown AST code blocks with Treelight when a remark-stage transform is needed.
 - `@treelight/<language>` packages provide language definitions with inlined grammar WASM and highlight queries.
 - `@treelight/theme-<theme>` packages provide bundled themes.
 

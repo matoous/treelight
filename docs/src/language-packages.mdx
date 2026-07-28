@@ -1,0 +1,25 @@
+---
+title: Language Packages
+description: How Treelight language packages are structured and maintained.
+---
+
+Each language package exports a `LanguageDefinition` with:
+
+- a stable language ID,
+- grammar WASM bytes,
+- Tree-sitter highlight queries,
+- optional injection and locals queries.
+
+Create a new package with the repository helper:
+
+```sh
+npm run create:language -- --name my-language --repo tree-sitter/tree-sitter-example --revision main
+```
+
+Then fill in the generated package metadata and query files. Language package metadata lives in `package.json` under `treelightLanguage` and is validated by:
+
+```sh
+npm run check:languages
+```
+
+Keep the metadata aligned with the checked-in WASM and query files so future update automation can compare local packages against upstream grammar revisions.

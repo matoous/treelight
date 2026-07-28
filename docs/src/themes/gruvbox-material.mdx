@@ -1,0 +1,55 @@
+---
+title: Gruvbox Material
+description: Treelight theme package for Gruvbox Material.
+---
+
+# Gruvbox Material
+
+Use `@treelight/theme-gruvbox-material` to register the Gruvbox Material color theme with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/theme-gruvbox-material` |
+| Theme ID | `gruvbox-material` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-gruvbox-material
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import gruvboxMaterial from '@treelight/theme-gruvbox-material';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [gruvboxMaterial],
+  theme: 'gruvbox-material',
+});
+```
+
+## Example
+
+This example is rendered by this docs site with `@treelight/theme-gruvbox-material`:
+
+```ts theme=gruvbox-material
+type ThemePreview = {
+  name: string;
+  tokens: string[];
+};
+
+const preview: ThemePreview = {
+  name: 'Treelight',
+  tokens: ['keyword', 'string', 'function', 'type'],
+};
+
+console.info(preview);
+```
+
+[Back to all themes](/themes)

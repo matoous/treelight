@@ -1,0 +1,37 @@
+---
+title: Themes
+description: Bundled Treelight theme packages and their theme IDs.
+---
+
+Themes map Tree-sitter highlight captures to CSS classes and colors. Register at least one theme when creating a highlighter:
+
+```ts
+import githubLight from '@treelight/theme-github-light';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [githubLight],
+  theme: 'github-light',
+});
+```
+
+## Bundled Packages
+
+| Theme | Package | Theme ID |
+| --- | --- | --- |
+| [Ayu Dark](/themes/ayu-dark) | `@treelight/theme-ayu-dark` | `ayu-dark` |
+| [Catppuccin Mocha](/themes/catppuccin-mocha) | `@treelight/theme-catppuccin-mocha` | `catppuccin-mocha` |
+| [Dracula](/themes/dracula) | `@treelight/theme-dracula` | `dracula` |
+| [Everforest Dark](/themes/everforest-dark) | `@treelight/theme-everforest-dark` | `everforest-dark` |
+| [GitHub Dark](/themes/github-dark) | `@treelight/theme-github-dark` | `github-dark` |
+| [GitHub Light](/themes/github-light) | `@treelight/theme-github-light` | `github-light` |
+| [Gruvbox](/themes/gruvbox) | `@treelight/theme-gruvbox` | `gruvbox` |
+| [Gruvbox Material](/themes/gruvbox-material) | `@treelight/theme-gruvbox-material` | `gruvbox-material` |
+| [Kanagawa](/themes/kanagawa) | `@treelight/theme-kanagawa` | `kanagawa` |
+| [Nord](/themes/nord) | `@treelight/theme-nord` | `nord` |
+| [One Dark](/themes/onedark) | `@treelight/theme-onedark` | `onedark` |
+| [Rose Pine](/themes/rose-pine) | `@treelight/theme-rose-pine` | `rose-pine` |
+| [Solarized Light](/themes/solarized-light) | `@treelight/theme-solarized-light` | `solarized-light` |
+| [Tokyo Night](/themes/tokyonight) | `@treelight/theme-tokyonight` | `tokyonight` |
+
+Use theme IDs consistently across highlighter configuration, user settings, and persisted preferences.

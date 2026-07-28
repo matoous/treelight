@@ -1,0 +1,45 @@
+---
+title: Getting Started
+description: Install Treelight and render highlighted HTML with one language and one theme.
+---
+
+Treelight is split into small packages. Install the runtime, at least one language package, and one theme package:
+
+```sh
+npm i @treelight/core @treelight/javascript @treelight/theme-github-dark
+```
+
+Create the highlighter once during application startup, build setup, or request-worker initialization:
+
+```ts
+import { Highlighter } from '@treelight/core';
+import javascript from '@treelight/javascript';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [javascript],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight('console.info("Hello World!")', 'javascript');
+```
+
+`Highlighter.create()` loads the registered grammars asynchronously. After creation, `highlighter.highlight()` is synchronous and can be reused across many code blocks.
+
+## Output
+
+Treelight returns HTML. Render it inside your existing markdown, MDX, static-site, or server-rendering pipeline.
+
+```html
+<pre><code><span class="function">console</span>...</code></pre>
+```
+
+The generated spans use the selected theme's capture classes and inline color data from the theme package.
+
+## Package Shape
+
+- `@treelight/core` provides the runtime and highlighter API.
+- `@treelight/browser` provides lazy browser registration helpers.
+- `@treelight/<language>` packages provide grammar WASM and Tree-sitter queries.
+- `@treelight/theme-<theme>` packages provide theme definitions.

@@ -1,0 +1,88 @@
+import bash from '@treelight/bash';
+import c from '@treelight/c';
+import { createHighlighter } from '@treelight/core';
+import cpp from '@treelight/cpp';
+import css from '@treelight/css';
+import dockerfile from '@treelight/dockerfile';
+import elixir from '@treelight/elixir';
+import go from '@treelight/go';
+import graphql from '@treelight/graphql';
+import html from '@treelight/html';
+import java from '@treelight/java';
+import javascript from '@treelight/javascript';
+import json from '@treelight/json';
+import lua from '@treelight/lua';
+import php from '@treelight/php';
+import python from '@treelight/python';
+import ruby from '@treelight/ruby';
+import rust from '@treelight/rust';
+import scheme from '@treelight/scheme';
+import sql from '@treelight/sql';
+import ayuDark from '@treelight/theme-ayu-dark';
+import catppuccinMocha from '@treelight/theme-catppuccin-mocha';
+import dracula from '@treelight/theme-dracula';
+import everforestDark from '@treelight/theme-everforest-dark';
+import githubDark from '@treelight/theme-github-dark';
+import githubLight from '@treelight/theme-github-light';
+import gruvbox from '@treelight/theme-gruvbox';
+import gruvboxMaterial from '@treelight/theme-gruvbox-material';
+import kanagawa from '@treelight/theme-kanagawa';
+import nord from '@treelight/theme-nord';
+import onedark from '@treelight/theme-onedark';
+import rosePine from '@treelight/theme-rose-pine';
+import solarizedLight from '@treelight/theme-solarized-light';
+import tokyonight from '@treelight/theme-tokyonight';
+import toml from '@treelight/toml';
+import tsx from '@treelight/tsx';
+import typescript from '@treelight/typescript';
+import yaml from '@treelight/yaml';
+import zig from '@treelight/zig';
+
+export const markdownLanguages = [
+  bash,
+  c,
+  cpp,
+  css,
+  dockerfile,
+  elixir,
+  go,
+  graphql,
+  html,
+  java,
+  javascript,
+  json,
+  lua,
+  php,
+  python,
+  ruby,
+  rust,
+  scheme,
+  sql,
+  toml,
+  tsx,
+  typescript,
+  yaml,
+  zig,
+];
+
+export const markdownThemes = [
+  ayuDark,
+  catppuccinMocha,
+  dracula,
+  everforestDark,
+  githubDark,
+  githubLight,
+  gruvbox,
+  gruvboxMaterial,
+  kanagawa,
+  nord,
+  onedark,
+  rosePine,
+  solarizedLight,
+  tokyonight,
+];
+
+export const markdownHighlighter = await createHighlighter({
+  languages: markdownLanguages,
+  themes: markdownThemes,
+});
