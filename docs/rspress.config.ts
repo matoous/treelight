@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { defineConfig } from '@rspress/core';
+import { createTreelightShikiTransformer } from '@treelight/rspress';
 import { markdownHighlighter } from './src/lib/markdown';
-import { createTreelightShikiTransformer } from './src/lib/treelight-shiki-transformer';
 
 const siteUrl = (
   process.env.DOCS_SITE_URL ?? 'https://github.com/matoous/treelight'

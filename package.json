@@ -13,6 +13,7 @@
     "packages/integration",
     "packages/rehype",
     "packages/remark",
+    "packages/rspress",
     "packages/languages/*",
     "packages/themes/*",
     "docs"
@@ -41,6 +42,7 @@
     "@treelight/python": "workspace:*",
     "@treelight/rehype": "workspace:*",
     "@treelight/remark": "workspace:*",
+    "@treelight/rspress": "workspace:*",
     "@treelight/ruby": "workspace:*",
     "@treelight/rust": "workspace:*",
     "@treelight/scheme": "workspace:*",

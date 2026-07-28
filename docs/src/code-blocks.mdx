@@ -3,16 +3,16 @@ title: Code Blocks
 description: Render Markdown, MDX, and Astro code blocks with Treelight.
 ---
 
-Treelight ships integrations for Markdown and Astro code blocks. Prefer `@treelight/rehype` when your docs framework accepts rehype plugins. Use `@treelight/remark` only when you need to transform Markdown `code` nodes before the rehype stage.
+Treelight ships integrations for Markdown and Astro code blocks. Prefer `@treelight/rehype` when your docs framework accepts rehype plugins. Use `@treelight/rspress` for Rspress sites because Rspress code blocks are handled through Shiki transformers. Use `@treelight/remark` only when you need to transform Markdown `code` nodes before the rehype stage.
 
 ## This Docs Site
 
-This site uses Treelight for its own Markdown code blocks through Rspress's `markdown.shiki.transformers` option. Rspress runs its built-in Shiki pass before user rehype plugins, so the docs site bridges that Shiki transformer hook to Treelight's renderer and keeps fence metadata like `startLineNumber` and highlighted-line ranges intact.
+This site uses `@treelight/rspress` for its own Markdown code blocks. Rspress runs code highlighting through Shiki transformers, so the package installs a Shiki-compatible transformer that delegates the final HTML rendering to Treelight.
 
-```ts {10-17}
+```ts title="docs/rspress.config.ts" {9-16}
 import { defineConfig } from '@rspress/core';
+import { createTreelightShikiTransformer } from '@treelight/rspress';
 import { markdownHighlighter } from './src/lib/markdown';
-import { createTreelightShikiTransformer } from './src/lib/treelight-shiki-transformer';
 
 const treelightCodeBlocks = createTreelightShikiTransformer({
   highlighter: markdownHighlighter,
@@ -35,16 +35,49 @@ export default defineConfig({
 });
 ```
 
-The block below is rendered by that same pipeline. It shows global line numbers, per-block `startLineNumber`, and highlighted-line metadata. Highlight ranges are source-line ranges, so `highlightLines="2-3"` highlights the second and third code lines even though the visible gutter starts at `41`.
+The block below is rendered by that same pipeline. It shows global line numbers, per-block `startLineNumber`, highlighted-line metadata, a per-block theme, and a title. Highlight ranges are source-line ranges, so `highlightLines="2-3"` highlights the second and third code lines even though the visible gutter starts at `41`.
 
-```ts showLineNumbers startLineNumber=41 highlightLines="2-3"
+```ts title="packages.ts" theme=dracula showLineNumbers startLineNumber=41 highlightLines="2-3"
 type PackageName = `@treelight/${string}`;
 
 const integrations: PackageName[] = [
   '@treelight/rehype',
   '@treelight/remark',
   '@treelight/astro',
+  '@treelight/rspress',
 ];
+```
+
+## Rspress
+
+Use the Rspress plugin when Treelight should render Markdown and MDX code blocks in an Rspress site:
+
+```sh
+npm i @treelight/rspress @treelight/javascript @treelight/theme-github-dark
+```
+
+```ts
+import { defineConfig } from '@rspress/core';
+import treelight from '@treelight/rspress';
+import javascript from '@treelight/javascript';
+import githubDark from '@treelight/theme-github-dark';
+
+export default defineConfig({
+  plugins: [
+    treelight({
+      languages: [javascript],
+      themes: [githubDark],
+      theme: 'github-dark',
+      lineNumbers: true,
+    }),
+  ],
+});
+```
+
+Import the stylesheet from your Rspress global CSS:
+
+```css
+@import "@treelight/rspress/styles.css";
 ```
 
 ## Rehype

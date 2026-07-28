@@ -44,7 +44,7 @@
   margin: 1rem 0;
 }
 
-.treelight-frame > .treelight {
+.treelight-frame .treelight {
   margin: 0;
   border-top-left-radius: 0;
   border-top-right-radius: 0;

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build:markdown": "npm run --workspace=@treelight/hast build && npm run --workspace=@treelight/java build",
+    "build:markdown": "npm run --workspace=@treelight/hast build && npm run --workspace=@treelight/java build && npm run --workspace=@treelight/rspress build",
     "dev": "npm run build:markdown && rspress dev",
     "build": "npm run build:markdown && tsc --noEmit && rspress build",
     "preview": "rspress preview",
@@ -34,6 +34,7 @@
     "@treelight/php": "0.2.0",
     "@treelight/python": "0.2.0",
     "@treelight/rehype": "0.1.0",
+    "@treelight/rspress": "0.1.0",
     "@treelight/ruby": "0.2.0",
     "@treelight/rust": "0.2.0",
     "@treelight/scheme": "0.2.0",
