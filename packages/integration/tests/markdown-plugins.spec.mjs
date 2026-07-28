@@ -23,6 +23,22 @@ console.info(greeting);
 \`\`\`
 `;
 
+const metadataLineNumbersMarkdown = `# Example
+
+\`\`\`javascript showLineNumbers startLineNumber=41
+const greeting = 'hello';
+console.info(greeting);
+\`\`\`
+`;
+
+const disabledLineNumbersMarkdown = `# Example
+
+\`\`\`javascript showLineNumbers=false
+const greeting = 'hello';
+console.info(greeting);
+\`\`\`
+`;
+
 test.before(async (t) => {
   t.context.highlighter = await createHighlighter({
     languages: [javascriptLanguage],
@@ -128,7 +144,7 @@ test('remark plugin can render line numbers', async (t) => {
     .use(remarkParse)
     .use(remarkTreelight, {
       highlighter: t.context.highlighter,
-      lineNumbers: true,
+      lineNumbers: { startLineNumber: 41 },
     })
     .use(remarkRehype, {
       allowDangerousHtml: true,
@@ -140,9 +156,49 @@ test('remark plugin can render line numbers', async (t) => {
 
   const html = String(file);
   t.true(html.includes('<pre class="treelight github-dark has-line-numbers"'));
-  t.true(html.includes('data-line-number-start="1"'));
+  t.true(html.includes('data-line-number-start="41"'));
   t.true(html.includes('class="treelight-line-number"'));
-  t.true(html.includes('>1</span>'));
-  t.true(html.includes('>2</span>'));
+  t.true(html.includes('>41</span>'));
+  t.true(html.includes('>42</span>'));
   t.true(html.includes('<span class="variable"'));
+});
+
+test('remark plugin can render line numbers from code metadata', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+    })
+    .use(rehypeStringify, {
+      allowDangerousHtml: true,
+    })
+    .process(metadataLineNumbersMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('data-line-number-start="41"'));
+  t.true(html.includes('>41</span>'));
+  t.true(html.includes('>42</span>'));
+});
+
+test('remark plugin can disable global line numbers from code metadata', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkTreelight, {
+      highlighter: t.context.highlighter,
+      lineNumbers: true,
+    })
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+    })
+    .use(rehypeStringify, {
+      allowDangerousHtml: true,
+    })
+    .process(disabledLineNumbersMarkdown);
+
+  const html = String(file);
+  t.false(html.includes('has-line-numbers'));
+  t.false(html.includes('treelight-line-number'));
 });
