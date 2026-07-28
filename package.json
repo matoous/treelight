@@ -77,6 +77,8 @@
     "create:language": "node ./scripts/create-language-package.mjs",
     "create:theme": "node ./scripts/create-theme-package.mjs",
     "list:public-packages": "node ./scripts/list-public-packages.mjs",
+    "publish:initial": "node ./scripts/publish-initial-packages.mjs",
+    "trust:packages": "node ./scripts/setup-trusted-publishing.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "npm run build && changeset publish"
