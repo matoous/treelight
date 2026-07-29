@@ -21,7 +21,7 @@
   },
   "routes": [
     {
-      "pattern": "treelights.dzx.cz",
+      "pattern": "treelight.dzx.cz",
       "custom_domain": true
     }
   ]
