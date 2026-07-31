@@ -1,6 +1,36 @@
 import { BrowserOnly } from '@rspress/core/runtime';
-import type { HomeLayoutProps } from '@rspress/core/theme-original';
-import { HomeLayout as OriginalHomeLayout } from '@rspress/core/theme-original';
+import type {
+  HomeLayoutProps,
+  LayoutProps,
+} from '@rspress/core/theme-original';
+import {
+  HomeLayout as OriginalHomeLayout,
+  Layout as OriginalLayout,
+  Link,
+} from '@rspress/core/theme-original';
+
+function NavWordmark() {
+  return (
+    <div className="rp-nav__title">
+      <Link
+        href="/"
+        className="rp-nav__title__link"
+        aria-label="Treelight"
+      >
+        <span className="treelight-wordmark" aria-hidden="true">
+          <span className="treelight-wordmark__tree">Tree</span>
+          <span className="treelight-wordmark__light">light</span>
+        </span>
+      </Link>
+    </div>
+  );
+}
+
+export function Layout(props: LayoutProps) {
+  return (
+    <OriginalLayout {...props} navTitle={props.navTitle ?? <NavWordmark />} />
+  );
+}
 
 function CodeSample() {
   return (

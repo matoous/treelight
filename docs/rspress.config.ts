@@ -140,7 +140,7 @@ export default defineConfig({
     },
   },
   themeConfig: {
-    darkMode: true,
+    darkMode: 'force-dark',
     search: true,
     socialLinks: [
       {

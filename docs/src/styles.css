@@ -3,9 +3,18 @@
 :root {
   --rp-c-brand: #111111;
   --rp-c-brand-dark: #000000;
+  --rp-c-brand-darker: #000000;
   --rp-c-brand-light: #4b4b4b;
   --rp-c-brand-lighter: #777777;
   --rp-c-brand-tint: #eeeeea;
+  --rp-home-hero-secondary-color: #000000;
+  --rp-home-hero-title-color: #000000;
+  --rp-home-hero-title-bg: #000000;
+  --rp-home-background-bg: var(--rp-c-bg);
+  --rp-home-feature-bg: var(--rp-c-bg);
+  --treelight-wordmark-tree: #111111;
+  --treelight-wordmark-light: #666666;
+  --treelight-wordmark-glow: 0 0 0.4em rgba(255, 255, 255, 0.4);
   --rp-code-block-color: #f4f2ec;
   --rp-code-block-bg: #111111;
   --treelight-code-border-color: var(--rp-c-divider-light);
@@ -18,10 +27,38 @@
 html.rp-dark {
   --rp-c-brand: #f4f2ec;
   --rp-c-brand-dark: #ffffff;
+  --rp-c-brand-darker: #ffffff;
   --rp-c-brand-light: #d9d6ce;
   --rp-c-brand-lighter: #f4f2ec;
   --rp-c-brand-tint: #2a2926;
+  --rp-home-hero-secondary-color: #ffffff;
+  --rp-home-hero-title-color: #ffffff;
+  --rp-home-hero-title-bg: #ffffff;
+  --rp-home-background-bg: var(--rp-c-bg);
+  --rp-home-feature-bg: var(--rp-c-bg);
+  --treelight-wordmark-tree: #a8a8a8;
+  --treelight-wordmark-light: #ffffff;
+  --treelight-wordmark-glow: 0 0 0.4em rgba(255, 255, 255, 0.55);
   --rp-code-block-bg: #0d0d0d;
+}
+
+.dark .rp-button--brand,
+html.rp-dark .rp-button--brand {
+  color: #000000;
+}
+
+.treelight-wordmark__tree,
+.treelight-wordmark__light {
+  -webkit-text-fill-color: currentColor;
+}
+
+.treelight-wordmark__tree {
+  color: var(--treelight-wordmark-tree);
+}
+
+.treelight-wordmark__light {
+  color: var(--treelight-wordmark-light);
+  text-shadow: var(--treelight-wordmark-glow);
 }
 
 .home-code-sample,
@@ -38,8 +75,7 @@ html.rp-dark {
   align-items: center;
 }
 
-:is(.home-code-sample, .home-explorer-section).rp-doc
-  :where(h2:first-of-type)::before {
+:is(.home-code-sample, .home-explorer-section).rp-doc :where(h2:first-of-type)::before {
   display: none;
   content: none;
 }
@@ -143,6 +179,7 @@ html.rp-dark {
 }
 
 @media (max-width: 640px) {
+
   .home-code-sample,
   .home-explorer-section {
     padding-inline: 1rem;
