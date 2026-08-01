@@ -1,6 +1,6 @@
 {
   "name": "@treelight/dockerfile",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Treelight language module for dockerfile.",
   "type": "module",
   "main": "./dist/index.cjs",

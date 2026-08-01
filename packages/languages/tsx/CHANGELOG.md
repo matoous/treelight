@@ -1,5 +1,16 @@
 # @treelight/tsx
 
+## 0.4.0
+
+### Minor Changes
+
+- c50dc5a: Add recursive Tree-sitter injection support, new injection-focused language packages, and broader injection queries for Go, HTML, Python, TypeScript, and TSX.
+
+### Patch Changes
+
+- Updated dependencies [c50dc5a]
+  - @treelight/ecma@0.4.0
+
 ## 0.3.0
 
 ### Patch Changes
