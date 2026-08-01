@@ -17,24 +17,30 @@ Use `@treelight/go` to register Go syntax highlighting with Treelight.
 ## Install
 
 ```sh
-npm i @treelight/core @treelight/go @treelight/theme-github-dark
+npm i @treelight/comment @treelight/core @treelight/go \
+  @treelight/go-format-string @treelight/regex @treelight/theme-github-dark
 ```
 
 ## Register
 
 ```ts
+import comment from '@treelight/comment';
 import { Highlighter } from '@treelight/core';
 import go from '@treelight/go';
+import goFormatString from '@treelight/go-format-string';
+import regex from '@treelight/regex';
 import githubDark from '@treelight/theme-github-dark';
 
 const highlighter = await Highlighter.create({
-  languages: [go],
+  languages: [go, comment, goFormatString, regex],
   themes: [githubDark],
   theme: 'github-dark',
 });
 
 const html = highlighter.highlight(code, 'go');
 ```
+
+Go's bundled query can inject comment annotations, block documentation Markdown, `//go:generate` Bash, `regexp` patterns, and `fmt`/`log` format strings. Only registered targets are applied; see [Injections](/injections).
 
 ## Example
 

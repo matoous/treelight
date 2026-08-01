@@ -1,0 +1,119 @@
+---
+title: Injections
+description: Highlight embedded languages recursively with Tree-sitter injection queries.
+---
+
+An injection lets a host grammar hand part of its syntax tree to another registered language. Treelight then layers the injected language's captures over the host captures. This is how a Go string can contain a regular expression, an HTML document can contain JavaScript and CSS, or a Markdown fence can contain almost any language.
+
+## Register Both Languages
+
+Injection queries name languages by ID. Register the host and every injected language you want Treelight to load:
+
+```sh
+npm i @treelight/comment @treelight/core @treelight/go \
+  @treelight/go-format-string @treelight/regex \
+  @treelight/theme-github-dark
+```
+
+```ts
+import comment from '@treelight/comment';
+import { Highlighter } from '@treelight/core';
+import go from '@treelight/go';
+import goFormatString from '@treelight/go-format-string';
+import regex from '@treelight/regex';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [go, comment, goFormatString, regex],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(
+  `// TODO: #123
+pattern := regexp.MustCompile(\`^[a-z]+$\`)
+fmt.Printf("matched %03d items", total)`,
+  'go',
+);
+```
+
+`Highlighter.create` eagerly loads every definition. With `Treelight` or `createBrowserTreelight`, injected languages can use lazy loaders instead:
+
+```ts
+treelight.registerLanguage('go', () => import('@treelight/go'));
+treelight.registerLanguage('comment', () => import('@treelight/comment'));
+treelight.registerLanguage('regex', () => import('@treelight/regex'));
+treelight.registerLanguage(
+  'go-format-string',
+  () => import('@treelight/go-format-string'),
+);
+
+const html = await treelight.highlight(code, 'go');
+```
+
+An unregistered injected language is skipped, so the host language still highlights normally.
+
+## Bundled Injection Languages
+
+These packages are designed primarily as injection targets, although each can also be highlighted directly.
+
+| Language ID | Package | Typical host |
+| --- | --- | --- |
+| `comment` | `@treelight/comment` | Comments in Go, Python, HTML, C-family languages, and others |
+| `go-format-string` | `@treelight/go-format-string` | Format strings passed to supported Go `fmt` and `log` calls |
+| `jsdoc` | `@treelight/jsdoc` | JavaScript, TypeScript, and TSX comments |
+| `markdown.inline` | `@treelight/markdown-inline` | Inline nodes inside Markdown documents |
+| `regex` | `@treelight/regex` | Go/Python regex calls, JavaScript-family regex literals, CSS regex nodes, and HTML `pattern` attributes |
+
+The regular language packages are also injection targets. HTML injects `javascript` and `css`; Markdown fences use their info string as a language ID; Markdown frontmatter can inject `yaml` or `toml`; and Go `//go:generate` directives inject `bash`.
+
+Some bundled queries name languages Treelight does not bundle yet, such as `awk`, `jq`, or `latex`. Those ranges remain host-highlighted until you register a custom definition under the exact language ID.
+
+## Recursive Injections
+
+Injected languages can have injection queries of their own. For example:
+
+```text
+TypeScript -> JSDoc -> comment annotations
+Markdown -> HTML -> JavaScript -> regular expressions
+```
+
+Treelight discovers and loads these layers recursively. Cyclic ranges are ignored, and nesting is capped to keep malformed query graphs bounded.
+
+## Write An Injection Query
+
+Add an `injections.scm` file to a language package and expose it through `queries.injections`:
+
+```scheme
+(call_expression
+  function: (selector_expression) @_function
+  (#eq? @_function "regexp.MustCompile")
+  (argument_list
+    . (raw_string_literal
+        (raw_string_literal_content) @injection.content))
+  (#set! injection.language "regex"))
+```
+
+```ts
+import highlights from './queries/highlights.scm';
+import injections from './queries/injections.scm';
+
+export default {
+  id: 'host-language',
+  wasm,
+  queries: { highlights, injections },
+};
+```
+
+Treelight supports the Helix/Tree-sitter conventions used by bundled queries:
+
+| Query feature | Effect |
+| --- | --- |
+| `@injection.content` | Marks one or more source ranges for the injected parser. |
+| `#set! injection.language "id"` | Selects a fixed registered language ID. |
+| `@injection.language` | Reads the language ID dynamically from the captured source, as in a Markdown fence or tagged template. |
+| `#set! injection.combined` | Parses all ranges from the same query pattern and language as one layer. |
+| `#set! injection.include-children` | Includes the captured node and all of its children. |
+| `#set! injection.include-unnamed-children` | Excludes named child nodes but keeps unnamed syntax such as delimiters. |
+
+Language IDs are exact and case-sensitive. A dynamic capture should therefore produce the same ID used during registration.

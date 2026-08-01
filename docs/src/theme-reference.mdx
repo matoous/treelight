@@ -1,0 +1,111 @@
+---
+title: Theme Reference
+description: Complete reference for Treelight theme definitions, style values, and supported capture scopes.
+---
+
+Treelight uses Helix's capture-name taxonomy, but its theme file format is intentionally smaller. This page lists every configurable field the renderer currently consumes and the complete family of supported syntax scope names.
+
+## ThemeDefinition
+
+```ts
+interface ThemeStyle {
+  fg?: string;
+  bg?: string;
+}
+
+interface ThemeDefinition {
+  id?: string;
+  styles: Record<string, ThemeStyle | string>;
+}
+```
+
+| Field | Required | Meaning |
+| --- | --- | --- |
+| `id` | No | Registration name used by `theme: 'name'`. It is normalized to lowercase and `_` becomes `-`. Pass a name to `registerTheme(name, theme)` when the object has no ID. |
+| `styles` | Yes | Map from a capture or UI scope to a foreground color string or `{ fg, bg }`. |
+| `fg` | No | Foreground CSS color for matching text. |
+| `bg` | No | Background CSS color. For syntax spans it is accepted in the definition but not emitted by the current HTML renderer; `ui.background.bg` controls the code-block background. |
+
+Color values are written directly into inline CSS, so use valid CSS colors such as hex, `rgb()`, `oklch()`, or a CSS custom property.
+
+```ts
+const theme: ThemeDefinition = {
+  id: 'terminal_dark',
+  styles: {
+    'ui.background': { bg: '#101418' },
+    'ui.foreground': '#d7dde5',
+    comment: 'var(--syntax-comment)',
+    'function.method': { fg: 'oklch(78% 0.12 245)' },
+  },
+};
+```
+
+## Renderer-Consumed UI Scopes
+
+Treelight renders static code blocks rather than the full Helix editor UI. Only these UI scopes affect its output:
+
+| Scope | Channel | Use |
+| --- | --- | --- |
+| `ui.background` | `bg` | `<pre>` background. A string or `fg` is accepted as a compatibility fallback. Defaults to `#ffffff`. |
+| `ui.foreground` | `fg` | Default `<pre>` text color. Falls back through `ui.text`, `ui.background.fg`, `variable`, then `#000000`. |
+| `ui.text` | `fg` | Compatibility fallback for the default text color. It can also be emitted by a query, such as the comment grammar. |
+
+Other Helix UI keys can remain in a ported theme object, but Treelight does not render editor chrome such as selections, gutters, menus, status lines, cursors, diagnostics, or virtual text.
+
+## Syntax Scope Reference
+
+Queries may emit a base scope or a more specific dotted scope. Theme only the level you need; fallback resolution handles descendants.
+
+| Family | Recognized scope names |
+| --- | --- |
+| Attributes | `attribute` |
+| Types | `type`, `type.builtin`, `type.parameter`, `type.enum.variant` |
+| Constructors | `constructor` |
+| Constants | `constant`, `constant.builtin`, `constant.builtin.boolean`, `constant.character`, `constant.character.escape`, `constant.numeric`, `constant.numeric.integer`, `constant.numeric.float` |
+| Strings | `string`, `string.regexp`, `string.special`, `string.special.path`, `string.special.url`, `string.special.symbol` |
+| Comments | `comment`, `comment.line`, `comment.line.documentation`, `comment.block`, `comment.block.documentation`, `comment.unused` |
+| Variables | `variable`, `variable.mutable`, `variable.builtin`, `variable.builtin.mutable`, `variable.parameter`, `variable.parameter.mutable`, `variable.other.member`, `variable.other.member.private` |
+| Labels | `label` |
+| Punctuation | `punctuation`, `punctuation.delimiter`, `punctuation.bracket`, `punctuation.special` |
+| Keywords | `keyword`, `keyword.control`, `keyword.control.conditional`, `keyword.control.repeat`, `keyword.control.import`, `keyword.control.return`, `keyword.control.exception`, `keyword.operator`, `keyword.directive`, `keyword.function`, `keyword.storage`, `keyword.storage.type`, `keyword.storage.modifier` |
+| Operators | `operator` |
+| Functions | `function`, `function.public`, `function.builtin`, `function.method`, `function.method.public`, `function.method.private`, `function.macro`, `function.special` |
+| Tags | `tag`, `tag.builtin` |
+| Namespaces | `namespace` |
+| Special text | `special` |
+| Markup | `markup` |
+| Markup headings | `markup.heading`, `markup.heading.marker`, `markup.heading.1`, `markup.heading.2`, `markup.heading.3`, `markup.heading.4`, `markup.heading.5`, `markup.heading.6` |
+| Markup lists | `markup.list`, `markup.list.unnumbered`, `markup.list.numbered`, `markup.list.checked`, `markup.list.unchecked` |
+| Markup emphasis | `markup.bold`, `markup.italic`, `markup.strikethrough`, `markup.quote` |
+| Markup links | `markup.link`, `markup.link.url`, `markup.link.label`, `markup.link.text` |
+| Markup raw text | `markup.raw`, `markup.raw.inline`, `markup.raw.block` |
+| Diffs | `diff`, `diff.plus`, `diff.plus.gutter`, `diff.minus`, `diff.minus.gutter`, `diff.delta`, `diff.delta.moved`, `diff.delta.conflict`, `diff.delta.gutter` |
+| Embedded content | `embedded` |
+| Annotation levels | `hint`, `info`, `warning`, `error` |
+
+This taxonomy describes the names bundled and Helix-derived queries may emit; Tree-sitter capture names are open-ended. A custom query can emit another name, and the same `styles` map and dotted fallback rules apply.
+
+## Dotted Fallback And CSS Classes
+
+Treelight resolves a capture from most specific to least specific. For `function.method.call`, it checks:
+
+```text
+function.method.call -> function.method -> function
+```
+
+The emitted CSS class keeps the full capture name with dots changed to hyphens: `function.method.call` becomes `class="function-method-call"`. The inline foreground color can still come from a parent theme entry.
+
+## Helix Options Not Supported
+
+A Helix theme cannot be copied verbatim as a Treelight `ThemeDefinition`. The following Helix features are not part of Treelight's public theme API:
+
+| Helix feature | Treelight status |
+| --- | --- |
+| `inherits` | Not supported; merge the style maps before registration. |
+| `[palette]` and palette-name references | Not resolved; provide final CSS color values. |
+| `modifiers` such as bold, italic, dim, or underlined | Not emitted by the renderer. |
+| `underline` style/color fields | Not emitted by the renderer. |
+| `rainbow` palettes | Not supported. |
+| Editor UI scopes beyond the three listed above | Preserved in an object but unused by static code-block rendering. |
+
+See [Custom Themes](/custom-themes) for registration and package examples, or [Theme Packages](/theme-packages) for the bundled themes.

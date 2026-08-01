@@ -17,24 +17,28 @@ Use `@treelight/python` to register Python syntax highlighting with Treelight.
 ## Install
 
 ```sh
-npm i @treelight/core @treelight/python @treelight/theme-github-dark
+npm i @treelight/comment @treelight/core @treelight/python @treelight/regex @treelight/theme-github-dark
 ```
 
 ## Register
 
 ```ts
+import comment from '@treelight/comment';
 import { Highlighter } from '@treelight/core';
 import python from '@treelight/python';
+import regex from '@treelight/regex';
 import githubDark from '@treelight/theme-github-dark';
 
 const highlighter = await Highlighter.create({
-  languages: [python],
+  languages: [python, comment, regex],
   themes: [githubDark],
   theme: 'github-dark',
 });
 
 const html = highlighter.highlight(code, 'python');
 ```
+
+Python injects comment annotations and regular expressions passed as the first argument to standard-library `re` functions. See [Injections](/injections).
 
 ## Example
 

@@ -68,6 +68,9 @@
     "querySources": {
       "sharedHighlights": {
         "package": "@treelight/ecma"
+      },
+      "sharedInjections": {
+        "package": "@treelight/ecma"
       }
     }
   },

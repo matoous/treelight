@@ -70,6 +70,9 @@
       "sharedHighlights": {
         "package": "@treelight/ecma"
       },
+      "sharedInjections": {
+        "package": "@treelight/ecma"
+      },
       "typescriptHighlights": {
         "path": "../typescript/src/queries/highlights.scm"
       }

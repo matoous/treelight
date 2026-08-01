@@ -1,19 +1,24 @@
 import bashLanguage from '@treelight/bash';
 import cLanguage from '@treelight/c';
+import commentLanguage from '@treelight/comment';
 import cppLanguage from '@treelight/cpp';
 import cssLanguage from '@treelight/css';
 import dockerfileLanguage from '@treelight/dockerfile';
 import elixirLanguage from '@treelight/elixir';
 import goLanguage from '@treelight/go';
+import goFormatStringLanguage from '@treelight/go-format-string';
 import graphqlLanguage from '@treelight/graphql';
 import htmlLanguage from '@treelight/html';
 import javaLanguage from '@treelight/java';
 import javascriptLanguage from '@treelight/javascript';
+import jsdocLanguage from '@treelight/jsdoc';
 import jsonLanguage from '@treelight/json';
 import luaLanguage from '@treelight/lua';
 import markdownLanguage from '@treelight/markdown';
+import markdownInlineLanguage from '@treelight/markdown-inline';
 import phpLanguage from '@treelight/php';
 import pythonLanguage from '@treelight/python';
+import regexLanguage from '@treelight/regex';
 import rubyLanguage from '@treelight/ruby';
 import rustLanguage from '@treelight/rust';
 import schemeLanguage from '@treelight/scheme';
@@ -38,7 +43,7 @@ import zigLanguage from '@treelight/zig';
 import test from 'ava';
 import treelight from '../../core/dist/index.js';
 
-const { highlight, registerLanguage, registerTheme } = treelight;
+const { highlight, registerLanguage, registerTheme, Treelight } = treelight;
 const resolveLanguage = (module) => module.default ?? module;
 const resolveTheme = (module) => module.default ?? module;
 
@@ -62,17 +67,22 @@ test.before(() => {
   registerLanguage('c', resolveLanguage(cLanguage));
   registerLanguage('cpp', resolveLanguage(cppLanguage));
   registerLanguage('css', resolveLanguage(cssLanguage));
+  registerLanguage('comment', resolveLanguage(commentLanguage));
   registerLanguage('dockerfile', resolveLanguage(dockerfileLanguage));
   registerLanguage('go', resolveLanguage(goLanguage));
+  registerLanguage('go-format-string', resolveLanguage(goFormatStringLanguage));
   registerLanguage('graphql', resolveLanguage(graphqlLanguage));
   registerLanguage('html', resolveLanguage(htmlLanguage));
   registerLanguage('javascript', resolveLanguage(javascriptLanguage));
+  registerLanguage('jsdoc', resolveLanguage(jsdocLanguage));
   registerLanguage('java', resolveLanguage(javaLanguage));
   registerLanguage('json', resolveLanguage(jsonLanguage));
   registerLanguage('lua', resolveLanguage(luaLanguage));
   registerLanguage('markdown', resolveLanguage(markdownLanguage));
+  registerLanguage('markdown.inline', resolveLanguage(markdownInlineLanguage));
   registerLanguage('php', resolveLanguage(phpLanguage));
   registerLanguage('python', resolveLanguage(pythonLanguage));
+  registerLanguage('regex', resolveLanguage(regexLanguage));
   registerLanguage('ruby', resolveLanguage(rubyLanguage));
   registerLanguage('elixir', resolveLanguage(elixirLanguage));
   registerLanguage('rust', resolveLanguage(rustLanguage));
@@ -192,6 +202,50 @@ func main() {
   );
 });
 
+test.serial('go regex injection', async (t) => {
+  const isolated = new Treelight();
+  isolated.registerLanguage('go', resolveLanguage(goLanguage));
+  isolated.registerLanguage('regex', resolveLanguage(regexLanguage));
+
+  const html = await isolated.highlight(
+    `package search
+
+// café
+var labelPattern = regexp.MustCompile(\`^[a-z]+$\`)`,
+    'go',
+    { strict: true },
+  );
+
+  t.regex(html, /class="operator"[^>]*>\+<\/span>/);
+  t.regex(html, /class="punctuation-bracket"[^>]*>\[<\/span>/);
+  t.true(html.includes('café'));
+});
+
+test.serial('Go comment and format string injections', async (t) => {
+  const isolated = new Treelight();
+  isolated.registerLanguage('go', resolveLanguage(goLanguage));
+  isolated.registerLanguage('comment', resolveLanguage(commentLanguage));
+  isolated.registerLanguage(
+    'go-format-string',
+    resolveLanguage(goFormatStringLanguage),
+  );
+
+  const html = await isolated.highlight(
+    `package main
+
+// TODO: #123
+func main() {
+  fmt.Printf("worker %03d", 7)
+}`,
+    'go',
+    { strict: true },
+  );
+
+  t.regex(html, /class="info"[^>]*>TODO<\/span>/);
+  t.regex(html, /class="constant-numeric-integer"[^>]*>03<\/span>/);
+  t.regex(html, /class="type"[^>]*>d<\/span>/);
+});
+
 test('html', async (t) => {
   t.snapshot(
     await highlight(
@@ -204,8 +258,42 @@ test('html', async (t) => {
   );
 });
 
+test.serial('HTML pattern injection', async (t) => {
+  const isolated = new Treelight();
+  isolated.registerLanguage('html', resolveLanguage(htmlLanguage));
+  isolated.registerLanguage('regex', resolveLanguage(regexLanguage));
+
+  const html = await isolated.highlight(
+    '<input pattern="[Bb]anana|[Cc]herry">',
+    'html',
+    { strict: true },
+  );
+
+  t.regex(html, /class="punctuation-bracket"[^>]*>\[<\/span>/);
+  t.regex(html, /class="operator"[^>]*>\|<\/span>/);
+});
+
 test('javascript', async (t) => {
   t.snapshot(await highlight('console.info("test")', 'javascript'));
+});
+
+test.serial('TypeScript JSDoc and regex injections', async (t) => {
+  const isolated = new Treelight();
+  isolated.registerLanguage('typescript', resolveLanguage(typescriptLanguage));
+  isolated.registerLanguage('jsdoc', resolveLanguage(jsdocLanguage));
+  isolated.registerLanguage('comment', resolveLanguage(commentLanguage));
+  isolated.registerLanguage('regex', resolveLanguage(regexLanguage));
+
+  const html = await isolated.highlight(
+    `/** @param {string} name TODO */
+const valid = /^[a-z]+$/;`,
+    'typescript',
+    { strict: true },
+  );
+
+  t.regex(html, /class="keyword"[^>]*>.*@param/);
+  t.regex(html, /class="type"[^>]*>string<\/span>/);
+  t.regex(html, /class="operator"[^>]*>\+<\/span>/);
 });
 
 test('java', async (t) => {
@@ -264,6 +352,25 @@ Tree-sitter based syntax highlighting for JavaScript runtimes.
   );
 });
 
+test.serial('Markdown inline injection', async (t) => {
+  const isolated = new Treelight();
+  isolated.registerLanguage('markdown', resolveLanguage(markdownLanguage));
+  isolated.registerLanguage(
+    'markdown.inline',
+    resolveLanguage(markdownInlineLanguage),
+  );
+
+  const html = await isolated.highlight(
+    'Read **the [guide](https://example.com)**.',
+    'markdown',
+    { strict: true },
+  );
+
+  t.regex(html, /class="markup-bold"/);
+  t.regex(html, /class="markup-link-text"[^>]*>guide<\/span>/);
+  t.regex(html, /class="markup-link-url"[^>]*>https:\/\/example\.com<\/span>/);
+});
+
 test('php', async (t) => {
   t.snapshot(
     await highlight(
@@ -292,6 +399,24 @@ if __name__ == '__main__':
       'python',
     ),
   );
+});
+
+test.serial('Python comment and regex injections', async (t) => {
+  const isolated = new Treelight();
+  isolated.registerLanguage('python', resolveLanguage(pythonLanguage));
+  isolated.registerLanguage('comment', resolveLanguage(commentLanguage));
+  isolated.registerLanguage('regex', resolveLanguage(regexLanguage));
+
+  const html = await isolated.highlight(
+    `# FIXME: #42
+pattern = re.compile(r"^[a-z]+$")`,
+    'python',
+    { strict: true },
+  );
+
+  t.regex(html, /class="error"[^>]*>FIXME<\/span>/);
+  t.regex(html, /class="constant-numeric"[^>]*>#42<\/span>/);
+  t.regex(html, /class="operator"[^>]*>\+<\/span>/);
 });
 
 test('ruby', async (t) => {

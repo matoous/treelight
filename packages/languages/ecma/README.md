@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@treelight/ecma.svg)](https://www.npmjs.com/package/@treelight/ecma) [![npm downloads](https://img.shields.io/npm/dm/@treelight/ecma.svg)](https://www.npmjs.com/package/@treelight/ecma)
 
-Shared ECMAScript highlight queries for Treelight language packages.
+Shared ECMAScript highlight and injection queries for Treelight language packages. JavaScript-family packages use these injections for tagged templates, regular-expression literals, and JSDoc comments.
 
 ## Install
 

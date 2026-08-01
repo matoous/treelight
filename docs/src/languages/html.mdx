@@ -17,24 +17,31 @@ Use `@treelight/html` to register HTML syntax highlighting with Treelight.
 ## Install
 
 ```sh
-npm i @treelight/core @treelight/html @treelight/theme-github-dark
+npm i @treelight/comment @treelight/core @treelight/css @treelight/html \
+  @treelight/javascript @treelight/regex @treelight/theme-github-dark
 ```
 
 ## Register
 
 ```ts
+import comment from '@treelight/comment';
 import { Highlighter } from '@treelight/core';
+import css from '@treelight/css';
 import html from '@treelight/html';
+import javascript from '@treelight/javascript';
+import regex from '@treelight/regex';
 import githubDark from '@treelight/theme-github-dark';
 
 const highlighter = await Highlighter.create({
-  languages: [html],
+  languages: [html, comment, css, javascript, regex],
   themes: [githubDark],
   theme: 'github-dark',
 });
 
 const html = highlighter.highlight(code, 'html');
 ```
+
+HTML injects comment annotations, JavaScript inside `<script>`, CSS inside `<style>`, and regular expressions inside quoted `pattern` attributes. See [Injections](/injections).
 
 ## Example
 

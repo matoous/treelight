@@ -1,19 +1,25 @@
 import bash from '@treelight/bash';
 import c from '@treelight/c';
+import comment from '@treelight/comment';
 import { createHighlighter } from '@treelight/core';
 import cpp from '@treelight/cpp';
 import css from '@treelight/css';
 import dockerfile from '@treelight/dockerfile';
 import elixir from '@treelight/elixir';
 import go from '@treelight/go';
+import goFormatString from '@treelight/go-format-string';
 import graphql from '@treelight/graphql';
 import html from '@treelight/html';
 import java from '@treelight/java';
 import javascript from '@treelight/javascript';
+import jsdoc from '@treelight/jsdoc';
 import json from '@treelight/json';
 import lua from '@treelight/lua';
+import markdown from '@treelight/markdown';
+import markdownInline from '@treelight/markdown-inline';
 import php from '@treelight/php';
 import python from '@treelight/python';
+import regex from '@treelight/regex';
 import ruby from '@treelight/ruby';
 import rust from '@treelight/rust';
 import scheme from '@treelight/scheme';
@@ -41,19 +47,25 @@ import zig from '@treelight/zig';
 export const markdownLanguages = [
   bash,
   c,
+  comment,
   cpp,
   css,
   dockerfile,
   elixir,
   go,
+  goFormatString,
   graphql,
   html,
   java,
   javascript,
+  jsdoc,
   json,
   lua,
+  markdown,
+  markdownInline,
   php,
   python,
+  regex,
   ruby,
   rust,
   scheme,

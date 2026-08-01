@@ -5,6 +5,8 @@ description: Register custom capture colors and backgrounds with Treelight.
 
 Treelight themes are plain objects. A custom theme can live next to your app code, inside a docs site, or in a reusable `@treelight/theme-*` package.
 
+Treelight uses Helix-derived capture names but supports a smaller theme format. See the [Theme Reference](/theme-reference) for every field, syntax scope, renderer fallback, and unsupported Helix option.
+
 ## Theme Definition
 
 A theme needs an ID and a `styles` map keyed by Tree-sitter capture names:
@@ -110,3 +112,5 @@ npm run create:theme -- --name terminal --id terminal
 ```
 
 Then replace the generated `src/index.ts` stub with the actual styles and test the theme against several languages. The most important baseline keys are `ui.background`, `ui.foreground`, `comment`, `keyword`, `string`, `function`, `constant`, `type`, and `variable`.
+
+For the full capture taxonomy, see [Theme Reference](/theme-reference#syntax-scope-reference).

@@ -11,6 +11,7 @@ const goSample = `package main
 
 import (
   "fmt"
+  "regexp"
   "time"
 )
 
@@ -20,7 +21,9 @@ type Job struct {
 }
 
 func main() {
+  labelPattern := regexp.MustCompile(\`^[a-z]+$\`)
   job := Job{ID: 42, Label: "render"}
+  fmt.Println(labelPattern.MatchString(job.Label))
   for i := 0; i < 3; i++ {
     go process(i, job)
   }
@@ -325,6 +328,22 @@ const schemeSample = `;; Calculate factorial recursively.
 (display (factorial 5))
 `;
 
+const regexSample = `^(?<name>[a-z]+)(?:-[0-9]+)?$`;
+
+const commentSample = `TODO: verify the renderer (#123)
+WARN: this path is deprecated
+FIXME: handle malformed input`;
+
+const goFormatStringSample = `worker %[2]*.[1]*[3]f: %03d%%`;
+
+const jsdocSample = `/**
+ * Format a display name.
+ * @param {string} name TODO: validate this value
+ * @returns {string}
+ */`;
+
+const markdownInlineSample = `Read **the [Treelight guide](https://github.com/matoous/treelight)**.`;
+
 export const languageOptions: LanguageOption[] = [
   {
     id: 'bash',
@@ -351,6 +370,12 @@ export const languageOptions: LanguageOption[] = [
     sample: cssSample,
   },
   {
+    id: 'comment',
+    label: 'Comment annotations',
+    loader: () => import('@treelight/comment'),
+    sample: commentSample,
+  },
+  {
     id: 'dockerfile',
     label: 'Dockerfile',
     loader: () => import('@treelight/dockerfile'),
@@ -369,6 +394,12 @@ export const languageOptions: LanguageOption[] = [
     sample: goSample,
   },
   {
+    id: 'go-format-string',
+    label: 'Go format strings',
+    loader: () => import('@treelight/go-format-string'),
+    sample: goFormatStringSample,
+  },
+  {
     id: 'html',
     label: 'HTML',
     loader: () => import('@treelight/html'),
@@ -381,6 +412,12 @@ export const languageOptions: LanguageOption[] = [
     sample: javascriptSample,
   },
   {
+    id: 'jsdoc',
+    label: 'JSDoc',
+    loader: () => import('@treelight/jsdoc'),
+    sample: jsdocSample,
+  },
+  {
     id: 'lua',
     label: 'Lua',
     loader: () => import('@treelight/lua'),
@@ -391,6 +428,12 @@ export const languageOptions: LanguageOption[] = [
     label: 'Markdown',
     loader: () => import('@treelight/markdown'),
     sample: markdownSample,
+  },
+  {
+    id: 'markdown.inline',
+    label: 'Markdown inline',
+    loader: () => import('@treelight/markdown-inline'),
+    sample: markdownInlineSample,
   },
   {
     id: 'java',
@@ -421,6 +464,12 @@ export const languageOptions: LanguageOption[] = [
     label: 'Python',
     loader: () => import('@treelight/python'),
     sample: pythonSample,
+  },
+  {
+    id: 'regex',
+    label: 'Regular expressions',
+    loader: () => import('@treelight/regex'),
+    sample: regexSample,
   },
   {
     id: 'elixir',

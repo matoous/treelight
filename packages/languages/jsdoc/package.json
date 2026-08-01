@@ -1,0 +1,71 @@
+{
+  "name": "@treelight/jsdoc",
+  "version": "0.0.1",
+  "description": "Treelight language module for JSDoc comments.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "keywords": [
+    "treelight",
+    "tree-sitter",
+    "language",
+    "jsdoc"
+  ],
+  "scripts": {
+    "build": "rslib build && cp dist/index.d.cts dist/index.d.mts && publint",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github",
+    "update": "node ../../../scripts/update-language-wasm.mjs"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "typescript": "^7.0.2",
+    "publint": "^0.3.22"
+  },
+  "treelightLanguage": {
+    "repo": "tree-sitter/tree-sitter-jsdoc",
+    "revision": "658d18dcdddb75c760363faa4963427a7c6b52db",
+    "version": "658d18dcdddb75c760363faa4963427a7c6b52db",
+    "artifact": "tree-sitter-jsdoc.wasm",
+    "source": {
+      "git": "https://github.com/tree-sitter/tree-sitter-jsdoc.git"
+    },
+    "queries": {
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">= 18"
+  }
+}

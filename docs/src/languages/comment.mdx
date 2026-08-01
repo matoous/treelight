@@ -1,0 +1,33 @@
+---
+title: Comment annotations
+description: Treelight injection package for annotations inside comments.
+---
+
+# Comment annotations
+
+`@treelight/comment` highlights tags such as `TODO`, `WARN`, and `FIXME`, plus issue numbers, mentions, and URLs inside comments selected by a host language.
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/comment` |
+| Language ID | `comment` |
+
+```sh
+npm i @treelight/comment @treelight/core @treelight/go
+```
+
+```ts
+import comment from '@treelight/comment';
+import go from '@treelight/go';
+
+const highlighter = await Highlighter.create({
+  languages: [go, comment],
+});
+```
+
+```go
+// TODO: #123 verify the result
+// FIXME @owner: handle malformed input
+```
+
+See [Injections](/injections) for host-language coverage and custom queries.

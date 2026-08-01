@@ -1,0 +1,45 @@
+---
+title: Regular expressions
+description: Treelight language package for regular expressions.
+---
+
+# Regular expressions
+
+Use `@treelight/regex` directly, or register it with a host language whose injection queries identify regular-expression ranges.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/regex` |
+| Language ID | `regex` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/regex @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import regex from '@treelight/regex';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [regex],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'regex');
+```
+
+## Example
+
+```regex
+^(?<name>[a-z]+)(?:-[0-9]+)?$
+```
+
+[Back to all languages](/languages)

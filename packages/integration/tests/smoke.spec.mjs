@@ -3,7 +3,10 @@ import cLanguage from '@treelight/c';
 import cppLanguage from '@treelight/cpp';
 import cssLanguage from '@treelight/css';
 import dockerfileLanguage from '@treelight/dockerfile';
-import ecmaLanguage, { ecmaHighlightQuery } from '@treelight/ecma';
+import ecmaLanguage, {
+  ecmaHighlightQuery,
+  ecmaInjectionQuery,
+} from '@treelight/ecma';
 import elixirLanguage from '@treelight/elixir';
 import goLanguage from '@treelight/go';
 import graphqlLanguage from '@treelight/graphql';
@@ -92,11 +95,13 @@ const themeCases = [
 
 const resolveModule = (module) => module.default ?? module;
 
-test('shared ECMAScript query package exposes highlight queries', (t) => {
+test('shared ECMAScript query package exposes highlight and injection queries', (t) => {
   const language = resolveModule(ecmaLanguage);
   t.is(language.id, 'ecma');
   t.is(language.queries.highlights, ecmaHighlightQuery);
+  t.is(language.queries.injections, ecmaInjectionQuery);
   t.true(ecmaHighlightQuery.includes('@'));
+  t.true(ecmaInjectionQuery.includes('@injection.content'));
 });
 
 test.serial(

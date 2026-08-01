@@ -53,6 +53,9 @@
     "queries": {
       "highlights": [
         "queries/highlights.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
       ]
     }
   },

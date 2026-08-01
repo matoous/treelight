@@ -24,7 +24,7 @@ Treelight is a code-highlighter based on Tree-sitter grammars. It gives you the 
 - `@treelight/<language>` packages provide language definitions with inlined grammar WASM and highlight queries.
 - `@treelight/theme-<theme>` packages provide bundled themes.
 
-Bundled language packages currently cover Bash, C, C++, CSS, Dockerfile, Elixir, Go, GraphQL, HTML, Java, JavaScript, JSON, Lua, Markdown, PHP, Python, Ruby, Rust, Scheme, SQL, TOML, TSX, TypeScript, YAML, and Zig.
+Bundled language packages currently cover Bash, C, C++, comment annotations, CSS, Dockerfile, Elixir, Go, Go format strings, GraphQL, HTML, Java, JavaScript, JSDoc, JSON, Lua, Markdown, Markdown inline, PHP, Python, regular expressions, Ruby, Rust, Scheme, SQL, TOML, TSX, TypeScript, YAML, and Zig.
 
 Bundled theme packages currently cover Ayu Dark, Catppuccin Mocha, Dracula, Everforest Dark, GitHub Dark, GitHub Light, Gruvbox, Gruvbox Material, Kanagawa, Nord, One Dark, Rose Pine, Solarized Light, and Tokyo Night.
 
@@ -115,6 +115,33 @@ const html = await treelight.highlight(code, 'typescript')
 
 Eager imports are simpler when the language list is small. Lazy imports are better for browser apps that expose many languages.
 
+## Injections
+
+Injection queries highlight one language embedded inside another. Register both the host language and each injection target you want to use:
+
+```ts
+import comment from '@treelight/comment'
+import { Highlighter } from '@treelight/core'
+import go from '@treelight/go'
+import goFormatString from '@treelight/go-format-string'
+import regex from '@treelight/regex'
+
+const highlighter = await Highlighter.create({
+  languages: [go, comment, goFormatString, regex],
+})
+
+const html = highlighter.highlight(
+  `// TODO: validate this pattern
+pattern := regexp.MustCompile(\`^[a-z]+$\`)
+fmt.Printf("matches: %03d", total)`,
+  'go',
+)
+```
+
+Treelight discovers injections recursively. For example, TypeScript can inject JSDoc, which can inject comment annotations or a fenced example language. Unregistered targets are skipped without breaking the host highlight.
+
+See the [injection guide](./docs/src/injections.mdx) for bundled host/target combinations, lazy registration, and supported query directives.
+
 ## Themes
 
 Themes are plain objects that map Tree-sitter highlight captures, such as `@function.call` or `@variable.parameter`, to CSS classes and colors. Register a bundled theme during highlighter creation:
@@ -131,7 +158,7 @@ const highlighter = await Highlighter.create({
 })
 ```
 
-The generated HTML uses the theme classes directly, so applications can render the returned string into their own markup pipeline.
+The generated HTML uses capture-derived classes and inline colors, so applications can render the returned string into their own markup pipeline. Treelight follows Helix's syntax-scope taxonomy but currently supports a smaller theme format: `id`, `styles`, and `fg`/`bg` color channels. See the [theme reference](./docs/src/theme-reference.mdx) for every supported option and scope.
 
 ## How It Works
 
@@ -139,9 +166,9 @@ Language packages export a `LanguageDefinition` containing:
 
 - a language id, such as `javascript` or `rust`
 - compiled grammar WASM
-- Tree-sitter highlight queries
+- Tree-sitter highlight and injection queries
 
-Treelight loads those definitions into `web-tree-sitter`, runs Tree-sitter highlighting, and renders the captured ranges into themed HTML spans.
+Treelight loads those definitions into `web-tree-sitter`, runs Tree-sitter highlighting, and renders the captured ranges into themed HTML spans. When a host language's injection query names another registered language, Treelight parses that range with the injected grammar and layers its captures over the host highlights. Include injected languages in `Highlighter.create({ languages: [...] })`, or register them as lazy loaders when using `Treelight` directly.
 
 ## Contributing
 

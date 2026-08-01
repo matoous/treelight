@@ -1,0 +1,23 @@
+---
+title: Go format strings
+description: Treelight injection package for Go fmt-style format strings.
+---
+
+# Go format strings
+
+Register `@treelight/go-format-string` with `@treelight/go` to highlight flags, widths, precisions, argument indexes, and verbs inside supported `fmt` and `log` calls.
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/go-format-string` |
+| Language ID | `go-format-string` |
+
+```sh
+npm i @treelight/core @treelight/go @treelight/go-format-string
+```
+
+```go
+fmt.Printf("worker %03d: %[2]*.[1]*[3]f", id, width, value)
+```
+
+See [Injections](/injections) for registration examples.

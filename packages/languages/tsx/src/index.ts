@@ -1,6 +1,5 @@
-import { ecmaHighlightQuery } from '@treelight/ecma';
+import { ecmaHighlightQuery, ecmaInjectionQuery } from '@treelight/ecma';
 import tsxHighlights from './queries/highlights.scm';
-import injections from './queries/injections.scm';
 import locals from './queries/locals.scm';
 import typescriptHighlights from './queries/typescript-highlights.scm';
 import wasmDataUri from './wasm/tree-sitter-tsx.wasm';
@@ -16,7 +15,7 @@ const language = {
   wasm: wasmBase64,
   queries: {
     highlights: highlightQuery,
-    injections,
+    injections: ecmaInjectionQuery,
     locals,
   },
 };

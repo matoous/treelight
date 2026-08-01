@@ -1,0 +1,29 @@
+---
+title: JSDoc
+description: Treelight injection package for JSDoc comments.
+---
+
+# JSDoc
+
+JavaScript, TypeScript, and TSX inject `@treelight/jsdoc` into comments. JSDoc tags, types, and numbers receive syntax captures; registered fenced example languages and comment annotations can be injected recursively.
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/jsdoc` |
+| Language ID | `jsdoc` |
+
+```sh
+npm i @treelight/comment @treelight/core @treelight/javascript @treelight/jsdoc
+```
+
+```js
+/**
+ * @param {string} name TODO: validate this value
+ * @returns {string}
+ */
+function greet(name) {
+  return `Hello, ${name}`;
+}
+```
+
+See [Injections](/injections) for recursive registration.

@@ -50,6 +50,9 @@
     "queries": {
       "highlights": [
         "runtime/queries/ecma/highlights.scm"
+      ],
+      "injections": [
+        "runtime/queries/ecma/injections.scm"
       ]
     },
     "notes": "Shared ECMAScript query layer adapted from Helix runtime queries."

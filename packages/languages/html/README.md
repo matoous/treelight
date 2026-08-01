@@ -26,6 +26,6 @@ const highlighter = await Highlighter.create({
 const html = highlighter.highlight('<h1>Hello World!</h1>', 'html');
 ```
 
-This package includes the Tree-sitter grammar WASM and highlight queries for HTML.
+This package includes the Tree-sitter grammar WASM and highlight and injection queries for HTML. Register the relevant packages to highlight comments, `<script>` JavaScript, `<style>` CSS, and regular expressions in `pattern` attributes.
 
 See the [Treelight README](https://github.com/matoous/treelight#readme) for full usage.

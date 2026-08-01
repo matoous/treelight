@@ -1,5 +1,14 @@
 import defaultThemeDefinition from '@treelight/theme-github-dark';
-import { Language, Parser, Query, type QueryCapture } from 'web-tree-sitter';
+import {
+  Language,
+  type Node,
+  Parser,
+  type Point,
+  Query,
+  type QueryCapture,
+  type QueryMatch,
+  type Range,
+} from 'web-tree-sitter';
 
 import { getThemeColor, type ThemeDefinition } from './theme.js';
 import { base64ToUint8Array } from './utils/base64.js';
@@ -45,14 +54,28 @@ export type LanguageLoader =
   | LanguageLoaderResult;
 
 interface LanguageState {
+  id: string;
   parser: Parser;
   highlightQuery: Query;
+  injectionQuery?: Query;
 }
 
 interface CaptureRef {
   id: number;
   name: string;
-  node: QueryCapture['node'];
+  startIndex: number;
+  endIndex: number;
+}
+
+interface HighlightCapture {
+  name: string;
+  startIndex: number;
+  endIndex: number;
+}
+
+interface InjectionLayer {
+  languageName: string;
+  ranges: Range[];
 }
 
 interface CaptureEvent {
@@ -91,7 +114,7 @@ function wrapText(
 
 function renderHtmlFromCaptures(
   source: string,
-  captures: QueryCapture[],
+  captures: HighlightCapture[],
   theme: ThemeDefinition,
 ) {
   if (captures.length === 0) {
@@ -109,17 +132,20 @@ function renderHtmlFromCaptures(
     const ref: CaptureRef = {
       id: idx,
       name: capture.name,
-      node: capture.node,
+      startIndex: capture.startIndex,
+      endIndex: capture.endIndex,
     };
-    events.push({ type: 'start', pos: capture.node.startIndex, capture: ref });
-    events.push({ type: 'end', pos: capture.node.endIndex, capture: ref });
+    events.push({ type: 'start', pos: capture.startIndex, capture: ref });
+    events.push({ type: 'end', pos: capture.endIndex, capture: ref });
   });
   events.sort((a, b) => {
     if (a.pos !== b.pos) {
       return a.pos - b.pos;
     }
     if (a.type === b.type) {
-      return 0;
+      return a.type === 'start'
+        ? b.capture.endIndex - a.capture.endIndex
+        : b.capture.startIndex - a.capture.startIndex;
     }
     return a.type === 'end' ? -1 : 1;
   });
@@ -147,6 +173,170 @@ function renderHtmlFromCaptures(
     html += wrapText(source.slice(cursor), stack, attrByCapture);
   }
   return html;
+}
+
+function toHighlightCapture(capture: QueryCapture): HighlightCapture {
+  return {
+    name: capture.name,
+    startIndex: capture.node.startIndex,
+    endIndex: capture.node.endIndex,
+  };
+}
+
+function highlightCaptures(
+  state: LanguageState,
+  tree: NonNullable<ReturnType<Parser['parse']>>,
+  ranges?: Range[],
+): HighlightCapture[] {
+  const captures = state.highlightQuery.captures(tree.rootNode);
+  if (!ranges) {
+    return captures.map(toHighlightCapture);
+  }
+
+  return captures.flatMap((capture) => {
+    const clipped: HighlightCapture[] = [];
+    for (const range of ranges) {
+      const startIndex = Math.max(capture.node.startIndex, range.startIndex);
+      const endIndex = Math.min(capture.node.endIndex, range.endIndex);
+      if (startIndex < endIndex) {
+        clipped.push({ name: capture.name, startIndex, endIndex });
+      }
+    }
+    return clipped;
+  });
+}
+
+function rangeBetween(
+  startIndex: number,
+  startPosition: Point,
+  endIndex: number,
+  endPosition: Point,
+): Range | undefined {
+  if (startIndex >= endIndex) {
+    return undefined;
+  }
+  return { startIndex, startPosition, endIndex, endPosition };
+}
+
+function rangesForNode(
+  node: Node,
+  includeChildren: boolean,
+  includeUnnamedChildren: boolean,
+): Range[] {
+  if (includeChildren) {
+    return [
+      {
+        startIndex: node.startIndex,
+        startPosition: node.startPosition,
+        endIndex: node.endIndex,
+        endPosition: node.endPosition,
+      },
+    ];
+  }
+
+  const excludedChildren = includeUnnamedChildren
+    ? node.namedChildren
+    : node.children;
+  const ranges: Range[] = [];
+  let startIndex = node.startIndex;
+  let startPosition = node.startPosition;
+  for (const child of excludedChildren) {
+    const beforeChild = rangeBetween(
+      startIndex,
+      startPosition,
+      child.startIndex,
+      child.startPosition,
+    );
+    if (beforeChild) {
+      ranges.push(beforeChild);
+    }
+    startIndex = child.endIndex;
+    startPosition = child.endPosition;
+  }
+  const afterChildren = rangeBetween(
+    startIndex,
+    startPosition,
+    node.endIndex,
+    node.endPosition,
+  );
+  if (afterChildren) {
+    ranges.push(afterChildren);
+  }
+  return ranges;
+}
+
+function normalizedRanges(ranges: Range[]): Range[] {
+  const sorted = [...ranges].sort((a, b) => a.startIndex - b.startIndex);
+  const normalized: Range[] = [];
+  for (const range of sorted) {
+    const previous = normalized.at(-1);
+    if (!previous || range.startIndex > previous.endIndex) {
+      normalized.push(range);
+      continue;
+    }
+    if (range.endIndex > previous.endIndex) {
+      previous.endIndex = range.endIndex;
+      previous.endPosition = range.endPosition;
+    }
+  }
+  return normalized;
+}
+
+function languageNameForMatch(match: QueryMatch): string | undefined {
+  const configuredName = match.setProperties?.['injection.language'];
+  if (configuredName) {
+    return configuredName;
+  }
+  return match.captures
+    .find((capture) => capture.name === 'injection.language')
+    ?.node.text.trim();
+}
+
+function injectionLayers(
+  state: LanguageState,
+  tree: NonNullable<ReturnType<Parser['parse']>>,
+) {
+  if (!state.injectionQuery) {
+    return [];
+  }
+
+  const layers: InjectionLayer[] = [];
+  const combinedLayers = new Map<string, InjectionLayer>();
+  for (const match of state.injectionQuery.matches(tree.rootNode)) {
+    const languageName = languageNameForMatch(match);
+    if (!languageName) {
+      continue;
+    }
+    const includeChildren =
+      'injection.include-children' in (match.setProperties ?? {});
+    const includeUnnamedChildren =
+      'injection.include-unnamed-children' in (match.setProperties ?? {});
+    const ranges = match.captures
+      .filter((capture) => capture.name === 'injection.content')
+      .flatMap((capture) =>
+        rangesForNode(capture.node, includeChildren, includeUnnamedChildren),
+      );
+    if (ranges.length === 0) {
+      continue;
+    }
+    if ('injection.combined' in (match.setProperties ?? {})) {
+      const key = `${match.patternIndex}\0${languageName}`;
+      const layer = combinedLayers.get(key);
+      if (layer) {
+        layer.ranges.push(...ranges);
+      } else {
+        const combined = { languageName, ranges: [...ranges] };
+        combinedLayers.set(key, combined);
+        layers.push(combined);
+      }
+    } else {
+      layers.push({ languageName, ranges });
+    }
+  }
+  for (const layer of layers) {
+    layer.ranges = normalizedRanges(layer.ranges);
+  }
+  return layers;
 }
 
 async function loadWasmBinary(definition: LanguageDefinition) {
@@ -210,9 +400,14 @@ async function loadLanguageModule(
     throw new Error('Language definition is missing highlight queries');
   }
   const highlightQuery = new Query(language, definition.queries.highlights);
+  const injectionQuery = definition.queries.injections
+    ? new Query(language, definition.queries.injections)
+    : undefined;
   return {
+    id: definition.id,
     parser,
     highlightQuery,
+    injectionQuery,
   };
 }
 
@@ -323,7 +518,117 @@ export class Treelight {
     const definition = resolveLanguageDefinition(result);
     const state = await loadLanguageModule(definition);
     this.languageCache.set(name, state);
+    this.languageCache.set(definition.id, state);
     return state;
+  }
+
+  private collectCaptures(
+    code: string,
+    state: LanguageState,
+    ranges?: Range[],
+    depth = 0,
+    visited = new Set<string>(),
+  ): HighlightCapture[] {
+    const tree = state.parser.parse(
+      code,
+      null,
+      ranges ? { includedRanges: ranges } : undefined,
+    );
+    if (!tree) {
+      return [];
+    }
+
+    const captures = highlightCaptures(state, tree, ranges);
+    if (depth >= 16) {
+      return captures;
+    }
+    for (const layer of injectionLayers(state, tree)) {
+      const injectedState = this.languageCache.get(layer.languageName);
+      if (!injectedState) {
+        continue;
+      }
+      const key = `${injectedState.id}:${layer.ranges
+        .map((range) => `${range.startIndex}-${range.endIndex}`)
+        .join(',')}`;
+      if (visited.has(key)) {
+        continue;
+      }
+      visited.add(key);
+      const existingCaptures = new Set(
+        captures.map(
+          (capture) =>
+            `${capture.name}\0${capture.startIndex}\0${capture.endIndex}`,
+        ),
+      );
+      const injectedCaptures = this.collectCaptures(
+        code,
+        injectedState,
+        layer.ranges,
+        depth + 1,
+        visited,
+      );
+      const newCaptures = injectedCaptures.filter(
+        (capture) =>
+          !existingCaptures.has(
+            `${capture.name}\0${capture.startIndex}\0${capture.endIndex}`,
+          ),
+      );
+      captures.push(...newCaptures);
+    }
+    return captures;
+  }
+
+  private async loadInjectionLanguages(
+    code: string,
+    state: LanguageState,
+    ranges?: Range[],
+    depth = 0,
+    visited = new Set<string>(),
+    strict = false,
+  ): Promise<void> {
+    if (depth >= 16 || !state.injectionQuery) {
+      return;
+    }
+    const tree = state.parser.parse(
+      code,
+      null,
+      ranges ? { includedRanges: ranges } : undefined,
+    );
+    if (!tree) {
+      return;
+    }
+
+    for (const layer of injectionLayers(state, tree)) {
+      let injectedState = this.languageCache.get(layer.languageName);
+      if (!injectedState && this.languages.has(layer.languageName)) {
+        try {
+          injectedState = await this.loadLanguage(layer.languageName);
+        } catch (error) {
+          if (strict) {
+            throw error;
+          }
+          continue;
+        }
+      }
+      if (!injectedState) {
+        continue;
+      }
+      const key = `${injectedState.id}:${layer.ranges
+        .map((range) => `${range.startIndex}-${range.endIndex}`)
+        .join(',')}`;
+      if (visited.has(key)) {
+        continue;
+      }
+      visited.add(key);
+      await this.loadInjectionLanguages(
+        code,
+        injectedState,
+        layer.ranges,
+        depth + 1,
+        visited,
+        strict,
+      );
+    }
   }
 
   private renderHighlightedBlock(
@@ -335,11 +640,7 @@ export class Treelight {
     if (!state) {
       return buildPreBlock(escapeHtml(code), themeClass, theme);
     }
-    const tree = state.parser.parse(code);
-    if (!tree) {
-      return buildPreBlock(escapeHtml(code), themeClass, theme);
-    }
-    const captures = state.highlightQuery.captures(tree.rootNode);
+    const captures = this.collectCaptures(code, state);
     const html = renderHtmlFromCaptures(code, captures, theme);
     return buildPreBlock(html, themeClass, theme);
   }
@@ -353,6 +654,14 @@ export class Treelight {
     const themeClass = theme.id?.replace(/\s+/g, '-') || DEFAULT_THEME_NAME;
     try {
       const state = await this.loadLanguage(languageName);
+      await this.loadInjectionLanguages(
+        code,
+        state,
+        undefined,
+        0,
+        new Set<string>(),
+        options.strict,
+      );
       return this.renderHighlightedBlock(code, themeClass, theme, state);
     } catch (error) {
       if (options.strict) {
