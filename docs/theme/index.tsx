@@ -69,13 +69,6 @@ const highlighter =
 function Explorer() {
   return (
     <section className="home-explorer-section rp-doc">
-      <div className="home-explorer-heading">
-        <h2>Try the runtime in place.</h2>
-        <p>
-          Edit the source, switch languages, and compare themes against the
-          generated highlighted output.
-        </p>
-      </div>
       <section
         className="showcase"
         aria-label="Interactive syntax highlighting demo"
@@ -98,12 +91,6 @@ export function HomeLayout(props: HomeLayoutProps) {
     <OriginalHomeLayout
       {...props}
       afterHero={
-        <>
-          {props.afterHero}
-          <CodeSample />
-        </>
-      }
-      afterFeatures={
         <>
           {props.afterFeatures}
           <Explorer />
