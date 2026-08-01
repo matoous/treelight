@@ -1,5 +1,12 @@
 # @treelight/javascript
 
+## 0.4.0
+
+### Patch Changes
+
+- Updated dependencies [c50dc5a]
+  - @treelight/ecma@0.4.0
+
 ## 0.3.0
 
 ### Patch Changes

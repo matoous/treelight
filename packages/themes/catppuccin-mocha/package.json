@@ -1,6 +1,6 @@
 {
   "name": "@treelight/theme-catppuccin-mocha",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Treelight theme module for catppuccin-mocha.",
   "main": "./dist/index.cjs",
   "exports": {

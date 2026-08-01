@@ -1,5 +1,13 @@
 # @treelight/rehype
 
+## 0.4.0
+
+### Patch Changes
+
+- Updated dependencies [c50dc5a]
+  - @treelight/core@0.4.0
+  - @treelight/hast@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes

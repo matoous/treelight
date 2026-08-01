@@ -1,5 +1,15 @@
 # @treelight/core
 
+## 0.4.0
+
+### Minor Changes
+
+- c50dc5a: Add recursive Tree-sitter injection support, new injection-focused language packages, and broader injection queries for Go, HTML, Python, TypeScript, and TSX.
+
+### Patch Changes
+
+- @treelight/theme-github-dark@0.4.0
+
 ## 0.3.0
 
 ### Patch Changes
