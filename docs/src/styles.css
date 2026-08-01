@@ -47,6 +47,17 @@ html.rp-dark .rp-button--brand {
   color: #000000;
 }
 
+.treelight-nav-brand {
+  gap: 0.5rem;
+}
+
+.treelight-nav-mark {
+  display: block;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
 .treelight-wordmark__tree,
 .treelight-wordmark__light {
   -webkit-text-fill-color: currentColor;
@@ -75,7 +86,8 @@ html.rp-dark .rp-button--brand {
   align-items: center;
 }
 
-:is(.home-code-sample, .home-explorer-section).rp-doc :where(h2:first-of-type)::before {
+:is(.home-code-sample, .home-explorer-section).rp-doc
+  :where(h2:first-of-type)::before {
   display: none;
   content: none;
 }
@@ -179,7 +191,6 @@ html.rp-dark .rp-button--brand {
 }
 
 @media (max-width: 640px) {
-
   .home-code-sample,
   .home-explorer-section {
     padding-inline: 1rem;

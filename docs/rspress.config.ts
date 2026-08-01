@@ -4,11 +4,12 @@ import { createTreelightShikiTransformer } from '@treelight/rspress';
 import { markdownHighlighter } from './src/lib/markdown';
 
 const siteUrl = (
-  process.env.DOCS_SITE_URL ?? 'https://github.com/matoous/treelight'
+  process.env.DOCS_SITE_URL ?? 'https://treelight.dzx.cz'
 ).replace(/\/$/, '');
 const siteTitle = 'Treelight';
 const siteDescription =
   'Tree-sitter based syntax highlighting for JavaScript runtimes.';
+const socialImageUrl = `${siteUrl}/social-card.png`;
 
 function routeUrl(routePath: string) {
   const normalizedPath = routePath === '/' ? '/' : routePath.replace(/\/$/, '');
@@ -84,6 +85,9 @@ export default defineConfig({
   root: 'src',
   title: siteTitle,
   description: siteDescription,
+  lang: 'en',
+  siteOrigin: siteUrl,
+  icon: '/favicon.svg',
   outDir: 'dist',
   llms: true,
   head: [
@@ -96,15 +100,91 @@ export default defineConfig({
           'treelight, tree-sitter, syntax highlighting, code highlighting, javascript, typescript, mdx, docs',
       },
     ],
-    ['meta', { name: 'robots', content: 'index,follow' }],
-    ['meta', { name: 'theme-color', content: '#ffffff' }],
+    [
+      'meta',
+      {
+        name: 'robots',
+        content:
+          'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+      },
+    ],
+    ['meta', { name: 'theme-color', content: '#000000' }],
+    ['meta', { name: 'color-scheme', content: 'dark' }],
+    ['meta', { name: 'application-name', content: siteTitle }],
+    ['meta', { name: 'apple-mobile-web-app-title', content: siteTitle }],
+    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
+    [
+      'meta',
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
+    ],
+    ['meta', { name: 'msapplication-TileColor', content: '#000000' }],
     ['meta', { property: 'og:site_name', content: siteTitle }],
-    ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:title', content: siteTitle }],
-    ['meta', { property: 'og:description', content: siteDescription }],
-    ['meta', { name: 'twitter:card', content: 'summary' }],
-    ['meta', { name: 'twitter:title', content: siteTitle }],
-    ['meta', { name: 'twitter:description', content: siteDescription }],
+    ['meta', { property: 'og:locale', content: 'en_US' }],
+    ['meta', { property: 'og:image', content: socialImageUrl }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { property: 'og:image:type', content: 'image/png' }],
+    [
+      'meta',
+      {
+        property: 'og:image:alt',
+        content: 'Treelight — Tree-sitter syntax highlighting',
+      },
+    ],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:image', content: socialImageUrl }],
+    [
+      'meta',
+      {
+        name: 'twitter:image:alt',
+        content: 'Treelight — Tree-sitter syntax highlighting',
+      },
+    ],
+    ['link', { rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
+    [
+      'link',
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '48x48',
+        href: '/favicon-48x48.png',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/favicon-32x32.png',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        href: '/favicon-16x16.png',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/apple-touch-icon.png',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'mask-icon',
+        href: '/safari-pinned-tab.svg',
+        color: '#000000',
+      },
+    ],
+    ['link', { rel: 'manifest', href: '/site.webmanifest' }],
     (route) => ['link', { rel: 'canonical', href: routeUrl(route.routePath) }],
     (route) => [
       'meta',

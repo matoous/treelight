@@ -4,19 +4,31 @@ import type {
   LayoutProps,
 } from '@rspress/core/theme-original';
 import {
+  Link,
   HomeLayout as OriginalHomeLayout,
   Layout as OriginalLayout,
-  Link,
 } from '@rspress/core/theme-original';
+
+const navMark = (
+  <img
+    src="/favicon.svg"
+    alt=""
+    aria-hidden="true"
+    className="treelight-nav-mark"
+    width={28}
+    height={28}
+  />
+);
 
 function NavWordmark() {
   return (
     <div className="rp-nav__title">
       <Link
         href="/"
-        className="rp-nav__title__link"
+        className="rp-nav__title__link treelight-nav-brand"
         aria-label="Treelight"
       >
+        {navMark}
         <span className="treelight-wordmark" aria-hidden="true">
           <span className="treelight-wordmark__tree">Tree</span>
           <span className="treelight-wordmark__light">light</span>
@@ -29,40 +41,6 @@ function NavWordmark() {
 export function Layout(props: LayoutProps) {
   return (
     <OriginalLayout {...props} navTitle={props.navTitle ?? <NavWordmark />} />
-  );
-}
-
-function CodeSample() {
-  return (
-    <section
-      className="home-code-sample rp-doc"
-      aria-label="Quick install example"
-    >
-      <div className="home-code-copy">
-        <h2>Small packages, reusable highlighters.</h2>
-        <p>
-          Install the runtime, add one language and one theme, then create the
-          highlighter once for your renderer.
-        </p>
-      </div>
-      <div className="home-code-panel">
-        <div className="home-panel-header">
-          <span>install</span>
-          <span>browser + static</span>
-        </div>
-        <pre>
-          <code>{`npm i @treelight/core \\
-  @treelight/javascript \\
-  @treelight/theme-github-dark
-
-const highlighter =
-  await createHighlighter({
-  languages: [javascript],
-  themes: [githubDark],
-});`}</code>
-        </pre>
-      </div>
-    </section>
   );
 }
 
