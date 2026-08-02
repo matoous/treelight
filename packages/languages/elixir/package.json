@@ -1,6 +1,6 @@
 {
   "name": "@treelight/elixir",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Treelight language module for elixir.",
   "type": "module",
   "main": "./dist/index.cjs",

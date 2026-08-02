@@ -1,6 +1,6 @@
 {
   "name": "@treelight/theme-rose-pine",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Treelight theme module for rose-pine.",
   "main": "./dist/index.cjs",
   "exports": {

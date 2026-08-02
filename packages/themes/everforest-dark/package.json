@@ -1,6 +1,6 @@
 {
   "name": "@treelight/theme-everforest-dark",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Treelight theme module for everforest-dark.",
   "main": "./dist/index.cjs",
   "exports": {
