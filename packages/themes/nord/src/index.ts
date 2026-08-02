@@ -275,6 +275,15 @@ const theme = {
     'markup.heading': {
       'fg': '#88C0D0',
     },
+    'markup.bold': {
+      'modifiers': ['bold'] as const,
+    },
+    'markup.italic': {
+      'modifiers': ['italic'] as const,
+    },
+    'markup.strikethrough': {
+      'modifiers': ['strikethrough'] as const,
+    },
     'markup.list': {
       'fg': '#81A1C1',
     },

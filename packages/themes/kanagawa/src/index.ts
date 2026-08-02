@@ -253,6 +253,15 @@ const theme = {
     'markup.link.text': {
       'fg': '#7FB4CA',
     },
+    'markup.bold': {
+      'modifiers': ['bold'] as const,
+    },
+    'markup.italic': {
+      'modifiers': ['italic'] as const,
+    },
+    'markup.strikethrough': {
+      'modifiers': ['strikethrough'] as const,
+    },
     'markup.link.url': {
       'fg': '#A3D4D5',
     },

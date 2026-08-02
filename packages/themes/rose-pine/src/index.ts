@@ -238,8 +238,18 @@ const theme = {
     'markup.link': {
       'fg': '#c4a7e7',
     },
+    'markup.bold': {
+      'modifiers': ['bold'] as const,
+    },
+    'markup.italic': {
+      'modifiers': ['italic'] as const,
+    },
+    'markup.strikethrough': {
+      'modifiers': ['strikethrough'] as const,
+    },
     'markup.link.url': {
       'fg': '#c4a7e7',
+      'underline': { 'color': '#c4a7e7', 'style': 'line' as const },
     },
     'markup.link.label': {
       'fg': '#908caa',

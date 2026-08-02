@@ -1,11 +1,11 @@
 ---
 title: Custom Themes
-description: Register custom capture colors and backgrounds with Treelight.
+description: Register custom colors, backgrounds, and text modifiers with Treelight.
 ---
 
 Treelight themes are plain objects. A custom theme can live next to your app code, inside a docs site, or in a reusable `@treelight/theme-*` package.
 
-Treelight uses Helix-derived capture names but supports a smaller theme format. See the [Theme Reference](/theme-reference) for every field, syntax scope, renderer fallback, and unsupported Helix option.
+Treelight uses Tree-sitter capture names and browser-native text modifiers. See the [Theme Reference](/theme-reference) for every field, syntax scope, renderer fallback, and unsupported theme feature.
 
 ## Theme Definition
 
@@ -19,10 +19,16 @@ const terminalTheme: ThemeDefinition = {
   styles: {
     'ui.background': { bg: '#101418' },
     'ui.foreground': { fg: '#d7dde5' },
-    comment: { fg: '#7c8794' },
+    comment: { fg: '#7c8794', modifiers: ['italic'] },
     constant: { fg: '#d19a66' },
     function: { fg: '#61afef' },
     keyword: { fg: '#c678dd' },
+    'markup.bold': { modifiers: ['bold'] },
+    'markup.link.url': {
+      modifiers: ['underline'],
+      underline: { color: '#61afef', style: 'line' },
+    },
+    'markup.strikethrough': { modifiers: ['strikethrough'] },
     string: { fg: '#98c379' },
     type: { fg: '#e5c07b' },
     variable: { fg: '#d7dde5' },
@@ -32,7 +38,7 @@ const terminalTheme: ThemeDefinition = {
 export default terminalTheme;
 ```
 
-Style values can be either a foreground color string or an object with `fg` and `bg` channels:
+Style values can be either a foreground color string or an object with `fg`, `bg`, `modifiers`, and `underline` fields:
 
 ```ts
 const theme: ThemeDefinition = {
@@ -41,9 +47,13 @@ const theme: ThemeDefinition = {
     'ui.background': { bg: '#ffffff' },
     'ui.foreground': '#24292f',
     keyword: '#cf222e',
+    comment: { fg: '#57606a', modifiers: ['dim', 'italic'] },
+    'markup.bold': { modifiers: ['bold'] },
   },
 };
 ```
+
+Available modifiers are `bold`, `dim`, `italic`, `strikethrough`, and `underline`. An `underline` object can set its `color` and choose `line`, `curl`, `dotted`, `dashed`, or `double_line` styling.
 
 ## Capture Fallbacks
 

@@ -10,7 +10,14 @@ import {
   type Range,
 } from 'web-tree-sitter';
 
-import { getThemeColor, type ThemeDefinition } from './theme.js';
+import {
+  getThemeColor,
+  getThemeStyle,
+  type ThemeDefinition,
+  type ThemeModifier,
+  type ThemeStyle,
+  type ThemeUnderlineStyle,
+} from './theme.js';
 import { base64ToUint8Array } from './utils/base64.js';
 import { escapeHtml } from './utils/html.js';
 
@@ -88,11 +95,52 @@ const defaultTheme = defaultThemeDefinition as ThemeDefinition;
 let parserInit: Promise<void> | undefined;
 let languageLoadQueue: Promise<void> = Promise.resolve();
 
+const underlineStyleMap: Record<ThemeUnderlineStyle, string> = {
+  line: 'solid',
+  curl: 'wavy',
+  dotted: 'dotted',
+  dashed: 'dashed',
+  double_line: 'double',
+};
+
+function buildModifierDeclarations(style: ThemeStyle) {
+  const declarations: string[] = [];
+  const modifiers = new Set<ThemeModifier>(style.modifiers);
+
+  if (style.fg) declarations.push(`color: ${style.fg}`);
+  if (style.bg) declarations.push(`background-color: ${style.bg}`);
+  if (modifiers.has('bold')) declarations.push('font-weight: bold');
+  if (modifiers.has('dim')) declarations.push('opacity: 0.7');
+  if (modifiers.has('italic')) declarations.push('font-style: italic');
+
+  const decorationLines: string[] = [];
+  if (modifiers.has('underline') || style.underline) {
+    decorationLines.push('underline');
+  }
+  if (modifiers.has('strikethrough')) decorationLines.push('line-through');
+  if (decorationLines.length > 0) {
+    declarations.push(`text-decoration-line: ${decorationLines.join(' ')}`);
+  }
+  if (style.underline?.style) {
+    declarations.push(
+      `text-decoration-style: ${underlineStyleMap[style.underline.style]}`,
+    );
+  }
+  if (style.underline?.color) {
+    declarations.push(`text-decoration-color: ${style.underline.color}`);
+  }
+
+  return declarations;
+}
+
 function buildAttribute(name: string, theme: ThemeDefinition) {
   const className = name.replace(/\./g, '-');
-  const color = getThemeColor(theme, name, 'fg');
-  if (color) {
-    return `class="${className}" style="color: ${color}"`;
+  const style = getThemeStyle(theme, name);
+  if (style) {
+    const declarations = buildModifierDeclarations(style);
+    if (declarations.length > 0) {
+      return `class="${className}" style="${declarations.join('; ')}"`;
+    }
   }
   return `class="${className}"`;
 }
@@ -751,4 +799,10 @@ export class Treelight {
   }
 }
 
-export type { ThemeDefinition, ThemeStyle } from './theme.js';
+export type {
+  ThemeDefinition,
+  ThemeModifier,
+  ThemeStyle,
+  ThemeUnderline,
+  ThemeUnderlineStyle,
+} from './theme.js';

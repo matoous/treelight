@@ -123,12 +123,17 @@ const theme = {
     },
     'markup.bold': {
       'fg': '#ffb86c',
+      'modifiers': ['bold'] as const,
     },
     'markup.heading': {
       'fg': '#BD93F9',
     },
     'markup.italic': {
       'fg': '#f1fa8c',
+      'modifiers': ['italic'] as const,
+    },
+    'markup.strikethrough': {
+      'modifiers': ['strikethrough'] as const,
     },
     'markup.link.text': {
       'fg': '#ff79c6',

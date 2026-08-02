@@ -119,8 +119,20 @@ const theme = {
     'markup.heading.hover': {
       'bg': '#343a55',
     },
+    'markup.bold': {
+      'modifiers': ['bold'] as const,
+    },
+    'markup.italic': {
+      'modifiers': ['italic'] as const,
+    },
+    'markup.strikethrough': {
+      'modifiers': ['strikethrough'] as const,
+    },
     'markup.link': {
       'fg': '#7aa2f7',
+    },
+    'markup.link.url': {
+      'underline': { 'style': 'line' as const },
     },
     'markup.link.label': {
       'fg': '#1abc9c',

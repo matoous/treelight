@@ -63,9 +63,14 @@ const theme = {
     },
     'markup.bold': {
       'fg': '#ff8f40',
+      'modifiers': ['bold'] as const,
     },
     'markup.italic': {
       'fg': '#ff8f40',
+      'modifiers': ['italic'] as const,
+    },
+    'markup.strikethrough': {
+      'modifiers': ['strikethrough'] as const,
     },
     'markup.raw.block': {
       'fg': '#ff8f40',

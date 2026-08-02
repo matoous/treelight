@@ -9,7 +9,11 @@ import {
   type LanguageRegistration,
   type ParserInitOptions,
   type ThemeDefinition,
+  type ThemeModifier,
   type ThemeRegistration,
+  type ThemeStyle,
+  type ThemeUnderline,
+  type ThemeUnderlineStyle,
   Treelight,
   type TreelightOptions,
 } from '@treelight/core';
@@ -101,7 +105,11 @@ export {
   type LanguageRegistration,
   type ParserInitOptions,
   type ThemeDefinition,
+  type ThemeModifier,
   type ThemeRegistration,
+  type ThemeStyle,
+  type ThemeUnderline,
+  type ThemeUnderlineStyle,
   Treelight,
   type TreelightOptions,
 };

@@ -7,8 +7,11 @@ import {
   type LanguageQueries,
   type ParserInitOptions,
   type ThemeDefinition,
+  type ThemeModifier,
   type ThemeName,
   type ThemeStyle,
+  type ThemeUnderline,
+  type ThemeUnderlineStyle,
   Treelight,
   type TreelightOptions,
 } from './treelight.js';
@@ -167,8 +170,11 @@ export {
   registerLanguageRegistration,
   registerTheme,
   type ThemeDefinition,
+  type ThemeModifier,
   type ThemeName,
   type ThemeStyle,
+  type ThemeUnderline,
+  type ThemeUnderlineStyle,
   Treelight,
   type TreelightOptions,
 };

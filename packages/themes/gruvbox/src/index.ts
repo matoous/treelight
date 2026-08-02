@@ -70,8 +70,18 @@ const theme = {
     'markup.link.text': {
       'fg': '#fb4934',
     },
+    'markup.bold': {
+      'modifiers': ['bold'] as const,
+    },
+    'markup.italic': {
+      'modifiers': ['italic'] as const,
+    },
+    'markup.strikethrough': {
+      'modifiers': ['strikethrough'] as const,
+    },
     'markup.link.url': {
       'fg': '#b8bb26',
+      'modifiers': ['underline'] as const,
     },
     'markup.raw': {
       'fg': '#fb4934',

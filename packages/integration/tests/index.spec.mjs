@@ -366,9 +366,45 @@ test.serial('Markdown inline injection', async (t) => {
     { strict: true },
   );
 
-  t.regex(html, /class="markup-bold"/);
+  t.regex(html, /class="markup-bold" style="font-weight: bold"/);
   t.regex(html, /class="markup-link-text"[^>]*>guide<\/span>/);
-  t.regex(html, /class="markup-link-url"[^>]*>https:\/\/example\.com<\/span>/);
+  t.regex(
+    html,
+    /class="markup-link-url" style="text-decoration-line: underline"[^>]*>https:\/\/example\.com<\/span>/,
+  );
+});
+
+test.serial('theme modifiers and underlines', async (t) => {
+  const isolated = new Treelight();
+  isolated.registerLanguage('markdown', resolveLanguage(markdownLanguage));
+  isolated.registerLanguage(
+    'markdown.inline',
+    resolveLanguage(markdownInlineLanguage),
+  );
+  isolated.registerTheme({
+    id: 'modifiers',
+    styles: {
+      'ui.background': { bg: '#101418' },
+      'ui.foreground': { fg: '#d7dde5' },
+      'markup.bold': {
+        fg: '#ff0000',
+        bg: '#001122',
+        modifiers: ['bold', 'dim', 'italic', 'underline', 'strikethrough'],
+        underline: { color: '#00ff00', style: 'curl' },
+      },
+    },
+  });
+
+  const html = await isolated.highlight(
+    '**bold** [guide](https://example.com)',
+    'markdown',
+    { strict: true, theme: 'modifiers' },
+  );
+
+  t.regex(
+    html,
+    /class="markup-bold" style="color: #ff0000; background-color: #001122; font-weight: bold; opacity: 0\.7; font-style: italic; text-decoration-line: underline line-through; text-decoration-style: wavy; text-decoration-color: #00ff00"/,
+  );
 });
 
 test('php', async (t) => {

@@ -78,12 +78,18 @@ const theme = {
     },
     'markup.bold': {
       'fg': '#b58900',
+      'modifiers': ['bold'] as const,
     },
     'markup.italic': {
       'fg': '#d33682',
+      'modifiers': ['italic'] as const,
+    },
+    'markup.strikethrough': {
+      'modifiers': ['strikethrough'] as const,
     },
     'markup.link.url': {
       'fg': '#b58900',
+      'modifiers': ['underline'] as const,
     },
     'markup.link.text': {
       'fg': '#dc322f',
