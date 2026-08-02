@@ -1,0 +1,45 @@
+---
+title: "PHPDoc"
+description: "Treelight language package for PHPDoc."
+---
+
+# PHPDoc
+
+Use `@treelight/phpdoc` to register PHPDoc syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/phpdoc` |
+| Language ID | `phpdoc` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/phpdoc @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import phpdoc from '@treelight/phpdoc';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [phpdoc],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'phpdoc');
+```
+
+## Example
+
+```php
+/** @param string $name Display name. */
+```
+
+[Back to all languages](/languages)

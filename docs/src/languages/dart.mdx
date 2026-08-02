@@ -1,0 +1,47 @@
+---
+title: "Dart"
+description: "Treelight language package for Dart."
+---
+
+# Dart
+
+Use `@treelight/dart` to register Dart syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/dart` |
+| Language ID | `dart` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/dart @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import dart from '@treelight/dart';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [dart],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'dart');
+```
+
+## Example
+
+```dart
+void main() {
+  print('Hello, Treelight!');
+}
+```
+
+[Back to all languages](/languages)

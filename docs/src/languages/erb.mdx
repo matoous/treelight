@@ -1,0 +1,45 @@
+---
+title: "ERB"
+description: "Treelight language package for ERB."
+---
+
+# ERB
+
+Use `@treelight/erb` to register ERB syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/erb` |
+| Language ID | `erb` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/erb @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import erb from '@treelight/erb';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [erb],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'erb');
+```
+
+## Example
+
+```erb
+<h1><%= @title %></h1>
+```
+
+[Back to all languages](/languages)

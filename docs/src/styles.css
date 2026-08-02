@@ -1,4 +1,4 @@
-@import "@treelight/rspress/styles.css";
+@import "@treelight/plugin-rspress/styles.css";
 
 :root {
   --rp-c-brand: #111111;

@@ -1,0 +1,99 @@
+{
+  "name": "@treelight/phpdoc",
+  "version": "0.0.1",
+  "description": "Treelight language module for phpdoc.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "browser": {
+        "import": {
+          "types": "./dist/browser.d.mts",
+          "default": "./dist/browser.js"
+        },
+        "require": {
+          "types": "./dist/browser.d.cts",
+          "default": "./dist/browser.cjs"
+        }
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./browser": {
+      "import": {
+        "types": "./dist/browser.d.mts",
+        "default": "./dist/browser.js"
+      },
+      "require": {
+        "types": "./dist/browser.d.cts",
+        "default": "./dist/browser.cjs"
+      }
+    },
+    "./embedded": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "keywords": [
+    "treelight",
+    "tree-sitter",
+    "language",
+    "phpdoc"
+  ],
+  "scripts": {
+    "build": "rslib build && cp dist/index.d.cts dist/index.d.mts && cp dist/browser.d.cts dist/browser.d.mts && cp dist/definition.d.cts dist/definition.d.mts && publint",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github",
+    "update": "node ../../../scripts/update-language-wasm.mjs"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "publint": "^0.3.22",
+    "typescript": "^7.0.2"
+  },
+  "treelightLanguage": {
+    "repo": "claytonrcarter/tree-sitter-phpdoc",
+    "revision": "12d50307e6c02e5f4f876fa6cf2edea1f7808c0d",
+    "version": "12d50307e6c02e5f4f876fa6cf2edea1f7808c0d",
+    "artifact": "tree-sitter-phpdoc.wasm",
+    "source": {
+      "git": "https://github.com/claytonrcarter/tree-sitter-phpdoc.git"
+    },
+    "queries": {
+      "highlights": [
+        "queries/highlights.scm"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">= 18"
+  }
+}

@@ -1,0 +1,46 @@
+---
+title: "Protobuf"
+description: "Treelight language package for Protobuf."
+---
+
+# Protobuf
+
+Use `@treelight/protobuf` to register Protobuf syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/protobuf` |
+| Language ID | `protobuf` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/protobuf @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import protobuf from '@treelight/protobuf';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [protobuf],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'protobuf');
+```
+
+## Example
+
+```protobuf
+syntax = "proto3";
+message Job { string label = 1; }
+```
+
+[Back to all languages](/languages)

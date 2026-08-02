@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { defineConfig } from '@rspress/core';
-import { createTreelightShikiTransformer } from '@treelight/rspress';
+import { createTreelightShikiTransformer } from '@treelight/plugin-rspress';
 import { markdownHighlighter } from './src/lib/markdown';
 
 const siteUrl = (
@@ -17,34 +17,53 @@ function routeUrl(routePath: string) {
 }
 
 const languagePages = [
+  ['Astro', '/languages/astro'],
+  ['AWK', '/languages/awk'],
   ['Bash', '/languages/bash'],
   ['C', '/languages/c'],
+  ['C#', '/languages/c-sharp'],
   ['C++', '/languages/cpp'],
   ['Comment annotations', '/languages/comment'],
   ['CSS', '/languages/css'],
+  ['Dart', '/languages/dart'],
   ['Dockerfile', '/languages/dockerfile'],
   ['Elixir', '/languages/elixir'],
+  ['ERB', '/languages/erb'],
+  ['Fish', '/languages/fish'],
   ['Go', '/languages/go'],
   ['Go format strings', '/languages/go-format-string'],
   ['GraphQL', '/languages/graphql'],
+  ['HCL / Terraform', '/languages/hcl'],
+  ['HEEx', '/languages/heex'],
   ['HTML', '/languages/html'],
   ['Java', '/languages/java'],
   ['JavaScript', '/languages/javascript'],
   ['JSDoc', '/languages/jsdoc'],
   ['JSON', '/languages/json'],
+  ['jq', '/languages/jq'],
+  ['Kotlin', '/languages/kotlin'],
+  ['LaTeX', '/languages/latex'],
   ['Lua', '/languages/lua'],
+  ['Lua format strings', '/languages/lua-format-string'],
   ['Markdown', '/languages/markdown'],
   ['Markdown inline', '/languages/markdown-inline'],
+  ['Nix', '/languages/nix'],
   ['PHP', '/languages/php'],
+  ['PHPDoc', '/languages/phpdoc'],
+  ['PowerShell', '/languages/powershell'],
+  ['Protobuf', '/languages/protobuf'],
   ['Python', '/languages/python'],
   ['Regular expressions', '/languages/regex'],
   ['Ruby', '/languages/ruby'],
   ['Rust', '/languages/rust'],
   ['Scheme', '/languages/scheme'],
   ['SQL', '/languages/sql'],
+  ['Svelte', '/languages/svelte'],
+  ['Swift', '/languages/swift'],
   ['TOML', '/languages/toml'],
   ['TSX', '/languages/tsx'],
   ['TypeScript', '/languages/typescript'],
+  ['Vue', '/languages/vue'],
   ['YAML', '/languages/yaml'],
   ['Zig', '/languages/zig'],
 ].map(([text, link]) => ({ text, link }));

@@ -5,7 +5,7 @@ import javascriptLanguage from '@treelight/javascript';
 import {
   createTreelightShikiTransformer,
   rspressTreelight,
-} from '@treelight/rspress';
+} from '@treelight/plugin-rspress';
 import draculaTheme from '@treelight/theme-dracula';
 import test from 'ava';
 
@@ -57,12 +57,12 @@ test('Rspress plugin appends a Treelight transformer', async (t) => {
   });
 
   t.is(config.markdown.shiki.transformers[0], existingTransformer);
-  t.is(config.markdown.shiki.transformers[1].name, '@treelight/rspress');
+  t.is(config.markdown.shiki.transformers[1].name, '@treelight/plugin-rspress');
 });
 
 test('Rspress stylesheet resets Rspress code block chrome inside Treelight frames', async (t) => {
   const css = await readFile(
-    new URL('../../rspress/styles.css', import.meta.url),
+    new URL('../../plugin-rspress/styles.css', import.meta.url),
     'utf8',
   );
 

@@ -17,6 +17,10 @@ function parseArgs(argv) {
     const arg = argv[i];
     if (!arg.startsWith('--')) continue;
     const key = arg.slice(2);
+    if (key === 'help' || key === 'skip-update') {
+      args[key] = true;
+      continue;
+    }
     const value = argv[i + 1];
     if (!value || value.startsWith('--')) {
       throw new Error(`Missing value for --${key}`);
@@ -29,10 +33,12 @@ function parseArgs(argv) {
 
 function usage() {
   console.log(`Usage:
-  node scripts/create-language-package.mjs --name <folder-name> --repo <owner/repo> --version <tag> --artifact <filename> [--id <language-id>]
+  node scripts/create-language-package.mjs --name <folder-name> --repo <owner/repo> --version <tag-or-revision> --artifact <filename> [--id <language-id>] [--source-git <url>] [--source-subpath <path>] [--skip-update]
 
 Example:
   npm run create:language -- --name rust --repo tree-sitter/tree-sitter-rust --version v0.23.0 --artifact tree-sitter-rust.wasm
+
+  npm run create:language -- --name awk --repo Beaglefoot/tree-sitter-awk --version <revision> --artifact tree-sitter-awk.wasm --source-git https://github.com/Beaglefoot/tree-sitter-awk.git
 `);
 }
 
@@ -76,6 +82,12 @@ async function main() {
   const languageId = args.id || packageFolderName;
   const packageName = `@treelight/${packageFolderName}`;
   const artifact = args.artifact;
+  const source = args['source-git']
+    ? {
+        git: args['source-git'],
+        ...(args['source-subpath'] ? { subpath: args['source-subpath'] } : {}),
+      }
+    : undefined;
 
   const pkgJson = {
     name: packageName,
@@ -157,11 +169,15 @@ async function main() {
       revision: args.version,
       version: args.version,
       artifact,
+      ...(source ? { source } : {}),
       queries: {
         highlights: ['queries/highlights.scm'],
         injections: ['queries/injections.scm'],
         locals: ['queries/locals.scm'],
       },
+    },
+    engines: {
+      node: '>= 18',
     },
   };
 
@@ -357,6 +373,10 @@ export default defineConfig({
   console.log(
     `Created language package at ${path.relative(repoRoot, packageDir)}`,
   );
+  if (args['skip-update']) {
+    console.log('Skipped downloading or building the WASM artifact.');
+    return;
+  }
   console.log('Downloading WASM artifact...');
   try {
     await execFileAsync(

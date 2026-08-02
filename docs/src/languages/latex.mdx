@@ -1,0 +1,47 @@
+---
+title: "LaTeX"
+description: "Treelight language package for LaTeX."
+---
+
+# LaTeX
+
+Use `@treelight/latex` to register LaTeX syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/latex` |
+| Language ID | `latex` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/latex @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import latex from '@treelight/latex';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [latex],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'latex');
+```
+
+## Example
+
+```latex
+\\section{Treelight}
+
+Energy is $E = mc^2$.
+```
+
+[Back to all languages](/languages)

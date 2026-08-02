@@ -18,13 +18,14 @@ Treelight is a code-highlighter based on Tree-sitter grammars. It gives you the 
 
 - `@treelight/core` provides the runtime, language/theme registration, and highlighter APIs.
 - `@treelight/browser` configures `web-tree-sitter` for browser bundlers and re-exports the core API.
-- `@treelight/astro` installs Treelight as an Astro Markdown/MDX code block integration.
-- `@treelight/rehype` renders HTML AST code blocks with Treelight in unified pipelines.
-- `@treelight/remark` renders Markdown AST code blocks with Treelight when a remark-stage transform is needed.
+- `@treelight/plugin-astro` installs Treelight as an Astro Markdown/MDX code block integration.
+- `@treelight/plugin-rehype` renders HTML AST code blocks with Treelight in unified pipelines.
+- `@treelight/plugin-remark` renders Markdown AST code blocks with Treelight when a remark-stage transform is needed.
+- `@treelight/plugin-rspress` integrates Treelight with Rspress's Shiki pipeline.
 - `@treelight/<language>` packages select cacheable WASM assets in browser bundles and self-contained definitions in Node and SSR runtimes.
 - `@treelight/theme-<theme>` packages provide bundled themes.
 
-Bundled language packages currently cover Bash, C, C++, comment annotations, CSS, Dockerfile, Elixir, Go, Go format strings, GraphQL, HTML, Java, JavaScript, JSDoc, JSON, Lua, Markdown, Markdown inline, PHP, Python, regular expressions, Ruby, Rust, Scheme, SQL, TOML, TSX, TypeScript, YAML, and Zig.
+Bundled language packages currently cover Astro, AWK, Bash, C, C#, C++, comment annotations, CSS, Dart, Dockerfile, Elixir, ERB, Fish, Go, Go format strings, GraphQL, HCL/Terraform, HEEx, HTML, Java, JavaScript, jq, JSDoc, JSON, Kotlin, LaTeX, Lua, Lua format strings, Markdown, Markdown inline, Nix, PHP, PHPDoc, PowerShell, Protobuf, Python, regular expressions, Ruby, Rust, Scheme, SQL, Svelte, Swift, TOML, TSX, TypeScript, Vue, YAML, and Zig.
 
 Bundled theme packages currently cover Ayu Dark, Catppuccin Mocha, Dracula, Everforest Dark, GitHub Dark, GitHub Light, Gruvbox, Gruvbox Material, Kanagawa, Nord, One Dark, Rose Pine, Solarized Light, and Tokyo Night.
 

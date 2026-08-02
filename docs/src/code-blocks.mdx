@@ -3,15 +3,15 @@ title: Code Blocks
 description: Render Markdown, MDX, and Astro code blocks with Treelight.
 ---
 
-Treelight ships integrations for Markdown and Astro code blocks. Prefer `@treelight/rehype` when your docs framework accepts rehype plugins. Use `@treelight/rspress` for Rspress sites because Rspress code blocks are handled through Shiki transformers. Use `@treelight/remark` only when you need to transform Markdown `code` nodes before the rehype stage.
+Treelight ships integrations for Markdown and Astro code blocks. Prefer `@treelight/plugin-rehype` when your docs framework accepts rehype plugins. Use `@treelight/plugin-rspress` for Rspress sites because Rspress code blocks are handled through Shiki transformers. Use `@treelight/plugin-remark` only when you need to transform Markdown `code` nodes before the rehype stage.
 
 ## This Docs Site
 
-This site uses `@treelight/rspress` for its own Markdown code blocks. Rspress runs code highlighting through Shiki transformers, so the package installs a Shiki-compatible transformer that delegates the final HTML rendering to Treelight.
+This site uses `@treelight/plugin-rspress` for its own Markdown code blocks. Rspress runs code highlighting through Shiki transformers, so the package installs a Shiki-compatible transformer that delegates the final HTML rendering to Treelight.
 
 ```ts title="docs/rspress.config.ts" {9-16}
 import { defineConfig } from '@rspress/core';
-import { createTreelightShikiTransformer } from '@treelight/rspress';
+import { createTreelightShikiTransformer } from '@treelight/plugin-rspress';
 import { markdownHighlighter } from './src/lib/markdown';
 
 const treelightCodeBlocks = createTreelightShikiTransformer({
@@ -41,10 +41,10 @@ The block below is rendered by that same pipeline. It shows global line numbers,
 type PackageName = `@treelight/${string}`;
 
 const integrations: PackageName[] = [
-  '@treelight/rehype',
-  '@treelight/remark',
-  '@treelight/astro',
-  '@treelight/rspress',
+  '@treelight/plugin-rehype',
+  '@treelight/plugin-remark',
+  '@treelight/plugin-astro',
+  '@treelight/plugin-rspress',
 ];
 ```
 
@@ -53,12 +53,12 @@ const integrations: PackageName[] = [
 Use the Rspress plugin when Treelight should render Markdown and MDX code blocks in an Rspress site:
 
 ```sh
-npm i @treelight/rspress @treelight/javascript @treelight/theme-github-dark
+npm i @treelight/plugin-rspress @treelight/javascript @treelight/theme-github-dark
 ```
 
 ```ts
 import { defineConfig } from '@rspress/core';
-import treelight from '@treelight/rspress';
+import treelight from '@treelight/plugin-rspress';
 import javascript from '@treelight/javascript';
 import githubDark from '@treelight/theme-github-dark';
 
@@ -77,7 +77,7 @@ export default defineConfig({
 Import the stylesheet from your Rspress global CSS:
 
 ```css
-@import "@treelight/rspress/styles.css";
+@import "@treelight/plugin-rspress/styles.css";
 ```
 
 ## Rehype
@@ -85,13 +85,13 @@ Import the stylesheet from your Rspress global CSS:
 Install the integration, the languages you want to highlight, and a theme:
 
 ```sh
-npm i @treelight/rehype @treelight/javascript @treelight/theme-github-dark
+npm i @treelight/plugin-rehype @treelight/javascript @treelight/theme-github-dark
 ```
 
 Register the plugin in your Markdown pipeline:
 
 ```ts
-import rehypeTreelight from '@treelight/rehype';
+import rehypeTreelight from '@treelight/plugin-rehype';
 import javascript from '@treelight/javascript';
 import githubDark from '@treelight/theme-github-dark';
 
@@ -114,7 +114,7 @@ export default {
 Import the shared stylesheet from your app entrypoint or docs layout:
 
 ```ts
-import '@treelight/rehype/styles.css';
+import '@treelight/plugin-rehype/styles.css';
 ```
 
 ## Astro
@@ -122,11 +122,11 @@ import '@treelight/rehype/styles.css';
 Use the Astro integration when Treelight should own Markdown code blocks across an Astro site:
 
 ```sh
-npm i @treelight/astro @treelight/javascript @treelight/theme-github-dark
+npm i @treelight/plugin-astro @treelight/javascript @treelight/theme-github-dark
 ```
 
 ```ts
-import treelight from '@treelight/astro';
+import treelight from '@treelight/plugin-astro';
 import javascript from '@treelight/javascript';
 import githubDark from '@treelight/theme-github-dark';
 import { defineConfig } from 'astro/config';
@@ -143,22 +143,22 @@ export default defineConfig({
 });
 ```
 
-The integration disables Astro's built-in Markdown syntax highlighter and installs Treelight into supported Satteri and unified Markdown processors. If you use a custom processor shape, add `@treelight/rehype` to that processor manually.
+The integration disables Astro's built-in Markdown syntax highlighter and installs Treelight into supported Satteri and unified Markdown processors. If you use a custom processor shape, add `@treelight/plugin-rehype` to that processor manually.
 
 Import the stylesheet from an Astro layout:
 
 ```tsx
 ---
-import '@treelight/astro/styles.css';
+import '@treelight/plugin-astro/styles.css';
 ---
 ```
 
 ## Remark
 
-`@treelight/remark` is compatibility-oriented. Use it when your pipeline only exposes remark plugins or when highlighted HTML must be produced before `remark-rehype`.
+`@treelight/plugin-remark` is compatibility-oriented. Use it when your pipeline only exposes remark plugins or when highlighted HTML must be produced before `remark-rehype`.
 
 ```ts
-import remarkTreelight from '@treelight/remark';
+import remarkTreelight from '@treelight/plugin-remark';
 import javascript from '@treelight/javascript';
 import githubDark from '@treelight/theme-github-dark';
 
@@ -268,9 +268,9 @@ const third = 3;
 The rendered code block stylesheet is exported by all Markdown integration packages:
 
 ```ts
-import '@treelight/rehype/styles.css';
-import '@treelight/remark/styles.css';
-import '@treelight/astro/styles.css';
+import '@treelight/plugin-rehype/styles.css';
+import '@treelight/plugin-remark/styles.css';
+import '@treelight/plugin-astro/styles.css';
 ```
 
 The stable classes are:
@@ -301,7 +301,7 @@ Use the Astro component for dynamic snippets outside Markdown:
 
 ```tsx
 ---
-import Code from '@treelight/astro/components/Code.astro';
+import Code from '@treelight/plugin-astro/components/Code.astro';
 import javascript from '@treelight/javascript';
 import githubDark from '@treelight/theme-github-dark';
 ---

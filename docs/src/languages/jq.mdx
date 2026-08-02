@@ -1,0 +1,45 @@
+---
+title: "jq"
+description: "Treelight language package for jq."
+---
+
+# jq
+
+Use `@treelight/jq` to register jq syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/jq` |
+| Language ID | `jq` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/jq @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import jq from '@treelight/jq';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [jq],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'jq');
+```
+
+## Example
+
+```text
+.items[] | select(.enabled) | .name
+```
+
+[Back to all languages](/languages)

@@ -1,0 +1,45 @@
+---
+title: "HEEx"
+description: "Treelight language package for HEEx."
+---
+
+# HEEx
+
+Use `@treelight/heex` to register HEEx syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/heex` |
+| Language ID | `heex` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/heex @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import heex from '@treelight/heex';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [heex],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'heex');
+```
+
+## Example
+
+```html
+<div class="card">{@title}</div>
+```
+
+[Back to all languages](/languages)

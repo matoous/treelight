@@ -62,15 +62,23 @@ These packages are designed primarily as injection targets, although each can al
 
 | Language ID | Package | Typical host |
 | --- | --- | --- |
+| `awk` | `@treelight/awk` | AWK programs passed by Bash commands |
 | `comment` | `@treelight/comment` | Comments in Go, Python, HTML, C-family languages, and others |
+| `erb` | `@treelight/erb` | ERB-tagged Ruby heredocs |
 | `go-format-string` | `@treelight/go-format-string` | Format strings passed to supported Go `fmt` and `log` calls |
+| `heex` | `@treelight/heex` | Phoenix LiveView `~H` sigils in Elixir |
+| `jq` | `@treelight/jq` | jq programs passed by Bash and Fish commands |
 | `jsdoc` | `@treelight/jsdoc` | JavaScript, TypeScript, and TSX comments |
+| `latex` | `@treelight/latex` | LaTeX blocks inside Markdown inline content |
+| `lua-format-string` | `@treelight/lua-format-string` | Format strings passed to Lua `string.format` and `:format` calls |
 | `markdown.inline` | `@treelight/markdown-inline` | Inline nodes inside Markdown documents |
+| `phpdoc` | `@treelight/phpdoc` | Documentation comments in PHP |
 | `regex` | `@treelight/regex` | Go/Python regex calls, JavaScript-family regex literals, CSS regex nodes, and HTML `pattern` attributes |
 
 The regular language packages are also injection targets. HTML injects `javascript` and `css`; Markdown fences use their info string as a language ID; Markdown frontmatter can inject `yaml` or `toml`; and Go `//go:generate` directives inject `bash`.
 
-Some bundled queries name languages Treelight does not bundle yet, such as `awk`, `jq`, or `latex`. Those ranges remain host-highlighted until you register a custom definition under the exact language ID.
+Other query targets that are not bundled remain host-highlighted until you
+register a custom definition under the exact language ID.
 
 ## Recursive Injections
 

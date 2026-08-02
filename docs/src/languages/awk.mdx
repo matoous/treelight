@@ -1,0 +1,45 @@
+---
+title: "AWK"
+description: "Treelight language package for AWK."
+---
+
+# AWK
+
+Use `@treelight/awk` to register AWK syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/awk` |
+| Language ID | `awk` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/awk @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import awk from '@treelight/awk';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [awk],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'awk');
+```
+
+## Example
+
+```awk
+BEGIN { print "Hello, Treelight!" }
+```
+
+[Back to all languages](/languages)

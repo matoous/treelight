@@ -8,7 +8,12 @@ export const repoRoot = path.resolve(__dirname, '..');
 const packageRoots = [
   path.join(repoRoot, 'packages', 'browser'),
   path.join(repoRoot, 'packages', 'core'),
+  path.join(repoRoot, 'packages', 'hast'),
   path.join(repoRoot, 'packages', 'languages'),
+  path.join(repoRoot, 'packages', 'plugin-astro'),
+  path.join(repoRoot, 'packages', 'plugin-rehype'),
+  path.join(repoRoot, 'packages', 'plugin-remark'),
+  path.join(repoRoot, 'packages', 'plugin-rspress'),
   path.join(repoRoot, 'packages', 'themes'),
 ];
 

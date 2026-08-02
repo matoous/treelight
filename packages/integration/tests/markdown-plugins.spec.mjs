@@ -1,7 +1,7 @@
 import { createHighlighter } from '@treelight/core';
 import javascriptLanguage from '@treelight/javascript';
-import rehypeTreelight from '@treelight/rehype';
-import remarkTreelight from '@treelight/remark';
+import rehypeTreelight from '@treelight/plugin-rehype';
+import remarkTreelight from '@treelight/plugin-remark';
 import draculaTheme from '@treelight/theme-dracula';
 import test from 'ava';
 import rehypeStringify from 'rehype-stringify';

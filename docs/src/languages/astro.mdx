@@ -1,0 +1,48 @@
+---
+title: "Astro"
+description: "Treelight language package for Astro."
+---
+
+# Astro
+
+Use `@treelight/astro` to register Astro syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/astro` |
+| Language ID | `astro` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/astro @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import astro from '@treelight/astro';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [astro],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'astro');
+```
+
+## Example
+
+```astro
+---
+const title = 'Treelight';
+---
+<h1>{title}</h1>
+```
+
+[Back to all languages](/languages)

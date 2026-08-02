@@ -60,6 +60,8 @@ async function buildFromSource(meta, destPath) {
   );
   console.log(`Cloning ${repoUrl} (${meta.revision})`);
   await execFileAsync('git', [
+    '-c',
+    'url.https://github.com/.insteadOf=git@github.com:',
     'clone',
     '--depth',
     '1',

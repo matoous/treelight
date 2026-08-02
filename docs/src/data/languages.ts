@@ -344,6 +344,128 @@ const jsdocSample = `/**
 
 const markdownInlineSample = `Read **the [Treelight guide](https://github.com/matoous/treelight)**.`;
 
+const astroSample = `---
+const title = 'Treelight';
+---
+
+<main>
+  <h1>{title}</h1>
+</main>`;
+
+const awkSample = `BEGIN { FS = "," }
+
+$3 == "active" {
+  print $1, $2
+}`;
+
+const cSharpSample = `public record Job(int Id, string Label);
+
+var jobs = new[] { new Job(42, "render") };
+foreach (var job in jobs) {
+  Console.WriteLine($"{job.Id}: {job.Label}");
+}`;
+
+const dartSample = `void main() {
+  final names = ['Tree', 'light'];
+  for (final name in names) {
+    print(name);
+  }
+}`;
+
+const erbSample = `<main>
+  <h1><%= @title %></h1>
+  <% @items.each do |item| %>
+    <p><%= item %></p>
+  <% end %>
+</main>`;
+
+const fishSample = `set names Tree light
+
+for name in $names
+  echo $name
+end`;
+
+const hclSample = `resource "aws_s3_bucket" "assets" {
+  bucket = "treelight-assets"
+
+  tags = {
+    Project = "Treelight"
+  }
+}`;
+
+const heexSample = `<div class="card">
+  <h2>{@title}</h2>
+  <button phx-click="save">Save</button>
+</div>`;
+
+const jqSample = `.items[]
+| select(.enabled)
+| { id, label: .name }`;
+
+const kotlinSample = `data class Job(val id: Int, val label: String)
+
+fun main() {
+  val job = Job(42, "render")
+  println("\${job.id}: \${job.label}")
+}`;
+
+const latexSample = `\\section{Treelight}
+
+Tree-sitter highlighting for $E = mc^2$ and \\LaTeX{} documents.`;
+
+const luaFormatStringSample = `worker %03d: %.2f%% complete`;
+
+const nixSample = `{ pkgs }:
+
+pkgs.mkShell {
+  packages = [ pkgs.nodejs pkgs.git ];
+}`;
+
+const phpdocSample = `/**
+ * Format a display name.
+ * @param string $name
+ * @return string
+ */`;
+
+const powershellSample = `$names = @('Tree', 'light')
+
+$names | ForEach-Object {
+  Write-Host "Hello, $_!"
+}`;
+
+const protobufSample = `syntax = "proto3";
+
+message Job {
+  int64 id = 1;
+  string label = 2;
+}`;
+
+const svelteSample = `<script lang="ts">
+  let count = 0;
+</script>
+
+<button on:click={() => count += 1}>
+  Count: {count}
+</button>`;
+
+const swiftSample = `struct Job {
+  let id: Int
+  let label: String
+}
+
+let job = Job(id: 42, label: "render")
+print("\\(job.id): \\(job.label)")`;
+
+const vueSample = `<script setup lang="ts">
+import { ref } from 'vue';
+
+const count = ref(0);
+</script>
+
+<template>
+  <button @click="count++">Count: {{ count }}</button>
+</template>`;
+
 export const languageOptions: LanguageOption[] = [
   {
     id: 'bash',
@@ -524,5 +646,119 @@ export const languageOptions: LanguageOption[] = [
     label: 'Zig',
     loader: () => import('@treelight/zig'),
     sample: zigSample,
+  },
+  {
+    id: 'astro',
+    label: 'Astro',
+    loader: () => import('@treelight/astro'),
+    sample: astroSample,
+  },
+  {
+    id: 'awk',
+    label: 'AWK',
+    loader: () => import('@treelight/awk'),
+    sample: awkSample,
+  },
+  {
+    id: 'c-sharp',
+    label: 'C#',
+    loader: () => import('@treelight/c-sharp'),
+    sample: cSharpSample,
+  },
+  {
+    id: 'dart',
+    label: 'Dart',
+    loader: () => import('@treelight/dart'),
+    sample: dartSample,
+  },
+  {
+    id: 'erb',
+    label: 'ERB',
+    loader: () => import('@treelight/erb'),
+    sample: erbSample,
+  },
+  {
+    id: 'fish',
+    label: 'Fish',
+    loader: () => import('@treelight/fish'),
+    sample: fishSample,
+  },
+  {
+    id: 'hcl',
+    label: 'HCL / Terraform',
+    loader: () => import('@treelight/hcl'),
+    sample: hclSample,
+  },
+  {
+    id: 'heex',
+    label: 'HEEx',
+    loader: () => import('@treelight/heex'),
+    sample: heexSample,
+  },
+  {
+    id: 'jq',
+    label: 'jq',
+    loader: () => import('@treelight/jq'),
+    sample: jqSample,
+  },
+  {
+    id: 'kotlin',
+    label: 'Kotlin',
+    loader: () => import('@treelight/kotlin'),
+    sample: kotlinSample,
+  },
+  {
+    id: 'latex',
+    label: 'LaTeX',
+    loader: () => import('@treelight/latex'),
+    sample: latexSample,
+  },
+  {
+    id: 'lua-format-string',
+    label: 'Lua format strings',
+    loader: () => import('@treelight/lua-format-string'),
+    sample: luaFormatStringSample,
+  },
+  {
+    id: 'nix',
+    label: 'Nix',
+    loader: () => import('@treelight/nix'),
+    sample: nixSample,
+  },
+  {
+    id: 'phpdoc',
+    label: 'PHPDoc',
+    loader: () => import('@treelight/phpdoc'),
+    sample: phpdocSample,
+  },
+  {
+    id: 'powershell',
+    label: 'PowerShell',
+    loader: () => import('@treelight/powershell'),
+    sample: powershellSample,
+  },
+  {
+    id: 'protobuf',
+    label: 'Protobuf',
+    loader: () => import('@treelight/protobuf'),
+    sample: protobufSample,
+  },
+  {
+    id: 'svelte',
+    label: 'Svelte',
+    loader: () => import('@treelight/svelte'),
+    sample: svelteSample,
+  },
+  {
+    id: 'swift',
+    label: 'Swift',
+    loader: () => import('@treelight/swift'),
+    sample: swiftSample,
+  },
+  {
+    id: 'vue',
+    label: 'Vue',
+    loader: () => import('@treelight/vue'),
+    sample: vueSample,
   },
 ];

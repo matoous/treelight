@@ -1,0 +1,47 @@
+---
+title: "Fish"
+description: "Treelight language package for Fish."
+---
+
+# Fish
+
+Use `@treelight/fish` to register Fish syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/fish` |
+| Language ID | `fish` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/fish @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import fish from '@treelight/fish';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [fish],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'fish');
+```
+
+## Example
+
+```fish
+for name in Tree light
+  echo $name
+end
+```
+
+[Back to all languages](/languages)

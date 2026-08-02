@@ -1,0 +1,46 @@
+---
+title: "PowerShell"
+description: "Treelight language package for PowerShell."
+---
+
+# PowerShell
+
+Use `@treelight/powershell` to register PowerShell syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/powershell` |
+| Language ID | `powershell` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/powershell @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import powershell from '@treelight/powershell';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [powershell],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'powershell');
+```
+
+## Example
+
+```powershell
+$names = @('Tree', 'light')
+$names | ForEach-Object { Write-Host $_ }
+```
+
+[Back to all languages](/languages)

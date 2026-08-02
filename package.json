@@ -6,14 +6,14 @@
   "type": "module",
   "license": "MIT",
   "workspaces": [
-    "packages/astro",
+    "packages/plugin-astro",
     "packages/browser",
     "packages/core",
     "packages/hast",
     "packages/integration",
-    "packages/rehype",
-    "packages/remark",
-    "packages/rspress",
+    "packages/plugin-rehype",
+    "packages/plugin-remark",
+    "packages/plugin-rspress",
     "packages/languages/*",
     "packages/themes/*",
     "docs"

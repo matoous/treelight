@@ -2,7 +2,7 @@
 
 Shared HAST utilities used by Treelight Markdown integrations.
 
-This package is intended for integration authors. Most projects should use `@treelight/rehype`, `@treelight/remark`, or `@treelight/astro` directly.
+This package is intended for integration authors. Most projects should use `@treelight/plugin-rehype`, `@treelight/plugin-remark`, or `@treelight/plugin-astro` directly.
 
 ## Styles
 

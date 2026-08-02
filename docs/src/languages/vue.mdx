@@ -1,0 +1,45 @@
+---
+title: "Vue"
+description: "Treelight language package for Vue."
+---
+
+# Vue
+
+Use `@treelight/vue` to register Vue syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/vue` |
+| Language ID | `vue` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/vue @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import vue from '@treelight/vue';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [vue],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'vue');
+```
+
+## Example
+
+```vue
+<template><button @click="count++">{{ count }}</button></template>
+```
+
+[Back to all languages](/languages)

@@ -1,0 +1,45 @@
+---
+title: "C#"
+description: "Treelight language package for C#."
+---
+
+# C#
+
+Use `@treelight/c-sharp` to register C# syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/c-sharp` |
+| Language ID | `c-sharp` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/c-sharp @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import cSharp from '@treelight/c-sharp';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [cSharp],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'c-sharp');
+```
+
+## Example
+
+```csharp
+public record Job(int Id, string Label);
+```
+
+[Back to all languages](/languages)

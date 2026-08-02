@@ -1,0 +1,47 @@
+---
+title: "HCL / Terraform"
+description: "Treelight language package for HCL / Terraform."
+---
+
+# HCL / Terraform
+
+Use `@treelight/hcl` to register HCL / Terraform syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/hcl` |
+| Language ID | `hcl` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/hcl @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import hcl from '@treelight/hcl';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [hcl],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'hcl');
+```
+
+## Example
+
+```hcl
+resource "aws_s3_bucket" "assets" {
+  bucket = "treelight-assets"
+}
+```
+
+[Back to all languages](/languages)

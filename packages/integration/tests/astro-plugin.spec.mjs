@@ -1,5 +1,5 @@
-import treelight from '@treelight/astro';
-import rehypeTreelight from '@treelight/rehype';
+import treelight from '@treelight/plugin-astro';
+import rehypeTreelight from '@treelight/plugin-rehype';
 import test from 'ava';
 
 function createSetupOptions(config) {
@@ -113,5 +113,5 @@ test('astro integration warns for unsupported markdown processors', async (t) =>
   t.is(updates.length, 0);
   t.is(warnings.length, 1);
   t.true(warnings[0].includes('markdown.processor'));
-  t.true(warnings[0].includes('@treelight/rehype'));
+  t.true(warnings[0].includes('@treelight/plugin-rehype'));
 });

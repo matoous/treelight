@@ -85,6 +85,8 @@ interface CaptureEvent {
 }
 
 const defaultTheme = defaultThemeDefinition as ThemeDefinition;
+let parserInit: Promise<void> | undefined;
+let languageLoadQueue: Promise<void> = Promise.resolve();
 
 function buildAttribute(name: string, theme: ThemeDefinition) {
   const className = name.replace(/\./g, '-');
@@ -389,7 +391,7 @@ function buildPreBlock(
   return `<pre class="treelight ${themeClass}" style="background-color: ${background}; color: ${foreground}"><code>${content}</code></pre>`;
 }
 
-async function loadLanguageModule(
+async function loadLanguageModuleUnqueued(
   definition: LanguageDefinition,
 ): Promise<LanguageState> {
   const wasmBinary = await loadWasmBinary(definition);
@@ -409,6 +411,19 @@ async function loadLanguageModule(
     highlightQuery,
     injectionQuery,
   };
+}
+
+function loadLanguageModule(
+  definition: LanguageDefinition,
+): Promise<LanguageState> {
+  const pending = languageLoadQueue.then(() =>
+    loadLanguageModuleUnqueued(definition),
+  );
+  languageLoadQueue = pending.then(
+    () => undefined,
+    () => undefined,
+  );
+  return pending;
 }
 
 function normalizeThemeName(name?: string | null) {
@@ -439,8 +454,6 @@ export class Treelight {
     string,
     Promise<LanguageState>
   >();
-  private parserInit?: Promise<void>;
-
   private readonly themes = new Map<string, ThemeDefinition>();
 
   constructor(options: TreelightOptions = {}) {
@@ -449,10 +462,10 @@ export class Treelight {
   }
 
   private async ensureParser(): Promise<void> {
-    if (!this.parserInit) {
-      this.parserInit = Parser.init(this.options.parser || undefined);
+    if (!parserInit) {
+      parserInit = Parser.init(this.options.parser || undefined);
     }
-    await this.parserInit;
+    await parserInit;
   }
 
   registerLanguage(definition: LanguageDefinition): void;

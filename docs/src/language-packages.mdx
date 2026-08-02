@@ -13,8 +13,14 @@ Each language package exports a `LanguageDefinition` with:
 Create a new package with the repository helper:
 
 ```sh
-npm run create:language -- --name my-language --repo tree-sitter/tree-sitter-example --revision main
+npm run create:language -- --name my-language \
+  --repo tree-sitter/tree-sitter-example \
+  --version v0.1.0 \
+  --artifact tree-sitter-example.wasm
 ```
+
+For grammars without a release artifact, pass `--source-git` and optionally
+`--source-subpath`; the helper will build the grammar from the pinned revision.
 
 Then fill in the generated package metadata and query files. Language package metadata lives in `package.json` under `treelightLanguage` and is validated by:
 

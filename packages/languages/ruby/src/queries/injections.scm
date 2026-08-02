@@ -1,25 +1,23 @@
 ((comment) @injection.content
  (#set! injection.language "comment"))
 
-((heredoc_body 
+(heredoc_body
   (heredoc_content) @injection.content
-  (heredoc_end) @name
-  (#set! injection.language "sql")) 
- (#eq? @name "SQL"))
+  (heredoc_end) @_name
+  (#eq? @_name "SQL")
+  (#set! injection.language "sql"))
 
-((heredoc_body
+(heredoc_body
   (heredoc_content) @injection.content
-  (heredoc_end) @name
+  (heredoc_end) @_name
+  (#any-of? @_name "GQL" "GRAPHQL")
   (#set! injection.language "graphql"))
- (#any-of? @name
-       "GQL"
-       "GRAPHQL"))
 
-((heredoc_body
+(heredoc_body
   (heredoc_content) @injection.content
-  (heredoc_end) @name
+  (heredoc_end) @_name
+  (#eq? @_name "ERB")
   (#set! injection.language "erb"))
- (#eq? @name "ERB"))
 
 ; `<command>`
 ; %x{<command>}

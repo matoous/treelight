@@ -1,0 +1,45 @@
+---
+title: "Swift"
+description: "Treelight language package for Swift."
+---
+
+# Swift
+
+Use `@treelight/swift` to register Swift syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/swift` |
+| Language ID | `swift` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/swift @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import swift from '@treelight/swift';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [swift],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'swift');
+```
+
+## Example
+
+```swift
+let names: [String] = ["Tree", "light"]
+```
+
+[Back to all languages](/languages)

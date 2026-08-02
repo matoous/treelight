@@ -1,0 +1,47 @@
+---
+title: "Nix"
+description: "Treelight language package for Nix."
+---
+
+# Nix
+
+Use `@treelight/nix` to register Nix syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/nix` |
+| Language ID | `nix` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/nix @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import nix from '@treelight/nix';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [nix],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'nix');
+```
+
+## Example
+
+```nix
+{ pkgs }: pkgs.mkShell {
+  packages = [ pkgs.nodejs ];
+}
+```
+
+[Back to all languages](/languages)

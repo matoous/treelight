@@ -1,0 +1,46 @@
+---
+title: "Svelte"
+description: "Treelight language package for Svelte."
+---
+
+# Svelte
+
+Use `@treelight/svelte` to register Svelte syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/svelte` |
+| Language ID | `svelte` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/svelte @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import svelte from '@treelight/svelte';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [svelte],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'svelte');
+```
+
+## Example
+
+```svelte
+<script>let count = 0;</script>
+<button>{count}</button>
+```
+
+[Back to all languages](/languages)

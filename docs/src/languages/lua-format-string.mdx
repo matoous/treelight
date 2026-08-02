@@ -1,0 +1,45 @@
+---
+title: "Lua format strings"
+description: "Treelight language package for Lua format strings."
+---
+
+# Lua format strings
+
+Use `@treelight/lua-format-string` to register Lua format strings syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/lua-format-string` |
+| Language ID | `lua-format-string` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/lua-format-string @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import luaFormatString from '@treelight/lua-format-string';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [luaFormatString],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'lua-format-string');
+```
+
+## Example
+
+```text
+worker %03d: %.2f%% complete
+```
+
+[Back to all languages](/languages)
