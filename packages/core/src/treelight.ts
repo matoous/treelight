@@ -433,6 +433,13 @@ export class Treelight {
 
   private readonly languageCache = new Map<string, LanguageState>();
 
+  private readonly languagePromises = new Map<string, Promise<LanguageState>>();
+
+  private readonly languageDefinitionPromises = new Map<
+    string,
+    Promise<LanguageState>
+  >();
+
   private parserInit?: Promise<void>;
 
   private readonly themes = new Map<string, ThemeDefinition>();
@@ -509,17 +516,61 @@ export class Treelight {
     if (cached) {
       return cached;
     }
+    const pending =
+      this.languagePromises.get(name) ||
+      this.languageDefinitionPromises.get(name);
+    if (pending) {
+      return pending;
+    }
     const loader = this.languages.get(name);
     if (!loader) {
       throw new Error(`Language "${name}" is not registered.`);
     }
-    await this.ensureParser();
-    const result = await (typeof loader === 'function' ? loader() : loader);
-    const definition = resolveLanguageDefinition(result);
-    const state = await loadLanguageModule(definition);
-    this.languageCache.set(name, state);
-    this.languageCache.set(definition.id, state);
-    return state;
+
+    let definitionId: string | undefined;
+    let loadPromise!: Promise<LanguageState>;
+    loadPromise = (async () => {
+      await this.ensureParser();
+      const result = await (typeof loader === 'function' ? loader() : loader);
+      const definition = resolveLanguageDefinition(result);
+      definitionId = definition.id;
+
+      const cachedByDefinition = this.languageCache.get(definition.id);
+      if (cachedByDefinition) {
+        this.languageCache.set(name, cachedByDefinition);
+        return cachedByDefinition;
+      }
+
+      const pendingByDefinition = this.languageDefinitionPromises.get(
+        definition.id,
+      );
+      if (pendingByDefinition) {
+        const state = await pendingByDefinition;
+        this.languageCache.set(name, state);
+        return state;
+      }
+
+      this.languageDefinitionPromises.set(definition.id, loadPromise);
+      const state = await loadLanguageModule(definition);
+      this.languageCache.set(name, state);
+      this.languageCache.set(definition.id, state);
+      return state;
+    })();
+    this.languagePromises.set(name, loadPromise);
+
+    try {
+      return await loadPromise;
+    } finally {
+      if (this.languagePromises.get(name) === loadPromise) {
+        this.languagePromises.delete(name);
+      }
+      if (
+        definitionId &&
+        this.languageDefinitionPromises.get(definitionId) === loadPromise
+      ) {
+        this.languageDefinitionPromises.delete(definitionId);
+      }
+    }
   }
 
   private collectCaptures(
