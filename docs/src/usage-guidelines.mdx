@@ -31,7 +31,10 @@ Use `@treelight/browser` for interactive browser experiences:
 
 ```ts
 const treelight = createBrowserTreelight();
-treelight.registerLanguage('typescript', () => import('@treelight/typescript'));
+treelight.registerLanguage(
+  'typescript',
+  () => import('@treelight/typescript'),
+);
 const html = await treelight.highlight(code, 'typescript');
 ```
 

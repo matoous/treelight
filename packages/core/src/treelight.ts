@@ -439,7 +439,6 @@ export class Treelight {
     string,
     Promise<LanguageState>
   >();
-
   private parserInit?: Promise<void>;
 
   private readonly themes = new Map<string, ThemeDefinition>();

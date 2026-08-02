@@ -18,7 +18,10 @@ const treelight = createBrowserTreelight({
   theme: 'github-dark',
 });
 
-treelight.registerLanguage('typescript', () => import('@treelight/typescript'));
+treelight.registerLanguage(
+  'typescript',
+  () => import('@treelight/typescript'),
+);
 
 const html = await treelight.highlight('const ok: boolean = true;', 'typescript');
 ```
@@ -28,12 +31,17 @@ const html = await treelight.highlight('const ok: boolean = true;', 'typescript'
 Register each language with a dynamic import:
 
 ```ts
-treelight.registerLanguage('javascript', () => import('@treelight/javascript'));
+treelight.registerLanguage(
+  'javascript',
+  () => import('@treelight/javascript'),
+);
 treelight.registerLanguage('rust', () => import('@treelight/rust'));
 treelight.registerLanguage('zig', () => import('@treelight/zig'));
 ```
 
-This keeps each grammar in its own browser chunk. The first highlight for a language loads its grammar; later highlights reuse the registered parser.
+This keeps each grammar out of the JavaScript chunks. Language packages automatically select their browser entry in Vite and Astro, which emit the grammar as a hashed `.wasm` asset. The first highlight fetches it and later highlights reuse the registered parser. No application-specific `locateFile` or asset-copy configuration is required.
+
+Node and SSR imports automatically use the self-contained embedded grammar. Explicit `/browser` and `/embedded` exports are available when an application needs to override the automatic selection.
 
 ## Themes
 

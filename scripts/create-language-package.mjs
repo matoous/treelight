@@ -86,6 +86,36 @@ async function main() {
     types: './dist/index.d.cts',
     exports: {
       '.': {
+        browser: {
+          import: {
+            types: './dist/browser.d.mts',
+            default: './dist/browser.js',
+          },
+          require: {
+            types: './dist/browser.d.cts',
+            default: './dist/browser.cjs',
+          },
+        },
+        import: {
+          types: './dist/index.d.mts',
+          default: './dist/index.js',
+        },
+        require: {
+          types: './dist/index.d.cts',
+          default: './dist/index.cjs',
+        },
+      },
+      './browser': {
+        import: {
+          types: './dist/browser.d.mts',
+          default: './dist/browser.js',
+        },
+        require: {
+          types: './dist/browser.d.cts',
+          default: './dist/browser.cjs',
+        },
+      },
+      './embedded': {
         import: {
           types: './dist/index.d.mts',
           default: './dist/index.js',
@@ -97,6 +127,7 @@ async function main() {
       },
     },
     files: ['dist'],
+    sideEffects: false,
     publishConfig: {
       access: 'public',
     },
@@ -107,7 +138,8 @@ async function main() {
     },
     keywords: ['treelight', 'tree-sitter', 'language', languageId],
     scripts: {
-      build: 'rslib build && cp dist/index.d.cts dist/index.d.mts && publint',
+      build:
+        'rslib build && cp dist/index.d.cts dist/index.d.mts && cp dist/browser.d.cts dist/browser.d.mts && cp dist/definition.d.cts dist/definition.d.mts && publint',
       'build:watch': 'rslib build --watch',
       inspect: 'rslib inspect',
       tsc: 'tsc --noEmit',
@@ -166,21 +198,53 @@ declare module '*.wasm' {
 }
 `;
 
-  const indexTs = `import highlights from './queries/highlights.scm'
+  const definitionTs = `import highlights from './queries/highlights.scm'
 import injections from './queries/injections.scm'
 import locals from './queries/locals.scm'
-import wasmDataUri from './wasm/${artifact}'
 
-const wasmBase64 = wasmDataUri.split(',')[1] ?? wasmDataUri
+export interface LanguageDefinition {
+  id: string
+  wasm?: string | ArrayBuffer | Uint8Array
+  wasmUrl?: string
+  queries: {
+    highlights: string
+    injections?: string
+    locals?: string
+  }
+}
 
-const language = {
+const language: LanguageDefinition = {
   id: '${languageId}',
-  wasm: wasmBase64,
   queries: {
     highlights,
     injections,
     locals,
   },
+}
+
+export default language
+`;
+
+  const indexTs = `import definition, { type LanguageDefinition } from './definition'
+import wasmDataUri from './wasm/${artifact}'
+
+const wasmBase64 = wasmDataUri.split(',')[1] ?? wasmDataUri
+
+const language: LanguageDefinition = {
+  ...definition,
+  wasm: wasmBase64,
+}
+
+export default language
+`;
+
+  const browserTs = `import definition, { type LanguageDefinition } from './definition'
+
+const wasmUrl = new URL('./wasm/${artifact}?url', import.meta.url).href
+
+const language: LanguageDefinition = {
+  ...definition,
+  wasmUrl,
 }
 
 export default language
@@ -199,6 +263,12 @@ export default language
   const rslibConfig = `import { defineConfig } from '@rslib/core'
 
 export default defineConfig({
+  source: {
+    entry: {
+      index: './src/index.ts',
+      browser: './src/browser.ts',
+    },
+  },
   lib: [
     {
       format: 'esm',
@@ -213,6 +283,7 @@ export default defineConfig({
   ],
   output: {
     cleanDistPath: true,
+    copy: [{ from: 'src/wasm', to: 'wasm' }],
     sourceMap: false,
     target: 'node',
   },
@@ -250,7 +321,17 @@ export default defineConfig({
     rslibConfig,
     'utf8',
   );
+  await writeFile(
+    path.join(packageDir, 'src', 'definition.ts'),
+    definitionTs,
+    'utf8',
+  );
   await writeFile(path.join(packageDir, 'src', 'index.ts'), indexTs, 'utf8');
+  await writeFile(
+    path.join(packageDir, 'src', 'browser.ts'),
+    browserTs,
+    'utf8',
+  );
   await writeFile(
     path.join(packageDir, 'src', 'types', 'raw.d.ts'),
     typeDecl,

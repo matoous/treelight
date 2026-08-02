@@ -1,5 +1,11 @@
 import { defineConfig } from '@rslib/core';
 export default defineConfig({
+  source: {
+    entry: {
+      index: './src/index.ts',
+      browser: './src/browser.ts',
+    },
+  },
   lib: [
     {
       format: 'esm',
@@ -14,6 +20,7 @@ export default defineConfig({
   ],
   output: {
     cleanDistPath: true,
+    copy: [{ from: 'src/wasm', to: 'wasm' }],
     sourceMap: false,
     target: 'node',
   },

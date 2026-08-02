@@ -21,7 +21,7 @@ Treelight is a code-highlighter based on Tree-sitter grammars. It gives you the 
 - `@treelight/astro` installs Treelight as an Astro Markdown/MDX code block integration.
 - `@treelight/rehype` renders HTML AST code blocks with Treelight in unified pipelines.
 - `@treelight/remark` renders Markdown AST code blocks with Treelight when a remark-stage transform is needed.
-- `@treelight/<language>` packages provide language definitions with inlined grammar WASM and highlight queries.
+- `@treelight/<language>` packages select cacheable WASM assets in browser bundles and self-contained definitions in Node and SSR runtimes.
 - `@treelight/theme-<theme>` packages provide bundled themes.
 
 Bundled language packages currently cover Bash, C, C++, comment annotations, CSS, Dockerfile, Elixir, Go, Go format strings, GraphQL, HTML, Java, JavaScript, JSDoc, JSON, Lua, Markdown, Markdown inline, PHP, Python, regular expressions, Ruby, Rust, Scheme, SQL, TOML, TSX, TypeScript, YAML, and Zig.
@@ -112,6 +112,10 @@ treelight.registerLanguage('typescript', () => import('@treelight/typescript'))
 
 const html = await treelight.highlight(code, 'typescript')
 ```
+
+Language packages automatically use a URL to the grammar in Vite and Astro browser builds. The bundler emits the WASM as a hashed, cacheable asset, and the first highlight fetches it without any asset-copy or `locateFile` configuration. Node and SSR imports remain self-contained.
+
+Use an explicit `/browser` or `/embedded` import only when you need to override that automatic selection.
 
 Eager imports are simpler when the language list is small. Lazy imports are better for browser apps that expose many languages.
 

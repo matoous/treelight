@@ -41,6 +41,39 @@ async function validatePackage(packageName) {
   if (packageName !== 'ecma' && !metadata.artifact) {
     errors.push('missing treelightLanguage.artifact');
   }
+  if (packageName !== 'ecma') {
+    const rootExport = packageJson.exports?.['.'];
+    if (
+      rootExport?.browser?.import?.default !== './dist/browser.js' ||
+      rootExport?.browser?.import?.types !== './dist/browser.d.mts' ||
+      rootExport?.browser?.require?.default !== './dist/browser.cjs' ||
+      rootExport?.browser?.require?.types !== './dist/browser.d.cts'
+    ) {
+      errors.push('root export does not select the browser entry');
+    }
+    if (!packageJson.exports?.['./browser']) {
+      errors.push('missing browser export');
+    }
+    if (!packageJson.exports?.['./embedded']) {
+      errors.push('missing embedded export');
+    }
+    const definitionPath = path.join(packageDir, 'src/definition.ts');
+    if (!(await pathExists(definitionPath))) {
+      errors.push('missing src/definition.ts');
+    }
+    const browserPath = path.join(packageDir, 'src/browser.ts');
+    if (!(await pathExists(browserPath))) {
+      errors.push('missing src/browser.ts');
+    } else {
+      const browserSource = await readFile(browserPath, 'utf8');
+      if (!browserSource.includes(`./wasm/${metadata.artifact}?url`)) {
+        errors.push('browser export does not reference its grammar WASM URL');
+      }
+      if (!browserSource.includes('./definition')) {
+        errors.push('browser export does not use the shared definition');
+      }
+    }
+  }
   if (!metadata.queries?.highlights?.length) {
     errors.push('missing treelightLanguage.queries.highlights');
   }

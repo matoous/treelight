@@ -29,6 +29,6 @@ document.body.innerHTML = highlighter.highlight(
 );
 ```
 
-This package configures the shared `web-tree-sitter` parser WASM for browser bundlers and re-exports the core Treelight API. If your bundler cannot resolve the parser WASM asset, pass `parserWasmUrl` to `createBrowserHighlighter` or `createBrowserTreelight`.
+This package configures the shared `web-tree-sitter` parser WASM for browser bundlers and re-exports the core Treelight API. Language packages automatically use `wasmUrl` in Vite and Astro browser builds, allowing each grammar to be emitted as a separate cacheable asset. If your bundler cannot resolve the parser WASM asset, pass `parserWasmUrl` to `createBrowserHighlighter` or `createBrowserTreelight`.
 
 See the [Treelight README](https://github.com/matoous/treelight#browser-usage) for full browser usage.

@@ -41,7 +41,10 @@ fmt.Printf("matched %03d items", total)`,
 
 ```ts
 treelight.registerLanguage('go', () => import('@treelight/go'));
-treelight.registerLanguage('comment', () => import('@treelight/comment'));
+treelight.registerLanguage(
+  'comment',
+  () => import('@treelight/comment'),
+);
 treelight.registerLanguage('regex', () => import('@treelight/regex'));
 treelight.registerLanguage(
   'go-format-string',
