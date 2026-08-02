@@ -22,6 +22,7 @@ export interface TreelightRspressOptions extends CreateHighlighterOptions {
   defaultLanguage?: string;
   highlighter?: Highlighter | Promise<Highlighter>;
   highlightLines?: HighlightLinesOption;
+  includeLanguages?: string[];
   languageMap?: Record<string, string>;
   lineNumbers?: LineNumbersOption;
   strict?: boolean;
@@ -33,6 +34,7 @@ export interface TreelightShikiTransformerOptions extends HighlightOptions {
   defaultLanguage?: string;
   highlighter: Highlighter;
   highlightLines?: HighlightLinesOption;
+  includeLanguages?: string[];
   languageMap?: Record<string, string>;
   lineNumbers?: LineNumbersOption;
   strict?: boolean;
@@ -75,6 +77,7 @@ function createTransformerOptions(
     defaultLanguage: options.defaultLanguage,
     highlighter,
     highlightLines: options.highlightLines,
+    includeLanguages: options.includeLanguages,
     languageMap: options.languageMap,
     lineNumbers: options.lineNumbers,
     strict: options.strict,
@@ -90,6 +93,7 @@ function createHighlighterOptions(
     defaultLanguage: _defaultLanguage,
     highlighter: _highlighter,
     highlightLines: _highlightLines,
+    includeLanguages: _includeLanguages,
     languageMap: _languageMap,
     lineNumbers: _lineNumbers,
     title: _title,
@@ -116,12 +120,19 @@ function appendTransformer(config: RspressConfig, transformer: unknown) {
 function createTreelightShikiTransformer(
   options: TreelightShikiTransformerOptions,
 ) {
+  const includedLanguages = options.includeLanguages
+    ? new Set(options.includeLanguages)
+    : undefined;
+
   return {
     name: '@treelight/plugin-rspress',
     root(this: ShikiTransformerContext) {
       const rawLanguage =
         this.options.lang || options.defaultLanguage || 'text';
       const language = options.languageMap?.[rawLanguage] || rawLanguage;
+      if (includedLanguages && !includedLanguages.has(language)) {
+        return;
+      }
       const meta = getRawMeta(this.options.meta);
       const html = options.highlighter.highlight(this.source, language, {
         ...options,

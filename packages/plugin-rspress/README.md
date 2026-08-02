@@ -37,4 +37,4 @@ Import the stylesheet from your Rspress global CSS:
 @import "@treelight/plugin-rspress/styles.css";
 ```
 
-Use `createTreelightShikiTransformer` when you want to wire the transformer manually through `markdown.shiki.transformers`.
+Use `createTreelightShikiTransformer` when you want to wire the transformer manually through `markdown.shiki.transformers`. Pass `includeLanguages` to apply Treelight only to selected languages and preserve Shiki's existing output for every other code block.

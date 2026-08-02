@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { defineConfig } from '@rspress/core';
 import { createTreelightShikiTransformer } from '@treelight/plugin-rspress';
-import { markdownHighlighter } from './src/lib/markdown';
+import { markdownHighlighter, markdownLanguageNames } from './src/lib/markdown';
 
 const siteUrl = (
   process.env.DOCS_SITE_URL ?? 'https://treelight.dzx.cz'
@@ -87,6 +87,7 @@ const themePages = [
 
 const treelightCodeBlocks = createTreelightShikiTransformer({
   highlighter: markdownHighlighter,
+  includeLanguages: markdownLanguageNames,
   theme: 'github-dark',
   lineNumbers: true,
   languageMap: {

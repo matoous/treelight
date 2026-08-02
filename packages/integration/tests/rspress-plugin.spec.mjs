@@ -41,6 +41,20 @@ test('Rspress transformer renders Treelight code blocks', (t) => {
   t.true(html.includes('data-highlighted-line="true"'));
 });
 
+test('Rspress transformer leaves excluded languages to Shiki', (t) => {
+  const transformer = createTreelightShikiTransformer({
+    highlighter: t.context.highlighter,
+    includeLanguages: ['javascript'],
+  });
+
+  const root = transformer.root.call({
+    options: { lang: 'python' },
+    source: 'print("hello")',
+  });
+
+  t.is(root, undefined);
+});
+
 test('Rspress plugin appends a Treelight transformer', async (t) => {
   const existingTransformer = { name: 'existing' };
   const plugin = rspressTreelight({

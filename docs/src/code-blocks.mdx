@@ -7,15 +7,19 @@ Treelight ships integrations for Markdown and Astro code blocks. Prefer `@treeli
 
 ## This Docs Site
 
-This site uses `@treelight/plugin-rspress` for its own Markdown code blocks. Rspress runs code highlighting through Shiki transformers, so the package installs a Shiki-compatible transformer that delegates the final HTML rendering to Treelight.
+This site uses `@treelight/plugin-rspress` for its most common Markdown code blocks. Rspress runs code highlighting through Shiki transformers, so the package installs a Shiki-compatible transformer that delegates selected languages to Treelight and preserves Shiki's existing output for the rest. Keeping the build-time Treelight language set focused avoids loading the whole language catalog into one documentation build process; every language remains available in the browser demo.
 
 ```ts title="docs/rspress.config.ts" {9-16}
 import { defineConfig } from '@rspress/core';
 import { createTreelightShikiTransformer } from '@treelight/plugin-rspress';
-import { markdownHighlighter } from './src/lib/markdown';
+import {
+  markdownHighlighter,
+  markdownLanguageNames,
+} from './src/lib/markdown';
 
 const treelightCodeBlocks = createTreelightShikiTransformer({
   highlighter: markdownHighlighter,
+  includeLanguages: markdownLanguageNames,
   theme: 'github-dark',
   lineNumbers: true,
   languageMap: {
