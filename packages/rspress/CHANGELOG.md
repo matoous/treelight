@@ -1,5 +1,14 @@
 # @treelight/rspress
 
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies [41a210a]
+- Updated dependencies [47b8bd6]
+  - @treelight/core@0.4.1
+  - @treelight/hast@0.4.1
+
 ## 0.2.1
 
 ### Patch Changes

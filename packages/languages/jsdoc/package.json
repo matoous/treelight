@@ -1,6 +1,6 @@
 {
   "name": "@treelight/jsdoc",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Treelight language module for JSDoc comments.",
   "type": "module",
   "main": "./dist/index.cjs",

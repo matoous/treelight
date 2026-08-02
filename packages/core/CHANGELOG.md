@@ -1,5 +1,13 @@
 # @treelight/core
 
+## 0.4.1
+
+### Patch Changes
+
+- 41a210a: Automatically select browser-specific language exports so Vite and Astro emit Tree-sitter grammars as separate, cacheable WASM assets while Node and SSR imports remain self-contained. Deduplicate concurrent language loads and allow failed loads to be retried.
+- 47b8bd6: Deduplicate concurrent language loads by registration name and resolved definition ID, including injected-language loads, while allowing failed loads to be retried.
+  - @treelight/theme-github-dark@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes

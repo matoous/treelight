@@ -1,6 +1,6 @@
 {
   "name": "@treelight/theme-solarized-light",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Treelight theme module for solarized-light.",
   "main": "./dist/index.cjs",
   "exports": {
