@@ -3,41 +3,47 @@ title: Code Blocks
 description: Render Markdown, MDX, and Astro code blocks with Treelight.
 ---
 
-Treelight ships integrations for Markdown and Astro code blocks. Prefer `@treelight/plugin-rehype` when your docs framework accepts rehype plugins. Use `@treelight/plugin-rspress` for Rspress sites because Rspress code blocks are handled through Shiki transformers. Use `@treelight/plugin-remark` only when you need to transform Markdown `code` nodes before the rehype stage.
+Treelight ships integrations for Markdown and Astro code blocks. Prefer `@treelight/plugin-rehype` when your docs framework accepts rehype plugins. Use `@treelight/plugin-rspress` for Rspress sites so Treelight owns the complete code-fence rendering path. Use `@treelight/plugin-remark` only when you need to transform Markdown `code` nodes before the rehype stage.
 
 ## This Docs Site
 
-This site uses `@treelight/plugin-rspress` for its most common Markdown code blocks. Rspress runs code highlighting through Shiki transformers, so the package installs a Shiki-compatible transformer that delegates selected languages to Treelight and preserves Shiki's existing output for the rest. Keeping the build-time Treelight language set focused avoids loading the whole language catalog into one documentation build process; every language remains available in the browser demo.
+This site uses `@treelight/plugin-rspress` for every Markdown code block. Its
+build-time highlighter loads the complete documented language catalog, and
+unknown fence languages fall back to escaped, themed Treelight output. The docs
+plugin bypasses Rspress's code-block renderer with a native `<pre>`, so frames,
+line numbers, highlighted lines, and copy controls all come from Treelight.
 
-```ts title="docs/rspress.config.ts" {9-16}
+```ts title="docs/rspress.config.ts" {5-20}
 import { defineConfig } from '@rspress/core';
-import { createTreelightShikiTransformer } from '@treelight/plugin-rspress';
-import {
-  markdownHighlighter,
-  markdownLanguageNames,
-} from './src/lib/markdown';
-
-const treelightCodeBlocks = createTreelightShikiTransformer({
-  highlighter: markdownHighlighter,
-  includeLanguages: markdownLanguageNames,
-  theme: 'github-dark',
-  lineNumbers: true,
-  languageMap: {
-    js: 'javascript',
-    md: 'markdown',
-    sh: 'bash',
-    ts: 'typescript',
-  },
-});
+import treelight from '@treelight/plugin-rspress';
+import { markdownHighlighter } from './src/lib/markdown';
 
 export default defineConfig({
-  markdown: {
-    shiki: {
-      transformers: [treelightCodeBlocks],
-    },
-  },
+  plugins: [
+    treelight({
+      copyButton: true,
+      highlighter: markdownHighlighter,
+      theme: 'github-dark',
+      lineNumbers: true,
+      languageMap: {
+        js: 'javascript',
+        md: 'markdown',
+        sh: 'bash',
+        ts: 'typescript',
+      },
+    }),
+  ],
 });
 ```
+
+The custom theme only imports `@treelight/plugin-rspress/copy` once. The plugin
+itself renders a native `<pre>`, so Rspress does not add its own wrapper, copy
+button, or wrap button around Treelight output.
+
+Rspress 2 still includes Shiki in its core Markdown pipeline and does not expose
+an opt-out. The Treelight plugin prevents that pass from loading or rendering
+languages, then renders each fence itself. Shiki therefore remains a transitive
+Rspress dependency, but it does not produce this site's code-block markup.
 
 The block below is rendered by that same pipeline. It shows global line numbers, per-block `startLineNumber`, highlighted-line metadata, a per-block theme, and a title. Highlight ranges are source-line ranges, so `highlightLines="2-3"` highlights the second and third code lines even though the visible gutter starts at `41`.
 
@@ -175,6 +181,48 @@ processor.use(remarkTreelight, {
 
 Because the remark plugin replaces Markdown code nodes with raw HTML, later HTML serialization must allow dangerous HTML.
 
+## Copy Button
+
+Set `copyButton: true` to add an accessible copy control to every Treelight code
+block:
+
+```ts
+processor.use(rehypeTreelight, {
+  copyButton: true,
+  languages: [javascript],
+});
+```
+
+Then import the matching browser runtime once in your client entrypoint:
+
+```ts
+import '@treelight/plugin-rehype/copy';
+```
+
+The stylesheet hides copy controls until the runtime is installed, so pages
+without JavaScript continue to render ordinary static code blocks. The runtime
+copies only source content; line-number gutters and other `aria-hidden` nodes
+are excluded. After a successful copy, the button briefly shows a checkmark and
+announces the configured copied label before returning to the copy icon.
+
+Customize the accessible labels, tooltips, and reset delay with an options
+object:
+
+```ts
+processor.use(rehypeTreelight, {
+  copyButton: {
+    label: 'Copy code',
+    copiedLabel: 'Copied',
+    errorLabel: 'Copy failed',
+    resetAfter: 2000,
+  },
+});
+```
+
+Use `copy` or `copy=false` in fence metadata to override the global setting for
+one block. The Rspress plugin bypasses Rspress's code-block component, so its
+copy control is not rendered alongside Treelight's.
+
 ## Line Numbers
 
 Set `lineNumbers: true` to enable line numbers for every block:
@@ -280,6 +328,8 @@ import '@treelight/plugin-astro/styles.css';
 The stable classes are:
 
 - `.treelight`
+- `.treelight-code-block`
+- `.treelight-copy-button`
 - `.treelight-line`
 - `.treelight-line-number`
 - `.treelight-line-content`
@@ -290,12 +340,14 @@ The stable classes are:
 Customize the generated blocks with CSS variables:
 
 ```css
-.treelight {
+.treelight,
+.treelight-code-block {
   --treelight-code-background: #111111;
   --treelight-code-border-color: #2f2f2f;
   --treelight-code-padding-inline: 1.25rem;
   --treelight-line-number-color: #9ca3af;
   --treelight-highlighted-line-background: rgba(255, 255, 255, 0.08);
+  --treelight-copy-button-background: rgba(0, 0, 0, 0.82);
 }
 ```
 
@@ -312,6 +364,7 @@ import githubDark from '@treelight/theme-github-dark';
 
 <Code
   code={`const greeting = 'hello';`}
+  copyButton
   lang="javascript"
   languages={[javascript]}
   themes={[githubDark]}

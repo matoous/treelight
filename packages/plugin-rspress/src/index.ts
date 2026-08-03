@@ -1,161 +1,69 @@
 import type { RspressPlugin } from '@rspress/core';
-import {
-  type CreateHighlighterOptions,
-  createHighlighter,
-  type Highlighter,
-  type HighlightOptions,
-} from '@treelight/core';
-import {
-  addClassName,
-  applyCodeBlockLineOptions,
-  type HighlightLinesOption,
-  htmlFragmentToRoot,
-  type LineNumbersOption,
-  resolveHighlightedLines,
-  resolveLineNumbers,
-  resolveTheme,
-  resolveTitle,
-  wrapCodeBlockFrame,
-} from '@treelight/hast';
+import { getClassNames } from '@treelight/hast';
+import rehypeTreelight, {
+  type RehypeTreelightOptions,
+} from '@treelight/plugin-rehype';
+import type { Element, Root as HastRoot } from 'hast';
+import type { Code, Root as MdastRoot } from 'mdast';
+import type { Plugin } from 'unified';
+import { visit } from 'unist-util-visit';
 
-export interface TreelightRspressOptions extends CreateHighlighterOptions {
-  defaultLanguage?: string;
-  highlighter?: Highlighter | Promise<Highlighter>;
-  highlightLines?: HighlightLinesOption;
-  includeLanguages?: string[];
-  languageMap?: Record<string, string>;
-  lineNumbers?: LineNumbersOption;
-  strict?: boolean;
-  theme?: string;
-  title?: string;
-}
+export type TreelightRspressOptions = RehypeTreelightOptions;
 
-export interface TreelightShikiTransformerOptions extends HighlightOptions {
-  defaultLanguage?: string;
-  highlighter: Highlighter;
-  highlightLines?: HighlightLinesOption;
-  includeLanguages?: string[];
-  languageMap?: Record<string, string>;
-  lineNumbers?: LineNumbersOption;
-  strict?: boolean;
-  theme?: string;
-  title?: string;
-}
-
-type ShikiTransformerContext = {
-  options: {
-    lang?: string;
-    meta?: unknown;
-  };
-  source: string;
+type TreelightCodeData = NonNullable<Code['data']> & {
+  hProperties?: Record<string, unknown>;
 };
 
 type RspressConfig = {
   markdown?: {
-    shiki?: {
-      transformers?: unknown[];
-      [key: string]: unknown;
-    };
+    shiki?: Record<string, unknown>;
     [key: string]: unknown;
   };
   [key: string]: unknown;
 };
 
-function getRawMeta(meta: unknown) {
-  if (!meta || typeof meta !== 'object') {
-    return '';
-  }
-  const raw = (meta as { __raw?: unknown }).__raw;
-  return typeof raw === 'string' ? raw : '';
+const remarkPrepareTreelight: Plugin<[], MdastRoot> = () => (tree) => {
+  visit(tree, 'code', (node: Code) => {
+    const language = node.lang?.split(/\s+/u)[0];
+    node.lang = undefined;
+
+    if (!language) {
+      return;
+    }
+
+    node.data ??= {};
+    const data = node.data as TreelightCodeData;
+    data.hProperties = {
+      ...data.hProperties,
+      dataTreelightLanguage: language,
+    };
+  });
+};
+
+function isTreelightPre(node: Element) {
+  return node.tagName === 'pre' && getClassNames(node).includes('treelight');
 }
 
-function createTransformerOptions(
-  options: TreelightRspressOptions,
-  highlighter: Highlighter,
-): TreelightShikiTransformerOptions {
-  return {
-    defaultLanguage: options.defaultLanguage,
-    highlighter,
-    highlightLines: options.highlightLines,
-    includeLanguages: options.includeLanguages,
-    languageMap: options.languageMap,
-    lineNumbers: options.lineNumbers,
-    strict: options.strict,
-    theme: options.theme,
-    title: options.title,
-  };
-}
+const rehypeUseTreelightPre: Plugin<[], HastRoot> = () => (tree) => {
+  visit(tree, 'element', (node) => {
+    if (isTreelightPre(node)) {
+      node.tagName = 'TreelightPre';
+    }
+  });
+};
 
-function createHighlighterOptions(
-  options: TreelightRspressOptions,
-): CreateHighlighterOptions {
-  const {
-    defaultLanguage: _defaultLanguage,
-    highlighter: _highlighter,
-    highlightLines: _highlightLines,
-    includeLanguages: _includeLanguages,
-    languageMap: _languageMap,
-    lineNumbers: _lineNumbers,
-    title: _title,
-    ...highlighterOptions
-  } = options;
-  return highlighterOptions;
-}
-
-function appendTransformer(config: RspressConfig, transformer: unknown) {
+function disableRspressShiki(config: RspressConfig) {
   const markdown = config.markdown ?? {};
-  const shiki = markdown.shiki ?? {};
   return {
     ...config,
     markdown: {
       ...markdown,
       shiki: {
-        ...shiki,
-        transformers: [...(shiki.transformers ?? []), transformer],
+        ...markdown.shiki,
+        defaultLanguage: undefined,
+        lazy: false,
+        langs: [],
       },
-    },
-  };
-}
-
-function createTreelightShikiTransformer(
-  options: TreelightShikiTransformerOptions,
-) {
-  const includedLanguages = options.includeLanguages
-    ? new Set(options.includeLanguages)
-    : undefined;
-
-  return {
-    name: '@treelight/plugin-rspress',
-    root(this: ShikiTransformerContext) {
-      const rawLanguage =
-        this.options.lang || options.defaultLanguage || 'text';
-      const language = options.languageMap?.[rawLanguage] || rawLanguage;
-      if (includedLanguages && !includedLanguages.has(language)) {
-        return;
-      }
-      const meta = getRawMeta(this.options.meta);
-      const html = options.highlighter.highlight(this.source, language, {
-        ...options,
-        theme: resolveTheme(options.theme, meta),
-      });
-      const root = htmlFragmentToRoot(html);
-      const pre = root.children[0];
-
-      if (pre?.type === 'element') {
-        addClassName(pre, `language-${language}`);
-        applyCodeBlockLineOptions(pre, {
-          highlightedLines: resolveHighlightedLines(
-            options.highlightLines,
-            meta,
-          ),
-          lineNumbers: resolveLineNumbers(options.lineNumbers, meta),
-        });
-        root.children[0] = wrapCodeBlockFrame(pre, {
-          title: resolveTitle(options.title, meta),
-        });
-      }
-
-      return root;
     },
   };
 }
@@ -164,21 +72,17 @@ function rspressTreelight(
   options: TreelightRspressOptions = {},
 ): RspressPlugin {
   return {
-    async config(config) {
-      const highlighter = await Promise.resolve(
-        options.highlighter ||
-          createHighlighter(createHighlighterOptions(options)),
-      );
-      return appendTransformer(
-        config as RspressConfig,
-        createTreelightShikiTransformer(
-          createTransformerOptions(options, highlighter),
-        ),
-      ) as typeof config;
+    config(config) {
+      return disableRspressShiki(config as RspressConfig) as typeof config;
+    },
+    markdown: {
+      globalComponents: ['@treelight/plugin-rspress/TreelightPre'],
+      rehypePlugins: [[rehypeTreelight, options], rehypeUseTreelightPre],
+      remarkPlugins: [remarkPrepareTreelight],
     },
     name: '@treelight/plugin-rspress',
   };
 }
 
-export { createTreelightShikiTransformer, rspressTreelight };
+export { rspressTreelight };
 export default rspressTreelight;

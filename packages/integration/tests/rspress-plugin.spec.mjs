@@ -1,13 +1,26 @@
 import { readFile } from 'node:fs/promises';
 import { createHighlighter } from '@treelight/core';
-import { hastToHtml } from '@treelight/hast';
 import javascriptLanguage from '@treelight/javascript';
-import {
-  createTreelightShikiTransformer,
-  rspressTreelight,
-} from '@treelight/plugin-rspress';
+import { rspressTreelight } from '@treelight/plugin-rspress';
 import draculaTheme from '@treelight/theme-dracula';
 import test from 'ava';
+import rehypeStringify from 'rehype-stringify';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import { unified } from 'unified';
+
+const markdown = `# Example
+
+\`\`\`javascript title="src/app.js" {1}
+const greeting = 'hello';
+\`\`\`
+`;
+
+function usePluggable(processor, pluggable) {
+  return Array.isArray(pluggable)
+    ? processor.use(...pluggable)
+    : processor.use(pluggable);
+}
 
 test.before(async (t) => {
   t.context.highlighter = await createHighlighter({
@@ -16,65 +29,63 @@ test.before(async (t) => {
   });
 });
 
-test('Rspress transformer renders Treelight code blocks', (t) => {
-  const transformer = createTreelightShikiTransformer({
+test('Rspress plugin owns the complete code fence rendering pipeline', async (t) => {
+  const plugin = rspressTreelight({
+    copyButton: true,
     highlighter: t.context.highlighter,
     lineNumbers: true,
-    theme: 'github-dark',
+    theme: 'dracula',
   });
+  const [remarkPlugin] = plugin.markdown.remarkPlugins;
+  const [treelightPlugin, nativePrePlugin] = plugin.markdown.rehypePlugins;
 
-  const root = transformer.root.call({
-    options: {
-      lang: 'javascript',
-      meta: {
-        __raw: 'theme=dracula title="src/app.js" {1}',
-      },
-    },
-    source: "const greeting = 'hello';",
-  });
+  let processor = unified().use(remarkParse);
+  processor = usePluggable(processor, remarkPlugin).use(remarkRehype);
+  processor = usePluggable(processor, treelightPlugin);
+  processor = usePluggable(processor, nativePrePlugin).use(rehypeStringify);
 
-  const html = hastToHtml(root);
+  const html = String(await processor.process(markdown));
   t.true(html.includes('<figure class="treelight-frame"'));
   t.true(html.includes('data-title="src/app.js"'));
-  t.true(html.includes('<pre class="treelight dracula language-javascript'));
+  t.true(html.includes('<TreelightPre class="treelight dracula'));
+  t.true(html.includes('language-javascript'));
   t.true(html.includes('has-line-numbers'));
   t.true(html.includes('data-highlighted-line="true"'));
+  t.true(html.includes('data-line-number="1"'));
+  t.false(html.includes('data-line-number="2"'));
+  t.true(html.includes('data-treelight-copy-button="true"'));
+  t.false(html.includes('language-js'));
+  t.false(html.includes('class="shiki'));
 });
 
-test('Rspress transformer leaves excluded languages to Shiki', (t) => {
-  const transformer = createTreelightShikiTransformer({
-    highlighter: t.context.highlighter,
-    includeLanguages: ['javascript'],
-  });
-
-  const root = transformer.root.call({
-    options: { lang: 'python' },
-    source: 'print("hello")',
-  });
-
-  t.is(root, undefined);
-});
-
-test('Rspress plugin appends a Treelight transformer', async (t) => {
+test('Rspress plugin neutralizes the built-in Shiki renderer', (t) => {
   const existingTransformer = { name: 'existing' };
-  const plugin = rspressTreelight({
-    highlighter: t.context.highlighter,
-    lineNumbers: true,
-  });
-
-  const config = await plugin.config({
+  const plugin = rspressTreelight({ highlighter: t.context.highlighter });
+  const config = plugin.config({
     markdown: {
       shiki: {
+        theme: 'existing-theme',
         transformers: [existingTransformer],
       },
     },
   });
 
+  t.is(config.markdown.shiki.defaultLanguage, undefined);
+  t.false(config.markdown.shiki.lazy);
+  t.deepEqual(config.markdown.shiki.langs, []);
+  t.is(config.markdown.shiki.theme, 'existing-theme');
   t.is(config.markdown.shiki.transformers[0], existingTransformer);
-  t.is(config.markdown.shiki.transformers[1].name, '@treelight/plugin-rspress');
 });
 
-test('Rspress stylesheet resets Rspress code block chrome inside Treelight frames', async (t) => {
+test('Rspress plugin registers its native pre component', (t) => {
+  const plugin = rspressTreelight({ highlighter: t.context.highlighter });
+
+  t.deepEqual(plugin.markdown.globalComponents, [
+    '@treelight/plugin-rspress/TreelightPre',
+  ]);
+});
+
+test('Rspress stylesheet contains no Rspress code block chrome overrides', async (t) => {
   const css = await readFile(
     new URL('../../plugin-rspress/styles.css', import.meta.url),
     'utf8',
@@ -85,10 +96,6 @@ test('Rspress stylesheet resets Rspress code block chrome inside Treelight frame
       '--treelight-title-background: var(--treelight-code-background)',
     ),
   );
-  t.true(css.includes('.treelight-frame > .rp-codeblock'));
-  t.true(css.includes('margin: 0'));
-  t.true(css.includes('border-top-left-radius: 0'));
-  t.true(css.includes('border-top-right-radius: 0'));
-  t.true(css.includes('.rp-codeblock__content .treelight code'));
-  t.true(css.includes('padding: 0'));
+  t.false(css.includes('.rp-codeblock'));
+  t.false(css.includes('.rp-codeblock__content'));
 });

@@ -21,7 +21,7 @@ Treelight is a code-highlighter based on Tree-sitter grammars. It gives you the 
 - `@treelight/plugin-astro` installs Treelight as an Astro Markdown/MDX code block integration.
 - `@treelight/plugin-rehype` renders HTML AST code blocks with Treelight in unified pipelines.
 - `@treelight/plugin-remark` renders Markdown AST code blocks with Treelight when a remark-stage transform is needed.
-- `@treelight/plugin-rspress` integrates Treelight with Rspress's Shiki pipeline.
+- `@treelight/plugin-rspress` gives Treelight full ownership of Rspress code fences and bypasses Rspress's code-block UI.
 - `@treelight/<language>` packages select cacheable WASM assets in browser bundles and self-contained definitions in Node and SSR runtimes.
 - `@treelight/theme-<theme>` packages provide bundled themes.
 

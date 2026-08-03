@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { defineConfig } from '@rspress/core';
-import { createTreelightShikiTransformer } from '@treelight/plugin-rspress';
-import { markdownHighlighter, markdownLanguageNames } from './src/lib/markdown';
+import treelight from '@treelight/plugin-rspress';
+import { markdownHighlighter } from './src/lib/markdown';
 
 const siteUrl = (
   process.env.DOCS_SITE_URL ?? 'https://treelight.dzx.cz'
@@ -84,22 +84,6 @@ const themePages = [
   ['Solarized Light', '/themes/solarized-light'],
   ['Tokyo Night', '/themes/tokyonight'],
 ].map(([text, link]) => ({ text, link }));
-
-const treelightCodeBlocks = createTreelightShikiTransformer({
-  highlighter: markdownHighlighter,
-  includeLanguages: markdownLanguageNames,
-  theme: 'github-dark',
-  lineNumbers: true,
-  languageMap: {
-    console: 'bash',
-    js: 'javascript',
-    md: 'markdown',
-    shell: 'bash',
-    sh: 'bash',
-    ts: 'typescript',
-    yml: 'yaml',
-  },
-});
 
 export default defineConfig({
   root: 'src',
@@ -213,14 +197,27 @@ export default defineConfig({
   ],
   themeDir: path.join(import.meta.dirname, 'theme'),
   globalStyles: path.join(import.meta.dirname, 'src/styles.css'),
+  plugins: [
+    treelight({
+      copyButton: true,
+      highlighter: markdownHighlighter,
+      theme: 'github-dark',
+      lineNumbers: true,
+      languageMap: {
+        console: 'bash',
+        csharp: 'c-sharp',
+        js: 'javascript',
+        md: 'markdown',
+        shell: 'bash',
+        sh: 'bash',
+        ts: 'typescript',
+        yml: 'yaml',
+      },
+    }),
+  ],
   route: {
     cleanUrls: true,
     extensions: ['.md', '.mdx'],
-  },
-  markdown: {
-    shiki: {
-      transformers: [treelightCodeBlocks],
-    },
   },
   builderConfig: {
     tools: {

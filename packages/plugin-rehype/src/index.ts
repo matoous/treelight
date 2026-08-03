@@ -61,7 +61,9 @@ function getLanguage(
     getPropertyString(code, 'lang') ||
     getPropertyString(pre, 'lang') ||
     getPropertyString(code, 'dataLang') ||
-    getPropertyString(pre, 'dataLang');
+    getPropertyString(pre, 'dataLang') ||
+    getPropertyString(code, 'dataTreelightLanguage') ||
+    getPropertyString(pre, 'dataTreelightLanguage');
   const resolvedLanguage =
     language || options.defaultLanguage || DEFAULT_LANGUAGE;
   return options.languageMap?.[resolvedLanguage] || resolvedLanguage;

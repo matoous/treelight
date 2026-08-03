@@ -1,11 +1,4 @@
-import bash from '@treelight/bash';
-import comment from '@treelight/comment';
 import { createHighlighter } from '@treelight/core';
-import javascript from '@treelight/javascript';
-import jsdoc from '@treelight/jsdoc';
-import markdown from '@treelight/markdown';
-import markdownInline from '@treelight/markdown-inline';
-import regex from '@treelight/regex';
 import ayuDark from '@treelight/theme-ayu-dark';
 import catppuccinMocha from '@treelight/theme-catppuccin-mocha';
 import dracula from '@treelight/theme-dracula';
@@ -20,23 +13,10 @@ import onedark from '@treelight/theme-onedark';
 import rosePine from '@treelight/theme-rose-pine';
 import solarizedLight from '@treelight/theme-solarized-light';
 import tokyonight from '@treelight/theme-tokyonight';
-import tsx from '@treelight/tsx';
-import typescript from '@treelight/typescript';
+import { languageOptions } from '../data/languages';
 
-export const markdownLanguages = [
-  bash,
-  comment,
-  javascript,
-  jsdoc,
-  markdown,
-  markdownInline,
-  regex,
-  tsx,
-  typescript,
-];
-
-export const markdownLanguageNames = markdownLanguages.map(
-  (language) => language.id,
+const markdownLanguages = await Promise.all(
+  languageOptions.map(async ({ loader }) => (await loader()).default),
 );
 
 export const markdownThemes = [

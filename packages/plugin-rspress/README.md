@@ -1,8 +1,6 @@
 # @treelight/plugin-rspress
 
-Rspress plugin for rendering Markdown and MDX code blocks with Treelight.
-
-The plugin installs a Shiki-compatible transformer into Rspress's `markdown.shiki.transformers` pipeline. Treelight renders the final code block HTML, while Rspress keeps its normal Markdown and MDX pipeline.
+Rspress plugin for rendering every Markdown and MDX code fence with Treelight.
 
 ```ts
 import { defineConfig } from '@rspress/core';
@@ -22,6 +20,17 @@ export default defineConfig({
 });
 ```
 
+The plugin owns the complete fence-rendering path. It preserves the language
+before Rspress's built-in Shiki stage, prevents that stage from loading or
+rendering languages, highlights the block through `@treelight/plugin-rehype`,
+and renders the result through a native `<pre>` instead of Rspress's code-block
+component. Rspress therefore does not add its own frame, copy button, or wrap
+button.
+
+Rspress 2 currently has no supported option for removing its built-in Shiki
+rehype plugin, so Shiki remains a transitive Rspress dependency and its empty
+transformer pass still runs. It does not render Treelight-managed fences.
+
 Code fence metadata can override block-level rendering:
 
 ````md
@@ -37,4 +46,15 @@ Import the stylesheet from your Rspress global CSS:
 @import "@treelight/plugin-rspress/styles.css";
 ```
 
-Use `createTreelightShikiTransformer` when you want to wire the transformer manually through `markdown.shiki.transformers`. Pass `includeLanguages` to apply Treelight only to selected languages and preserve Shiki's existing output for every other code block.
+## Copy Button
+
+Set `copyButton: true` to render a Treelight copy button for every code block,
+then import the browser runtime once from your custom theme entry:
+
+```ts
+import '@treelight/plugin-rspress/copy';
+```
+
+Use `copy` or `copy=false` in fence metadata to override the setting for one
+block. The Rspress plugin bypasses Rspress's own copy control, so only the
+Treelight button is rendered.

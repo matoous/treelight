@@ -16,6 +16,26 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./copy": {
+      "import": {
+        "types": "./dist/copy.d.mts",
+        "default": "./dist/copy.js"
+      },
+      "require": {
+        "types": "./dist/copy.d.cts",
+        "default": "./dist/copy.cjs"
+      }
+    },
+    "./TreelightPre": {
+      "import": {
+        "types": "./dist/TreelightPre.d.mts",
+        "default": "./dist/TreelightPre.js"
+      },
+      "require": {
+        "types": "./dist/TreelightPre.d.cts",
+        "default": "./dist/TreelightPre.cjs"
+      }
+    },
     "./styles.css": "./styles.css"
   },
   "files": [
@@ -33,30 +53,36 @@
   "keywords": [
     "treelight",
     "rspress",
-    "shiki",
     "syntax-highlighting",
     "code-blocks"
   ],
   "scripts": {
-    "build": "rslib build && cp dist/index.d.cts dist/index.d.mts && publint",
+    "build": "rslib build && cp dist/index.d.cts dist/index.d.mts && cp dist/copy.d.cts dist/copy.d.mts && cp dist/TreelightPre.d.cts dist/TreelightPre.d.mts && publint",
     "build:watch": "rslib build --watch",
     "inspect": "rslib inspect",
     "tsc": "tsc --noEmit",
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
-    "@treelight/core": "0.4.1",
-    "@treelight/hast": "0.4.1"
+    "@treelight/hast": "0.4.1",
+    "@treelight/plugin-rehype": "0.0.1",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@rslib/core": "^0.23.2",
     "@rspress/core": "^2.0.18",
+    "@types/hast": "^3.0.5",
+    "@types/mdast": "^4.0.4",
     "@types/node": "^26.1.2",
+    "@types/react": "^19.2.17",
+    "publint": "^0.3.22",
+    "react": "^19.2.8",
     "typescript": "^7.0.2",
-    "publint": "^0.3.22"
+    "unified": "^11.0.5"
   },
   "peerDependencies": {
-    "@rspress/core": "^2.0.0"
+    "@rspress/core": "^2.0.0",
+    "react": ">=19"
   },
   "publishConfig": {
     "access": "public"

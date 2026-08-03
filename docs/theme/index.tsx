@@ -8,6 +8,7 @@ import {
   HomeLayout as OriginalHomeLayout,
   Layout as OriginalLayout,
 } from '@rspress/core/theme-original';
+import '@treelight/plugin-rspress/copy';
 
 const navMark = (
   <img
