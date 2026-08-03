@@ -16,6 +16,16 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./copy": {
+      "import": {
+        "types": "./dist/copy.d.mts",
+        "default": "./dist/copy.js"
+      },
+      "require": {
+        "types": "./dist/copy.d.cts",
+        "default": "./dist/copy.cjs"
+      }
+    },
     "./styles.css": "./styles.css"
   },
   "files": [
@@ -37,7 +47,7 @@
     "code-blocks"
   ],
   "scripts": {
-    "build": "rslib build && cp dist/index.d.cts dist/index.d.mts && publint",
+    "build": "rslib build && cp dist/index.d.cts dist/index.d.mts && cp dist/copy.d.cts dist/copy.d.mts && publint",
     "build:watch": "rslib build --watch",
     "inspect": "rslib inspect",
     "tsc": "tsc --noEmit",

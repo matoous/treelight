@@ -8,14 +8,17 @@ import {
 import {
   addClassName,
   applyCodeBlockLineOptions,
+  type CopyButtonOption,
   type HighlightLinesOption,
   hastToHtml,
   htmlFragmentToNodes,
   type LineNumbersOption,
+  resolveCopyButton,
   resolveHighlightedLines,
   resolveLineNumbers,
   resolveTheme,
   resolveTitle,
+  wrapCodeBlockCopyButton,
   wrapCodeBlockFrame,
 } from '@treelight/hast';
 import type { Root } from 'hast';
@@ -23,6 +26,7 @@ import type { Root } from 'hast';
 export interface Props extends CreateHighlighterOptions {
   class?: string;
   code: string;
+  copyButton?: CopyButtonOption;
   highlighter?: Highlighter | Promise<Highlighter>;
   highlightLines?: HighlightLinesOption;
   lang?: string;
@@ -36,6 +40,7 @@ export interface Props extends CreateHighlighterOptions {
 const {
   class: className,
   code,
+  copyButton,
   highlighter,
   highlightLines,
   lang,
@@ -71,9 +76,13 @@ if (renderedPre?.type === 'element') {
     highlightedLines: resolveHighlightedLines(highlightLines, meta),
     lineNumbers: resolveLineNumbers(lineNumbers, meta),
   });
-  renderedNodes[renderedPreIndex] = wrapCodeBlockFrame(renderedPre, {
+  const renderedBlock = wrapCodeBlockFrame(renderedPre, {
     title: resolveTitle(title, meta),
   });
+  renderedNodes[renderedPreIndex] = wrapCodeBlockCopyButton(
+    renderedBlock,
+    resolveCopyButton(copyButton, meta),
+  );
 }
 
 // biome-ignore lint/correctness/noUnusedVariables: Astro consumes this value in the template below.

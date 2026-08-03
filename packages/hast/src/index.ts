@@ -25,6 +25,15 @@ export type CodeBlockFrameOptions = {
   title?: string;
 };
 
+export type CopyButtonOptions = {
+  copiedLabel?: string;
+  errorLabel?: string;
+  label?: string;
+  resetAfter?: number;
+};
+
+export type CopyButtonOption = boolean | CopyButtonOptions;
+
 export function getClassNames(node: Element): string[] {
   const className = node.properties?.className as unknown;
   if (Array.isArray(className)) {
@@ -369,6 +378,23 @@ export function resolveTitle(
   return title || option;
 }
 
+export function resolveCopyButton(
+  option: CopyButtonOption | undefined,
+  meta: string | null | undefined,
+) {
+  const attributes = parseMetaAttributes(meta ?? '');
+  const copy =
+    readMetaBoolean(attributes, 'copy') ??
+    readMetaBoolean(attributes, 'copyButton');
+  if (copy === false) {
+    return false;
+  }
+  if (copy === true) {
+    return typeof option === 'object' ? option : true;
+  }
+  return option;
+}
+
 export function wrapCodeBlockFrame(
   pre: Element,
   options: CodeBlockFrameOptions,
@@ -391,6 +417,103 @@ export function wrapCodeBlockFrame(
         [{ type: 'text', value: options.title }],
       ),
       pre,
+    ],
+  );
+}
+
+function createCopyIcon() {
+  return createElement(
+    'svg',
+    {
+      ariaHidden: 'true',
+      className: ['treelight-copy-button-icon', 'is-copy'],
+      fill: 'none',
+      focusable: 'false',
+      height: 16,
+      viewBox: '0 0 24 24',
+      width: 16,
+    },
+    [
+      createElement('path', {
+        d: 'M9 9h10v10H9z',
+        stroke: 'currentColor',
+        strokeLinejoin: 'round',
+        strokeWidth: '2',
+      }),
+      createElement('path', {
+        d: 'M15 9V5H5v10h4',
+        stroke: 'currentColor',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '2',
+      }),
+    ],
+  );
+}
+
+function createCopiedIcon() {
+  return createElement(
+    'svg',
+    {
+      ariaHidden: 'true',
+      className: ['treelight-copy-button-icon', 'is-copied'],
+      fill: 'none',
+      focusable: 'false',
+      height: 16,
+      viewBox: '0 0 24 24',
+      width: 16,
+    },
+    [
+      createElement('path', {
+        d: 'm5 12.5 4.5 4.5L19 7.5',
+        stroke: 'currentColor',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '2',
+      }),
+    ],
+  );
+}
+
+export function wrapCodeBlockCopyButton(
+  block: Element,
+  option: CopyButtonOption | undefined,
+) {
+  if (!option) {
+    return block;
+  }
+  const options = typeof option === 'object' ? option : {};
+  const label = options.label ?? 'Copy code';
+  const copiedLabel = options.copiedLabel ?? 'Copied';
+  const errorLabel = options.errorLabel ?? 'Copy failed';
+  const resetAfter = Math.max(0, options.resetAfter ?? 2_000);
+
+  return createElement(
+    'div',
+    {
+      className: ['treelight-code-block'],
+      dataTreelightCodeBlock: 'true',
+    },
+    [
+      createElement(
+        'button',
+        {
+          ariaAtomic: 'true',
+          ariaLabel: label,
+          ariaLive: 'polite',
+          className: ['treelight-copy-button'],
+          dataCopiedLabel: copiedLabel,
+          dataCopyErrorLabel: errorLabel,
+          dataCopyLabel: label,
+          dataCopyResetAfter: String(resetAfter),
+          dataCopyState: 'copy',
+          dataTreelightCopyButton: 'true',
+          title: label,
+          type: 'button',
+        },
+        [createCopyIcon(), createCopiedIcon()],
+      ),
+      block,
     ],
   );
 }

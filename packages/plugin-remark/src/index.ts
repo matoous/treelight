@@ -6,14 +6,17 @@ import {
 } from '@treelight/core';
 import {
   applyCodeBlockLineOptions,
+  type CopyButtonOption,
   type HighlightLinesOption,
   hastToHtml,
   htmlFragmentToRoot,
   type LineNumbersOption,
+  resolveCopyButton,
   resolveHighlightedLines,
   resolveLineNumbers,
   resolveTheme,
   resolveTitle,
+  wrapCodeBlockCopyButton,
   wrapCodeBlockFrame,
 } from '@treelight/hast';
 import type { Code, Html, Root } from 'mdast';
@@ -21,6 +24,7 @@ import type { Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
 
 export interface RemarkTreelightOptions extends CreateHighlighterOptions {
+  copyButton?: CopyButtonOption;
   defaultLanguage?: string;
   highlighter?: Highlighter | Promise<Highlighter>;
   highlightLines?: HighlightLinesOption;
@@ -52,12 +56,18 @@ function collectCodeBlocks(tree: Root): CodeBlockRef[] {
 function withLineOptions(
   html: string,
   options: {
+    copyButton?: CopyButtonOption;
     highlightedLines?: HighlightLinesOption;
     lineNumbers?: LineNumbersOption;
     title?: string;
   },
 ) {
-  if (!options.lineNumbers && !options.highlightedLines && !options.title) {
+  if (
+    !options.copyButton &&
+    !options.lineNumbers &&
+    !options.highlightedLines &&
+    !options.title
+  ) {
     return html;
   }
   const root = htmlFragmentToRoot(html);
@@ -67,9 +77,13 @@ function withLineOptions(
   const pre = root.children[preIndex];
   if (pre?.type === 'element') {
     applyCodeBlockLineOptions(pre, options);
-    root.children[preIndex] = wrapCodeBlockFrame(pre, {
+    const renderedBlock = wrapCodeBlockFrame(pre, {
       title: options.title,
     });
+    root.children[preIndex] = wrapCodeBlockCopyButton(
+      renderedBlock,
+      options.copyButton,
+    );
   }
   return hastToHtml(root);
 }
@@ -94,6 +108,7 @@ const remarkTreelight: Plugin<[RemarkTreelightOptions?], Root> = (
         const htmlNode = node as unknown as Html;
         htmlNode.type = 'html';
         htmlNode.value = withLineOptions(html, {
+          copyButton: resolveCopyButton(options.copyButton, node.meta),
           highlightedLines: resolveHighlightedLines(
             options.highlightLines,
             node.meta,

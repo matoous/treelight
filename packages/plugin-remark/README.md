@@ -56,6 +56,25 @@ The `start` option key remains available as a compatibility alias for older loca
 The `theme` metadata value selects a registered theme for one block and falls back to the plugin's configured `theme` when omitted.
 The `title` metadata value wraps the block in a lightweight frame with a visible title bar.
 
+## Copy Button
+
+Set `copyButton: true` to render a copy button for every code block. Use `copy`
+or `copy=false` in fence metadata to override the setting for one block.
+
+```js
+processor.use(remarkTreelight, {
+  copyButton: true,
+  languages: [javascript],
+});
+```
+
+Import the browser runtime once from your client entrypoint. Buttons remain
+hidden when this runtime is not loaded.
+
+```js
+import '@treelight/plugin-remark/copy';
+```
+
 Import the stylesheet from your app entrypoint or layout:
 
 ```js

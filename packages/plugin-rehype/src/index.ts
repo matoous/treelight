@@ -7,6 +7,7 @@ import {
 import {
   addClassName,
   applyCodeBlockLineOptions,
+  type CopyButtonOption,
   findCodeElement,
   getClassNames,
   getMetadata,
@@ -15,10 +16,12 @@ import {
   type HighlightLinesOption,
   htmlFragmentToNodes,
   type LineNumbersOption,
+  resolveCopyButton,
   resolveHighlightedLines,
   resolveLineNumbers,
   resolveTheme,
   resolveTitle,
+  wrapCodeBlockCopyButton,
   wrapCodeBlockFrame,
 } from '@treelight/hast';
 import type { Element, Parent, Root } from 'hast';
@@ -26,6 +29,7 @@ import type { Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
 
 export interface RehypeTreelightOptions extends CreateHighlighterOptions {
+  copyButton?: CopyButtonOption;
   defaultLanguage?: string;
   highlighter?: Highlighter | Promise<Highlighter>;
   highlightLines?: HighlightLinesOption;
@@ -120,9 +124,13 @@ const rehypeTreelight: Plugin<[RehypeTreelightOptions?], Root> = (
             ),
             lineNumbers: resolveLineNumbers(options.lineNumbers, meta),
           });
-          renderedNodes[0] = wrapCodeBlockFrame(renderedPre, {
+          const renderedBlock = wrapCodeBlockFrame(renderedPre, {
             title: resolveTitle(options.title, meta),
           });
+          renderedNodes[0] = wrapCodeBlockCopyButton(
+            renderedBlock,
+            resolveCopyButton(options.copyButton, meta),
+          );
         }
         parent.children.splice(index, 1, ...renderedNodes);
       }),

@@ -70,6 +70,20 @@ const greeting = 'hello';
 \`\`\`
 `;
 
+const copyButtonMarkdown = `# Example
+
+\`\`\`javascript copy
+const greeting = 'hello';
+\`\`\`
+`;
+
+const disabledCopyButtonMarkdown = `# Example
+
+\`\`\`javascript copy=false
+const greeting = 'hello';
+\`\`\`
+`;
+
 test.before(async (t) => {
   t.context.highlighter = await createHighlighter({
     languages: [javascriptLanguage],
@@ -256,6 +270,63 @@ test('rehype plugin can render a title from code metadata', async (t) => {
   );
 });
 
+test('rehype plugin can render an accessible copy button', async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeTreelight, {
+      copyButton: {
+        copiedLabel: 'Copied snippet',
+        errorLabel: 'Unable to copy snippet',
+        label: 'Copy snippet',
+        resetAfter: 500,
+      },
+      highlighter: t.context.highlighter,
+      lineNumbers: true,
+    })
+    .use(rehypeStringify)
+    .process(markdown);
+
+  const html = String(file);
+  t.true(html.includes('<div class="treelight-code-block"'));
+  t.true(html.includes('data-treelight-code-block="true"'));
+  t.true(html.includes('class="treelight-copy-button"'));
+  t.true(html.includes('data-copy-label="Copy snippet"'));
+  t.true(html.includes('data-copied-label="Copied snippet"'));
+  t.true(html.includes('data-copy-error-label="Unable to copy snippet"'));
+  t.true(html.includes('data-copy-reset-after="500"'));
+  t.true(html.includes('aria-label="Copy snippet"'));
+  t.true(html.includes('aria-live="polite"'));
+  t.true(html.includes('treelight-copy-button-icon is-copy'));
+  t.true(html.includes('treelight-copy-button-icon is-copied'));
+  t.false(html.includes('treelight-copy-button-label'));
+  t.false(html.includes('>Copy snippet<'));
+  t.true(html.includes('class="treelight-line-number"'));
+});
+
+test('rehype plugin resolves copy button fence metadata', async (t) => {
+  const enabledFile = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeTreelight, {
+      highlighter: t.context.highlighter,
+    })
+    .use(rehypeStringify)
+    .process(copyButtonMarkdown);
+  const disabledFile = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeTreelight, {
+      copyButton: true,
+      highlighter: t.context.highlighter,
+    })
+    .use(rehypeStringify)
+    .process(disabledCopyButtonMarkdown);
+
+  t.true(String(enabledFile).includes('data-treelight-copy-button="true"'));
+  t.false(String(disabledFile).includes('data-treelight-copy-button'));
+});
+
 test('remark plugin renders code blocks with Treelight', async (t) => {
   const file = await unified()
     .use(remarkParse)
@@ -425,4 +496,36 @@ test('remark plugin can render a title from code metadata', async (t) => {
     ),
   );
   t.true(html.includes('<pre class="treelight github-dark"'));
+});
+
+test('remark plugin can render and disable copy buttons', async (t) => {
+  const enabledFile = await unified()
+    .use(remarkParse)
+    .use(remarkTreelight, {
+      copyButton: true,
+      highlighter: t.context.highlighter,
+    })
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+    })
+    .use(rehypeStringify, {
+      allowDangerousHtml: true,
+    })
+    .process(markdown);
+  const disabledFile = await unified()
+    .use(remarkParse)
+    .use(remarkTreelight, {
+      copyButton: true,
+      highlighter: t.context.highlighter,
+    })
+    .use(remarkRehype, {
+      allowDangerousHtml: true,
+    })
+    .use(rehypeStringify, {
+      allowDangerousHtml: true,
+    })
+    .process(disabledCopyButtonMarkdown);
+
+  t.true(String(enabledFile).includes('data-treelight-copy-button="true"'));
+  t.false(String(disabledFile).includes('data-treelight-copy-button'));
 });

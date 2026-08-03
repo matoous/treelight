@@ -50,6 +50,22 @@ The `start` option key remains available as a compatibility alias for older loca
 The `theme` metadata value selects a registered theme for one block and falls back to the integration's configured `theme` when omitted.
 The `title` metadata value wraps the block in a lightweight frame with a visible title bar.
 
+## Copy Button
+
+Set `copyButton: true` on the integration or `<Code>` component. Use `copy` or
+`copy=false` in fence metadata to override the integration setting for one
+block.
+
+Load the browser runtime once from an Astro layout:
+
+```astro
+<script>
+  import '@treelight/plugin-astro/copy';
+</script>
+```
+
+The generated buttons stay hidden when this runtime is not loaded.
+
 Import the stylesheet from your layout:
 
 ```astro
@@ -72,6 +88,7 @@ import javascript from '@treelight/javascript';
 
 <Code
   code={`const greeting = 'hello';`}
+  copyButton
   lang="javascript"
   languages={[javascript]}
   title="src/app.js"

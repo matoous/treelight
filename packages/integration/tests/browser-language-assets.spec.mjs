@@ -115,5 +115,8 @@ test.serial(
       javascript.some((chunk) => chunk.includes('data:application/wasm')),
     );
     t.false(javascript.some((chunk) => chunk.includes('AGFzbQ')));
+    t.true(
+      javascript.some((chunk) => chunk.includes('treelight-copy-enabled')),
+    );
   },
 );

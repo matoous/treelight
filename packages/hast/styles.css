@@ -1,5 +1,6 @@
 .treelight,
-.treelight-frame {
+.treelight-frame,
+.treelight-code-block {
   --treelight-code-background: transparent;
   --treelight-code-border-color: transparent;
   --treelight-code-border-radius: 0.5rem;
@@ -26,6 +27,12 @@
     transparent
   );
   --treelight-highlighted-line-border-color: currentColor;
+  --treelight-copy-button-background: rgb(0 0 0 / 82%);
+  --treelight-copy-button-border-color: rgb(255 255 255 / 20%);
+  --treelight-copy-button-color: #ffffff;
+  --treelight-copy-button-error-color: #fecaca;
+  --treelight-copy-button-reserved-width: 3rem;
+  --treelight-copy-button-success-color: #bbf7d0;
 }
 
 .treelight {
@@ -42,6 +49,84 @@
 
 .treelight-frame {
   margin: 1rem 0;
+}
+
+.treelight-code-block {
+  position: relative;
+  margin: 1rem 0;
+}
+
+.treelight-code-block > .treelight,
+.treelight-code-block > .treelight-frame {
+  margin: 0;
+}
+
+.treelight-copy-button {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+  z-index: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  padding: 0;
+  color: var(--treelight-copy-button-color);
+  cursor: pointer;
+  background: var(--treelight-copy-button-background);
+  border: 1px solid var(--treelight-copy-button-border-color);
+  border-radius: 0.375rem;
+}
+
+.treelight-copy-enabled .treelight-copy-button {
+  display: inline-flex;
+}
+
+.treelight-copy-button:hover {
+  filter: brightness(1.15);
+}
+
+.treelight-copy-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.treelight-copy-button:disabled {
+  cursor: wait;
+}
+
+.treelight-copy-button[data-copy-state="copied"] {
+  color: var(--treelight-copy-button-success-color);
+}
+
+.treelight-copy-button[data-copy-state="error"] {
+  color: var(--treelight-copy-button-error-color);
+}
+
+.treelight-copy-button-icon {
+  flex: none;
+}
+
+.treelight-copy-button-icon.is-copied {
+  display: none;
+}
+
+.treelight-copy-button[data-copy-state="copied"]
+  .treelight-copy-button-icon.is-copy {
+  display: none;
+}
+
+.treelight-copy-button[data-copy-state="copied"]
+  .treelight-copy-button-icon.is-copied {
+  display: block;
+}
+
+.treelight-copy-enabled .treelight-code-block .treelight {
+  padding-inline-end: calc(
+    var(--treelight-code-padding-inline) +
+    var(--treelight-copy-button-reserved-width)
+  );
 }
 
 .treelight-frame .treelight {
@@ -61,6 +146,13 @@
   border-bottom: 0;
   border-top-left-radius: var(--treelight-code-border-radius);
   border-top-right-radius: var(--treelight-code-border-radius);
+}
+
+.treelight-copy-enabled .treelight-code-block .treelight-title {
+  padding-inline-end: calc(
+    var(--treelight-code-padding-inline) +
+    var(--treelight-copy-button-reserved-width)
+  );
 }
 
 .treelight code {
