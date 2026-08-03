@@ -86,11 +86,11 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260728.1",
-    "@rspress/core": "^2.0.18",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "typescript": "^5.9.3",
-    "wrangler": "^4.114.0"
+    "@cloudflare/workers-types": "^5.20260731.1",
+    "@rspress/core": "^2.0.19",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.116.0"
   }
 }
