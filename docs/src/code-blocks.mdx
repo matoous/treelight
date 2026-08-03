@@ -8,10 +8,9 @@ Treelight ships integrations for Markdown and Astro code blocks. Prefer `@treeli
 ## This Docs Site
 
 This site uses `@treelight/plugin-rspress` for every Markdown code block. Its
-build-time highlighter loads the complete documented language catalog, and
-unknown fence languages fall back to escaped, themed Treelight output. The docs
-plugin bypasses Rspress's code-block renderer with a native `<pre>`, so frames,
-line numbers, highlighted lines, and copy controls all come from Treelight.
+build-time highlighter loads a bounded set of common fence languages. Other
+languages fall back to escaped, themed Treelight output, while the interactive
+browser demo still loads the complete documented language catalog.
 
 ```ts title="docs/rspress.config.ts" {5-20}
 import { defineConfig } from '@rspress/core';
@@ -36,14 +35,10 @@ export default defineConfig({
 });
 ```
 
-The custom theme only imports `@treelight/plugin-rspress/copy` once. The plugin
-itself renders a native `<pre>`, so Rspress does not add its own wrapper, copy
-button, or wrap button around Treelight output.
-
-Rspress 2 still includes Shiki in its core Markdown pipeline and does not expose
-an opt-out. The Treelight plugin prevents that pass from loading or rendering
-languages, then renders each fence itself. Shiki therefore remains a transitive
-Rspress dependency, but it does not produce this site's code-block markup.
+The custom theme imports `@treelight/plugin-rspress/copy` once. The plugin
+bypasses Rspress's code-block renderer with a native `<pre>`, so frames, line
+numbers, highlighted lines, and copy controls all come from Treelight. Rspress
+still includes Shiki internally, but it does not render this site's code fences.
 
 The block below is rendered by that same pipeline. It shows global line numbers, per-block `startLineNumber`, highlighted-line metadata, a per-block theme, and a title. Highlight ranges are source-line ranges, so `highlightLines="2-3"` highlights the second and third code lines even though the visible gutter starts at `41`.
 
