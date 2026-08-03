@@ -1,4 +1,9 @@
 import { createHighlighter } from '@treelight/core';
+import {
+  applyCodeBlockLineOptions,
+  hastToHtml,
+  htmlFragmentToRoot,
+} from '@treelight/hast';
 import javascriptLanguage from '@treelight/javascript';
 import rehypeTreelight from '@treelight/plugin-rehype';
 import remarkTreelight from '@treelight/plugin-remark';
@@ -21,6 +26,14 @@ const multilineMarkdown = `# Example
 \`\`\`javascript
 const greeting = 'hello';
 console.info(greeting);
+\`\`\`
+`;
+
+const trailingBlankLineMarkdown = `# Example
+
+\`\`\`javascript
+const greeting = 'hello';
+
 \`\`\`
 `;
 
@@ -89,6 +102,29 @@ test.before(async (t) => {
     languages: [javascriptLanguage],
     themes: [draculaTheme],
   });
+});
+
+test('shared HAST line rendering omits only the terminal empty row', async (t) => {
+  const render = async (code) => {
+    const html = await t.context.highlighter.highlight(code, 'javascript');
+    const root = htmlFragmentToRoot(html);
+    const pre = root.children[0];
+    if (pre?.type !== 'element') {
+      throw new TypeError(
+        'Expected highlighted output to contain a pre element',
+      );
+    }
+    applyCodeBlockLineOptions(pre, { lineNumbers: true });
+    return hastToHtml(root);
+  };
+
+  const terminalNewline = await render("const greeting = 'hello';\n");
+  t.true(terminalNewline.includes('data-line-number="1"'));
+  t.false(terminalNewline.includes('data-line-number="2"'));
+
+  const trailingBlankLine = await render("const greeting = 'hello';\n\n");
+  t.true(trailingBlankLine.includes('data-line-number="2"'));
+  t.false(trailingBlankLine.includes('data-line-number="3"'));
 });
 
 test('rehype plugin renders code blocks with Treelight', async (t) => {
@@ -162,7 +198,25 @@ test('rehype plugin can render line numbers', async (t) => {
   t.true(html.includes('class="treelight-line-number"'));
   t.true(html.includes('>41</span>'));
   t.true(html.includes('>42</span>'));
+  t.false(html.includes('>43</span>'));
   t.true(html.includes('<span class="variable"'));
+});
+
+test("rehype plugin does not render Markdown's synthetic trailing row", async (t) => {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeTreelight, {
+      highlighter: t.context.highlighter,
+      lineNumbers: true,
+    })
+    .use(rehypeStringify)
+    .process(trailingBlankLineMarkdown);
+
+  const html = String(file);
+  t.true(html.includes('data-line-number="1"'));
+  t.true(html.includes('data-line-number="2"'));
+  t.false(html.includes('data-line-number="3"'));
 });
 
 test('rehype plugin can render line numbers from code metadata', async (t) => {
@@ -368,6 +422,7 @@ test('remark plugin can render line numbers', async (t) => {
   t.true(html.includes('class="treelight-line-number"'));
   t.true(html.includes('>41</span>'));
   t.true(html.includes('>42</span>'));
+  t.false(html.includes('>43</span>'));
   t.true(html.includes('<span class="variable"'));
 });
 

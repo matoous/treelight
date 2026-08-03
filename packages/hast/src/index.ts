@@ -145,10 +145,32 @@ export function createElement(
   };
 }
 
-function splitElementChildrenByLine(children: Element['children']) {
+function lineHasContent(children: Element['children']): boolean {
+  return children.some((child) => {
+    if (child.type === 'text') {
+      return child.value.length > 0;
+    }
+    if (child.type === 'element') {
+      return lineHasContent(child.children);
+    }
+    return false;
+  });
+}
+
+function splitElementChildrenByLine(
+  children: Element['children'],
+  omitTerminalEmptyLine = true,
+) {
   const lines: Element['children'][] = [[]];
   for (const child of children) {
     appendNodeLines(child, lines);
+  }
+  if (
+    omitTerminalEmptyLine &&
+    lines.length > 1 &&
+    !lineHasContent(lines[lines.length - 1])
+  ) {
+    lines.pop();
   }
   return lines;
 }
@@ -168,7 +190,7 @@ function appendNodeLines(node: ElementContent, lines: Element['children'][]) {
   }
 
   if (node.type === 'element') {
-    const nodeLines = splitElementChildrenByLine(node.children);
+    const nodeLines = splitElementChildrenByLine(node.children, false);
     nodeLines.forEach((children, index) => {
       lines[lines.length - 1].push({
         ...node,
