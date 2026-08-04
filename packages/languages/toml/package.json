@@ -76,8 +76,8 @@
   "devDependencies": {
     "@rslib/core": "^0.23.2",
     "@types/node": "^26.1.2",
-    "typescript": "^7.0.2",
-    "publint": "^0.3.22"
+    "publint": "^0.3.22",
+    "typescript": "^7.0.2"
   },
   "treelightLanguage": {
     "repo": "tree-sitter-grammars/tree-sitter-toml",

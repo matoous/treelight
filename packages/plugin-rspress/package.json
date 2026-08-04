@@ -70,11 +70,11 @@
   },
   "devDependencies": {
     "@rslib/core": "^0.23.2",
-    "@rspress/core": "^2.0.18",
+    "@rspress/core": "^2.0.19",
     "@types/hast": "^3.0.5",
     "@types/mdast": "^4.0.4",
     "@types/node": "^26.1.2",
-    "@types/react": "^19.2.17",
+    "@types/react": "^19.2.18",
     "publint": "^0.3.22",
     "react": "^19.2.8",
     "typescript": "^7.0.2",
