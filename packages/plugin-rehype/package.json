@@ -1,6 +1,6 @@
 {
   "name": "@treelight/plugin-rehype",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "Rehype plugin for rendering code blocks with Treelight.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -55,8 +55,8 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
-    "@treelight/core": "0.4.1",
-    "@treelight/hast": "0.4.1",
+    "@treelight/core": "0.5.0",
+    "@treelight/hast": "0.5.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0"
   },

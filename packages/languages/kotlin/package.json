@@ -1,6 +1,6 @@
 {
   "name": "@treelight/kotlin",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "Treelight language module for kotlin.",
   "type": "module",
   "main": "./dist/index.cjs",
