@@ -1,5 +1,13 @@
 # @treelight/browser
 
+## 0.5.0
+
+### Patch Changes
+
+- Updated dependencies [bfc16c2]
+- Updated dependencies [964adb5]
+  - @treelight/core@0.5.0
+
 ## 0.4.1
 
 ### Patch Changes

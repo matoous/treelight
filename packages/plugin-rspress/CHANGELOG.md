@@ -1,5 +1,34 @@
 # @treelight/plugin-rspress
 
+## 0.1.0
+
+### Minor Changes
+
+- bfc16c2: Add language packages for C#, Kotlin, Swift, Dart, HCL/Terraform, Nix,
+  Protobuf, Vue, Svelte, Astro, Fish, PowerShell, AWK, jq, LaTeX, ERB, HEEx,
+  Lua format strings, and PHPDoc.
+
+  Move the Astro, Rehype, Remark, and Rspress integrations to `@treelight/plugin-*`
+  package names, leaving `@treelight/astro` available for the Astro language.
+
+- aa12fa5: Add opt-in copy buttons to code block integrations, including per-fence
+  overrides, customizable status labels, shared styling, and delegated browser
+  runtimes. The icon-only controls briefly show a checkmark after successful
+  copies while retaining accessible status updates.
+
+  The Rspress plugin now owns the complete code-fence pipeline through
+  Treelight's remark and rehype stages, neutralizes Rspress's built-in Shiki
+  rendering, and bypasses its code-block UI with a native pre component. The
+  shared HAST line renderer also omits terminal empty rows while preserving
+  intentional blank lines.
+
+### Patch Changes
+
+- Updated dependencies [bfc16c2]
+- Updated dependencies [aa12fa5]
+  - @treelight/plugin-rehype@0.5.0
+  - @treelight/hast@0.5.0
+
 ## 0.2.2
 
 ### Patch Changes

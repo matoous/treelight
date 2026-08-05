@@ -1,6 +1,6 @@
 {
   "name": "@treelight/plugin-rspress",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Rspress plugin for rendering code blocks with Treelight.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -64,8 +64,8 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
-    "@treelight/hast": "0.4.1",
-    "@treelight/plugin-rehype": "0.0.1",
+    "@treelight/hast": "0.5.0",
+    "@treelight/plugin-rehype": "0.5.0",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {

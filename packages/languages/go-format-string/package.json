@@ -1,6 +1,6 @@
 {
   "name": "@treelight/go-format-string",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Treelight language module for Go format strings.",
   "type": "module",
   "main": "./dist/index.cjs",

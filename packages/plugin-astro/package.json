@@ -1,6 +1,6 @@
 {
   "name": "@treelight/plugin-astro",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "Astro integration for rendering code blocks with Treelight.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -57,9 +57,9 @@
     "lint": "biome ci --diagnostic-level=error --reporter=github"
   },
   "dependencies": {
-    "@treelight/core": "0.4.1",
-    "@treelight/hast": "0.4.1",
-    "@treelight/plugin-rehype": "0.0.1"
+    "@treelight/core": "0.5.0",
+    "@treelight/hast": "0.5.0",
+    "@treelight/plugin-rehype": "0.5.0"
   },
   "devDependencies": {
     "@rslib/core": "^0.23.2",
