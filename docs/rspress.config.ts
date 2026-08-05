@@ -197,6 +197,11 @@ export default defineConfig({
   ],
   themeDir: path.join(import.meta.dirname, 'theme'),
   globalStyles: path.join(import.meta.dirname, 'src/styles.css'),
+  markdown: {
+    globalComponents: [
+      path.join(import.meta.dirname, 'src/LanguageShowcase.tsx'),
+    ],
+  },
   plugins: [
     treelight({
       copyButton: true,

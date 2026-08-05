@@ -40,6 +40,8 @@ const html = highlighter.highlight(code, 'dockerfile');
 
 Example:
 
+<LanguageShowcase language="dockerfile">
+
 ```dockerfile
 FROM node:24-alpine
 WORKDIR /app
@@ -48,5 +50,7 @@ RUN npm ci
 COPY . .
 CMD ["npm", "run", "dev"]
 ```
+
+</LanguageShowcase>
 
 [Back to all languages](/languages)

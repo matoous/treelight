@@ -40,6 +40,8 @@ const html = highlighter.highlight(code, 'typescript');
 
 This example is rendered by this docs site with `@treelight/typescript`:
 
+<LanguageShowcase language="typescript">
+
 ```typescript
 type Task = {
   id: string;
@@ -54,5 +56,7 @@ function toggleTask(task: Task, completed: boolean = !task.completed) {
 const task: Task = { id: crypto.randomUUID(), title: 'Ship docs' };
 console.log(toggleTask(task));
 ```
+
+</LanguageShowcase>
 
 [Back to all languages](/languages)
