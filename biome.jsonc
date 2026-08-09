@@ -13,6 +13,7 @@
       "**",
       "!dist/**",
       "!packages/**/dist/**",
+      "!packages/catalog/src/generated.ts",
       "!node_modules/**",
       "!packages/**/src/wasm/*.wasm"
     ]

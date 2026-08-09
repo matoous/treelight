@@ -1,0 +1,110 @@
+{
+  "name": "@treelight/catalog",
+  "version": "0.0.1",
+  "description": "Lazy language catalog and file resolver for Treelight.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matoous/treelight.git"
+  },
+  "scripts": {
+    "build": "rslib build && cp dist/index.d.cts dist/index.d.mts && publint",
+    "build:watch": "rslib build --watch",
+    "inspect": "rslib inspect",
+    "tsc": "tsc --noEmit",
+    "lint": "biome ci --diagnostic-level=error --reporter=github"
+  },
+  "dependencies": {
+    "@treelight/astro": "0.4.1",
+    "@treelight/awk": "0.0.1",
+    "@treelight/bash": "0.4.1",
+    "@treelight/c": "0.4.1",
+    "@treelight/c-sharp": "0.0.1",
+    "@treelight/clojure": "0.0.1",
+    "@treelight/comment": "0.4.1",
+    "@treelight/core": "0.4.1",
+    "@treelight/cpp": "0.4.1",
+    "@treelight/css": "0.4.1",
+    "@treelight/dart": "0.0.1",
+    "@treelight/dockerfile": "0.4.1",
+    "@treelight/elixir": "0.4.1",
+    "@treelight/erb": "0.0.1",
+    "@treelight/fish": "0.0.1",
+    "@treelight/go": "0.4.1",
+    "@treelight/go-format-string": "0.4.1",
+    "@treelight/graphql": "0.4.1",
+    "@treelight/haskell": "0.0.1",
+    "@treelight/hcl": "0.0.1",
+    "@treelight/heex": "0.0.1",
+    "@treelight/html": "0.4.1",
+    "@treelight/java": "0.4.1",
+    "@treelight/javascript": "0.4.1",
+    "@treelight/jq": "0.0.1",
+    "@treelight/jsdoc": "0.4.1",
+    "@treelight/json": "0.4.1",
+    "@treelight/kotlin": "0.0.1",
+    "@treelight/latex": "0.0.1",
+    "@treelight/lua": "0.4.1",
+    "@treelight/lua-format-string": "0.0.1",
+    "@treelight/luap": "0.0.1",
+    "@treelight/markdown": "0.4.1",
+    "@treelight/markdown-inline": "0.4.1",
+    "@treelight/nginx": "0.0.1",
+    "@treelight/nim": "0.0.1",
+    "@treelight/nix": "0.0.1",
+    "@treelight/nu": "0.0.1",
+    "@treelight/perl": "0.0.1",
+    "@treelight/php": "0.4.1",
+    "@treelight/phpdoc": "0.0.1",
+    "@treelight/pod": "0.0.1",
+    "@treelight/powershell": "0.0.1",
+    "@treelight/protobuf": "0.0.1",
+    "@treelight/python": "0.4.1",
+    "@treelight/regex": "0.4.1",
+    "@treelight/ruby": "0.4.1",
+    "@treelight/rust": "0.4.1",
+    "@treelight/scheme": "0.4.1",
+    "@treelight/scss": "0.0.1",
+    "@treelight/sql": "0.4.1",
+    "@treelight/svelte": "0.0.1",
+    "@treelight/swift": "0.0.1",
+    "@treelight/toml": "0.4.1",
+    "@treelight/tsx": "0.4.1",
+    "@treelight/typescript": "0.4.1",
+    "@treelight/vue": "0.0.1",
+    "@treelight/xml": "0.0.1",
+    "@treelight/yaml": "0.4.1",
+    "@treelight/zig": "0.4.1"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.23.2",
+    "@types/node": "^26.1.2",
+    "publint": "^0.3.22",
+    "typescript": "^7.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">= 18"
+  }
+}

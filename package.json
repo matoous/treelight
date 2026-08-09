@@ -8,6 +8,7 @@
   "workspaces": [
     "packages/plugin-astro",
     "packages/browser",
+    "packages/catalog",
     "packages/core",
     "packages/hast",
     "packages/integration",
@@ -42,6 +43,8 @@
     "lint": "turbo run lint",
     "lint:repo": "biome ci --diagnostic-level=error --reporter=github",
     "lint:fix": "biome check --write",
+    "generate:catalog": "node ./scripts/generate-language-catalog.mjs",
+    "check:catalog": "node ./scripts/generate-language-catalog.mjs --check",
     "check:languages": "node ./scripts/check-language-metadata.mjs",
     "create:language": "node ./scripts/create-language-package.mjs",
     "create:theme": "node ./scripts/create-theme-package.mjs",

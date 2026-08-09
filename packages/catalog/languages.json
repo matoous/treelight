@@ -1,0 +1,265 @@
+{
+  "languages": [
+    { "id": "astro", "package": "@treelight/astro", "extensions": ["astro"] },
+    { "id": "awk", "package": "@treelight/awk", "extensions": ["awk"] },
+    {
+      "id": "bash",
+      "package": "@treelight/bash",
+      "aliases": ["shell", "sh", "zsh"],
+      "extensions": ["bash", "command", "ksh", "sh", "zsh"],
+      "filenames": [
+        ".bash_profile",
+        ".bashrc",
+        ".profile",
+        ".zprofile",
+        ".zshenv",
+        ".zshrc"
+      ]
+    },
+    { "id": "c", "package": "@treelight/c", "extensions": ["c", "h"] },
+    {
+      "id": "c-sharp",
+      "package": "@treelight/c-sharp",
+      "aliases": ["csharp", "cs"],
+      "extensions": ["cs", "csx"]
+    },
+    {
+      "id": "clojure",
+      "package": "@treelight/clojure",
+      "aliases": ["clj", "cljs", "edn"],
+      "extensions": [
+        "boot",
+        "clj",
+        "cljc",
+        "clje",
+        "cljr",
+        "cljs",
+        "cljx",
+        "edn"
+      ]
+    },
+    { "id": "comment", "package": "@treelight/comment" },
+    {
+      "id": "cpp",
+      "package": "@treelight/cpp",
+      "aliases": ["c++"],
+      "extensions": ["cc", "cpp", "cxx", "hh", "hpp", "hxx", "inl", "ipp"]
+    },
+    { "id": "css", "package": "@treelight/css", "extensions": ["css"] },
+    { "id": "dart", "package": "@treelight/dart", "extensions": ["dart"] },
+    {
+      "id": "dockerfile",
+      "package": "@treelight/dockerfile",
+      "extensions": ["dockerfile"],
+      "filenames": ["Containerfile", "Dockerfile"],
+      "filenamePrefixes": ["Containerfile.", "Dockerfile."]
+    },
+    {
+      "id": "elixir",
+      "package": "@treelight/elixir",
+      "extensions": ["ex", "exs"],
+      "filenames": ["mix.exs"]
+    },
+    { "id": "erb", "package": "@treelight/erb", "extensions": ["erb"] },
+    { "id": "fish", "package": "@treelight/fish", "extensions": ["fish"] },
+    { "id": "go", "package": "@treelight/go", "extensions": ["go"] },
+    { "id": "go-format-string", "package": "@treelight/go-format-string" },
+    {
+      "id": "graphql",
+      "package": "@treelight/graphql",
+      "aliases": ["gql"],
+      "extensions": ["gql", "graphql", "graphqls"]
+    },
+    {
+      "id": "haskell",
+      "package": "@treelight/haskell",
+      "aliases": ["hs"],
+      "extensions": ["hs", "hs-boot", "hsc"]
+    },
+    {
+      "id": "hcl",
+      "package": "@treelight/hcl",
+      "aliases": ["terraform"],
+      "extensions": ["hcl", "tf", "tfvars"]
+    },
+    { "id": "heex", "package": "@treelight/heex", "extensions": ["heex"] },
+    {
+      "id": "html",
+      "package": "@treelight/html",
+      "extensions": ["htm", "html", "xhtml"]
+    },
+    { "id": "java", "package": "@treelight/java", "extensions": ["java"] },
+    {
+      "id": "javascript",
+      "package": "@treelight/javascript",
+      "aliases": ["js"],
+      "extensions": ["cjs", "js", "jsx", "mjs"]
+    },
+    { "id": "jq", "package": "@treelight/jq", "extensions": ["jq"] },
+    { "id": "jsdoc", "package": "@treelight/jsdoc" },
+    {
+      "id": "json",
+      "package": "@treelight/json",
+      "extensions": ["geojson", "json", "json5", "jsonc"]
+    },
+    {
+      "id": "kotlin",
+      "package": "@treelight/kotlin",
+      "aliases": ["kt"],
+      "extensions": ["kt", "kts"]
+    },
+    {
+      "id": "latex",
+      "package": "@treelight/latex",
+      "aliases": ["tex"],
+      "extensions": ["latex", "tex"]
+    },
+    { "id": "lua", "package": "@treelight/lua", "extensions": ["lua"] },
+    { "id": "lua-format-string", "package": "@treelight/lua-format-string" },
+    { "id": "luap", "package": "@treelight/luap" },
+    {
+      "id": "markdown",
+      "package": "@treelight/markdown",
+      "aliases": ["md"],
+      "extensions": ["markdown", "md", "mdown", "mkdn"]
+    },
+    {
+      "id": "markdown.inline",
+      "package": "@treelight/markdown-inline",
+      "aliases": ["markdown-inline"]
+    },
+    {
+      "id": "nginx",
+      "package": "@treelight/nginx",
+      "filenames": ["nginx.conf"]
+    },
+    {
+      "id": "nim",
+      "package": "@treelight/nim",
+      "extensions": ["nim", "nimble", "nims"]
+    },
+    { "id": "nix", "package": "@treelight/nix", "extensions": ["nix"] },
+    {
+      "id": "nu",
+      "package": "@treelight/nu",
+      "aliases": ["nushell"],
+      "extensions": ["nu", "nuon"]
+    },
+    {
+      "id": "perl",
+      "package": "@treelight/perl",
+      "aliases": ["pl"],
+      "extensions": [
+        "p6",
+        "pl",
+        "pl6",
+        "pm",
+        "pm6",
+        "psgi",
+        "raku",
+        "rakudoc",
+        "rakumod",
+        "rakutest",
+        "t"
+      ],
+      "filenames": [".latexmkrc", "latexmkrc"]
+    },
+    {
+      "id": "php",
+      "package": "@treelight/php",
+      "extensions": ["php", "php3", "php4", "php5", "phps", "phtml"]
+    },
+    { "id": "phpdoc", "package": "@treelight/phpdoc" },
+    { "id": "pod", "package": "@treelight/pod", "extensions": ["pod"] },
+    {
+      "id": "powershell",
+      "package": "@treelight/powershell",
+      "aliases": ["ps1", "pwsh"],
+      "extensions": ["ps1", "psd1", "psm1"]
+    },
+    {
+      "id": "protobuf",
+      "package": "@treelight/protobuf",
+      "aliases": ["proto"],
+      "extensions": ["proto"]
+    },
+    {
+      "id": "python",
+      "package": "@treelight/python",
+      "aliases": ["py"],
+      "extensions": ["py", "pyi", "pyw"]
+    },
+    { "id": "regex", "package": "@treelight/regex" },
+    {
+      "id": "ruby",
+      "package": "@treelight/ruby",
+      "aliases": ["rb"],
+      "extensions": ["gemspec", "rake", "rb"],
+      "filenames": [
+        "Appfile",
+        "Brewfile",
+        "Fastfile",
+        "Gemfile",
+        "Podfile",
+        "Rakefile",
+        "Vagrantfile"
+      ]
+    },
+    {
+      "id": "rust",
+      "package": "@treelight/rust",
+      "aliases": ["rs"],
+      "extensions": ["rs"]
+    },
+    {
+      "id": "scheme",
+      "package": "@treelight/scheme",
+      "aliases": ["scm"],
+      "extensions": ["scm", "ss"]
+    },
+    { "id": "scss", "package": "@treelight/scss", "extensions": ["scss"] },
+    {
+      "id": "sql",
+      "package": "@treelight/sql",
+      "extensions": ["ddl", "dml", "sql"]
+    },
+    {
+      "id": "svelte",
+      "package": "@treelight/svelte",
+      "extensions": ["svelte"]
+    },
+    { "id": "swift", "package": "@treelight/swift", "extensions": ["swift"] },
+    { "id": "toml", "package": "@treelight/toml", "extensions": ["toml"] },
+    { "id": "tsx", "package": "@treelight/tsx", "extensions": ["tsx"] },
+    {
+      "id": "typescript",
+      "package": "@treelight/typescript",
+      "aliases": ["ts"],
+      "extensions": ["cts", "mts", "ts"]
+    },
+    { "id": "vue", "package": "@treelight/vue", "extensions": ["vue"] },
+    {
+      "id": "xml",
+      "package": "@treelight/xml",
+      "extensions": [
+        "atom",
+        "axaml",
+        "plist",
+        "rss",
+        "svg",
+        "xaml",
+        "xml",
+        "xsd",
+        "xsl",
+        "xslt"
+      ]
+    },
+    {
+      "id": "yaml",
+      "package": "@treelight/yaml",
+      "aliases": ["yml"],
+      "extensions": ["yaml", "yml"]
+    },
+    { "id": "zig", "package": "@treelight/zig", "extensions": ["zig"] }
+  ]
+}

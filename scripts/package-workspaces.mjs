@@ -7,6 +7,7 @@ export const repoRoot = path.resolve(__dirname, '..');
 
 const packageRoots = [
   path.join(repoRoot, 'packages', 'browser'),
+  path.join(repoRoot, 'packages', 'catalog'),
   path.join(repoRoot, 'packages', 'core'),
   path.join(repoRoot, 'packages', 'hast'),
   path.join(repoRoot, 'packages', 'languages'),

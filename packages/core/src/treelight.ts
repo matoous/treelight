@@ -85,10 +85,21 @@ interface InjectionLayer {
   ranges: Range[];
 }
 
+interface ParsedHighlightLayer {
+  captures: HighlightCapture[];
+  injections: InjectionLayer[];
+}
+
 interface CaptureEvent {
   type: 'start' | 'end';
   pos: number;
   capture: CaptureRef;
+}
+
+interface ThemePresentation {
+  className: string;
+  background: string;
+  foreground: string;
 }
 
 const defaultTheme = defaultThemeDefinition as ThemeDefinition;
@@ -162,14 +173,15 @@ function wrapText(
   return output;
 }
 
-function renderHtmlFromCaptures(
+function renderLinesFromCaptures(
   source: string,
   captures: HighlightCapture[],
   theme: ThemeDefinition,
 ) {
   if (captures.length === 0) {
-    return escapeHtml(source);
+    return source.split('\n').map(escapeHtml);
   }
+
   const attrByCapture = new Map<string, string>();
   for (const capture of captures) {
     if (!attrByCapture.has(capture.name)) {
@@ -200,12 +212,24 @@ function renderHtmlFromCaptures(
     return a.type === 'end' ? -1 : 1;
   });
 
-  let cursor = 0;
-  let html = '';
+  const lines = [''];
   const stack: CaptureRef[] = [];
+  const append = (text: string) => {
+    const parts = text.split('\n');
+    parts.forEach((part, index) => {
+      if (part) {
+        lines[lines.length - 1] += wrapText(part, stack, attrByCapture);
+      }
+      if (index < parts.length - 1) {
+        lines.push('');
+      }
+    });
+  };
+
+  let cursor = 0;
   for (const event of events) {
     if (event.pos > cursor) {
-      html += wrapText(source.slice(cursor, event.pos), stack, attrByCapture);
+      append(source.slice(cursor, event.pos));
       cursor = event.pos;
     }
     if (event.type === 'start') {
@@ -220,9 +244,9 @@ function renderHtmlFromCaptures(
     }
   }
   if (cursor < source.length) {
-    html += wrapText(source.slice(cursor), stack, attrByCapture);
+    append(source.slice(cursor));
   }
-  return html;
+  return lines;
 }
 
 function toHighlightCapture(capture: QueryCapture): HighlightCapture {
@@ -389,6 +413,49 @@ function injectionLayers(
   return layers;
 }
 
+function parseHighlightLayer(
+  code: string,
+  state: LanguageState,
+  ranges?: Range[],
+): ParsedHighlightLayer {
+  const tree = state.parser.parse(
+    code,
+    null,
+    ranges ? { includedRanges: ranges } : undefined,
+  );
+  if (!tree) {
+    return { captures: [], injections: [] };
+  }
+  return {
+    captures: highlightCaptures(state, tree, ranges),
+    injections: injectionLayers(state, tree),
+  };
+}
+
+function captureKey(capture: HighlightCapture) {
+  return `${capture.name}\0${capture.startIndex}\0${capture.endIndex}`;
+}
+
+function injectionKey(state: LanguageState, ranges: Range[]) {
+  return `${state.id}:${ranges
+    .map((range) => `${range.startIndex}-${range.endIndex}`)
+    .join(',')}`;
+}
+
+function appendUniqueCaptures(
+  captures: HighlightCapture[],
+  injectedCaptures: HighlightCapture[],
+) {
+  const existingCaptures = new Set(captures.map(captureKey));
+  for (const capture of injectedCaptures) {
+    const key = captureKey(capture);
+    if (!existingCaptures.has(key)) {
+      existingCaptures.add(key);
+      captures.push(capture);
+    }
+  }
+}
+
 async function loadWasmBinary(definition: LanguageDefinition) {
   if (definition.wasm) {
     if (definition.wasm instanceof Uint8Array) {
@@ -419,11 +486,7 @@ async function loadWasmBinary(definition: LanguageDefinition) {
   );
 }
 
-function buildPreBlock(
-  content: string,
-  themeClass: string,
-  theme: ThemeDefinition,
-) {
+function getThemePresentation(theme: ThemeDefinition): ThemePresentation {
   const background =
     getThemeColor(theme, 'ui.background', 'bg') ||
     getThemeColor(theme, 'ui.background') ||
@@ -436,7 +499,15 @@ function buildPreBlock(
     getThemeColor(theme, 'variable', 'fg') ||
     '#000000';
 
-  return `<pre class="treelight ${themeClass}" style="background-color: ${background}; color: ${foreground}"><code>${content}</code></pre>`;
+  return {
+    className: theme.id?.replace(/\s+/g, '-') || DEFAULT_THEME_NAME,
+    background,
+    foreground,
+  };
+}
+
+function buildPreBlock(content: string, theme: ThemePresentation) {
+  return `<pre class="treelight ${theme.className}" style="background-color: ${theme.background}; color: ${theme.foreground}"><code>${content}</code></pre>`;
 }
 
 async function loadLanguageModuleUnqueued(
@@ -633,83 +704,53 @@ export class Treelight {
     }
   }
 
-  private collectCaptures(
+  private collectCapturesSync(
     code: string,
     state: LanguageState,
     ranges?: Range[],
     depth = 0,
     visited = new Set<string>(),
   ): HighlightCapture[] {
-    const tree = state.parser.parse(
-      code,
-      null,
-      ranges ? { includedRanges: ranges } : undefined,
-    );
-    if (!tree) {
-      return [];
-    }
-
-    const captures = highlightCaptures(state, tree, ranges);
+    const { captures, injections } = parseHighlightLayer(code, state, ranges);
     if (depth >= 16) {
       return captures;
     }
-    for (const layer of injectionLayers(state, tree)) {
+    for (const layer of injections) {
       const injectedState = this.languageCache.get(layer.languageName);
       if (!injectedState) {
         continue;
       }
-      const key = `${injectedState.id}:${layer.ranges
-        .map((range) => `${range.startIndex}-${range.endIndex}`)
-        .join(',')}`;
+      const key = injectionKey(injectedState, layer.ranges);
       if (visited.has(key)) {
         continue;
       }
       visited.add(key);
-      const existingCaptures = new Set(
-        captures.map(
-          (capture) =>
-            `${capture.name}\0${capture.startIndex}\0${capture.endIndex}`,
-        ),
-      );
-      const injectedCaptures = this.collectCaptures(
+      const injectedCaptures = this.collectCapturesSync(
         code,
         injectedState,
         layer.ranges,
         depth + 1,
         visited,
       );
-      const newCaptures = injectedCaptures.filter(
-        (capture) =>
-          !existingCaptures.has(
-            `${capture.name}\0${capture.startIndex}\0${capture.endIndex}`,
-          ),
-      );
-      captures.push(...newCaptures);
+      appendUniqueCaptures(captures, injectedCaptures);
     }
     return captures;
   }
 
-  private async loadInjectionLanguages(
+  private async collectCaptures(
     code: string,
     state: LanguageState,
     ranges?: Range[],
     depth = 0,
     visited = new Set<string>(),
     strict = false,
-  ): Promise<void> {
-    if (depth >= 16 || !state.injectionQuery) {
-      return;
-    }
-    const tree = state.parser.parse(
-      code,
-      null,
-      ranges ? { includedRanges: ranges } : undefined,
-    );
-    if (!tree) {
-      return;
+  ): Promise<HighlightCapture[]> {
+    const { captures, injections } = parseHighlightLayer(code, state, ranges);
+    if (depth >= 16) {
+      return captures;
     }
 
-    for (const layer of injectionLayers(state, tree)) {
+    for (const layer of injections) {
       let injectedState = this.languageCache.get(layer.languageName);
       if (!injectedState && this.languages.has(layer.languageName)) {
         try {
@@ -724,14 +765,12 @@ export class Treelight {
       if (!injectedState) {
         continue;
       }
-      const key = `${injectedState.id}:${layer.ranges
-        .map((range) => `${range.startIndex}-${range.endIndex}`)
-        .join(',')}`;
+      const key = injectionKey(injectedState, layer.ranges);
       if (visited.has(key)) {
         continue;
       }
       visited.add(key);
-      await this.loadInjectionLanguages(
+      const injectedCaptures = await this.collectCaptures(
         code,
         injectedState,
         layer.ranges,
@@ -739,21 +778,75 @@ export class Treelight {
         visited,
         strict,
       );
+      appendUniqueCaptures(captures, injectedCaptures);
     }
+    return captures;
   }
 
   private renderHighlightedBlock(
     code: string,
-    themeClass: string,
     theme: ThemeDefinition,
-    state?: LanguageState,
+    captures?: HighlightCapture[],
   ) {
-    if (!state) {
-      return buildPreBlock(escapeHtml(code), themeClass, theme);
+    const lines = renderLinesFromCaptures(code, captures ?? [], theme);
+    return buildPreBlock(lines.join('\n'), getThemePresentation(theme));
+  }
+
+  private renderHighlightedLines(
+    code: string,
+    theme: ThemeDefinition,
+    captures?: HighlightCapture[],
+  ) {
+    return renderLinesFromCaptures(code, captures ?? [], theme);
+  }
+
+  private resolveStrict(options: HighlightOptions) {
+    return options.strict ?? this.options.strict ?? false;
+  }
+
+  private async highlightWith<T>(
+    code: string,
+    languageName: string,
+    options: HighlightOptions,
+    render: (theme: ThemeDefinition, captures?: HighlightCapture[]) => T,
+  ): Promise<T> {
+    const theme = this.getTheme(options.theme);
+    const strict = this.resolveStrict(options);
+    try {
+      const state = await this.loadLanguage(languageName);
+      const captures = await this.collectCaptures(
+        code,
+        state,
+        undefined,
+        0,
+        new Set<string>(),
+        strict,
+      );
+      return render(theme, captures);
+    } catch (error) {
+      if (strict) {
+        throw error;
+      }
     }
-    const captures = this.collectCaptures(code, state);
-    const html = renderHtmlFromCaptures(code, captures, theme);
-    return buildPreBlock(html, themeClass, theme);
+    return render(theme);
+  }
+
+  private highlightWithSync<T>(
+    code: string,
+    languageName: string,
+    options: HighlightOptions,
+    render: (theme: ThemeDefinition, captures?: HighlightCapture[]) => T,
+  ): T {
+    const theme = this.getTheme(options.theme);
+    const strict = this.resolveStrict(options);
+    const state = this.languageCache.get(languageName);
+    if (!state && strict) {
+      throw new Error(
+        `Language "${languageName}" is not loaded. Register and load it before highlighting synchronously.`,
+      );
+    }
+    const captures = state ? this.collectCapturesSync(code, state) : undefined;
+    return render(theme, captures);
   }
 
   async highlight(
@@ -761,25 +854,19 @@ export class Treelight {
     languageName: string,
     options: HighlightOptions = {},
   ): Promise<string> {
-    const theme = this.getTheme(options.theme);
-    const themeClass = theme.id?.replace(/\s+/g, '-') || DEFAULT_THEME_NAME;
-    try {
-      const state = await this.loadLanguage(languageName);
-      await this.loadInjectionLanguages(
-        code,
-        state,
-        undefined,
-        0,
-        new Set<string>(),
-        options.strict,
-      );
-      return this.renderHighlightedBlock(code, themeClass, theme, state);
-    } catch (error) {
-      if (options.strict) {
-        throw error;
-      }
-    }
-    return this.renderHighlightedBlock(code, themeClass, theme);
+    return this.highlightWith(code, languageName, options, (theme, captures) =>
+      this.renderHighlightedBlock(code, theme, captures),
+    );
+  }
+
+  async highlightLines(
+    code: string,
+    languageName: string,
+    options: HighlightOptions = {},
+  ): Promise<string[]> {
+    return this.highlightWith(code, languageName, options, (theme, captures) =>
+      this.renderHighlightedLines(code, theme, captures),
+    );
   }
 
   highlightSync(
@@ -787,15 +874,25 @@ export class Treelight {
     languageName: string,
     options: HighlightOptions = {},
   ): string {
-    const theme = this.getTheme(options.theme);
-    const themeClass = theme.id?.replace(/\s+/g, '-') || DEFAULT_THEME_NAME;
-    const state = this.languageCache.get(languageName);
-    if (!state && options.strict) {
-      throw new Error(
-        `Language "${languageName}" is not loaded. Register and load it before highlighting synchronously.`,
-      );
-    }
-    return this.renderHighlightedBlock(code, themeClass, theme, state);
+    return this.highlightWithSync(
+      code,
+      languageName,
+      options,
+      (theme, captures) => this.renderHighlightedBlock(code, theme, captures),
+    );
+  }
+
+  highlightLinesSync(
+    code: string,
+    languageName: string,
+    options: HighlightOptions = {},
+  ): string[] {
+    return this.highlightWithSync(
+      code,
+      languageName,
+      options,
+      (theme, captures) => this.renderHighlightedLines(code, theme, captures),
+    );
   }
 }
 

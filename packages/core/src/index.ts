@@ -65,6 +65,10 @@ export class Highlighter {
   highlight(code: string, language: string, options?: HighlightOptions) {
     return this.treelight.highlightSync(code, language, options);
   }
+
+  highlightLines(code: string, language: string, options?: HighlightOptions) {
+    return this.treelight.highlightLinesSync(code, language, options);
+  }
 }
 
 async function highlight(
@@ -73,6 +77,14 @@ async function highlight(
   options?: HighlightOptions,
 ) {
   return instance.highlight(code, language, options);
+}
+
+async function highlightLines(
+  code: string,
+  language: string,
+  options?: HighlightOptions,
+) {
+  return instance.highlightLines(code, language, options);
 }
 
 function resolveLanguageDefinition(result: LanguageLoaderResult) {
@@ -149,6 +161,7 @@ const api = {
   Treelight,
   Highlighter,
   highlight,
+  highlightLines,
   registerLanguage,
   registerTheme,
   instance,
@@ -159,6 +172,7 @@ export {
   createHighlighter,
   type HighlightOptions,
   highlight,
+  highlightLines,
   instance,
   type LanguageDefinition,
   type LanguageLoader,
