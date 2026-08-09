@@ -1,6 +1,6 @@
 {
   "name": "@treelight/go",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Treelight language module for go.",
   "type": "module",
   "main": "./dist/index.cjs",

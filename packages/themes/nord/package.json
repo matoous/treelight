@@ -1,6 +1,6 @@
 {
   "name": "@treelight/theme-nord",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Treelight theme module for nord.",
   "main": "./dist/index.cjs",
   "exports": {
