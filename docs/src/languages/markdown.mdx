@@ -17,7 +17,8 @@ Use `@treelight/markdown` to register Markdown syntax highlighting with Treeligh
 ## Install
 
 ```sh
-npm i @treelight/core @treelight/markdown @treelight/theme-github-dark
+npm i @treelight/core @treelight/markdown @treelight/markdown-inline \
+  @treelight/theme-github-dark
 ```
 
 ## Register
@@ -25,16 +26,23 @@ npm i @treelight/core @treelight/markdown @treelight/theme-github-dark
 ```ts
 import { Highlighter } from '@treelight/core';
 import markdown from '@treelight/markdown';
+import markdownInline from '@treelight/markdown-inline';
 import githubDark from '@treelight/theme-github-dark';
 
 const highlighter = await Highlighter.create({
-  languages: [markdown],
+  languages: [markdown, markdownInline],
   themes: [githubDark],
   theme: 'github-dark',
 });
 
 const html = highlighter.highlight(code, 'markdown');
 ```
+
+## Supporting packages
+
+| Package | Language ID | Purpose |
+| --- | --- | --- |
+| `@treelight/markdown-inline` | `markdown.inline` | Highlights links, emphasis, code spans, images, escapes, and table-cell content. |
 
 ## Example
 

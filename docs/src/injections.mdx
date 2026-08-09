@@ -77,6 +77,8 @@ These packages are designed primarily as injection targets, although each can al
 | `pod` | `@treelight/pod` | Plain Old Documentation sections inside Perl files |
 | `regex` | `@treelight/regex` | Go/Python regex calls, JavaScript-family regex literals, CSS regex nodes, and HTML `pattern` attributes |
 
+Single-host helpers are documented with their host language pages: [Go](/languages/go), [Lua](/languages/lua), [Markdown](/languages/markdown), [PHP](/languages/php), and [Perl](/languages/perl).
+
 The regular language packages are also injection targets. HTML injects `javascript` and `css`; Astro can inject `scss`; Markdown fences use their info string as a language ID; Markdown frontmatter can inject `yaml` or `toml`; Fish can inject `nu`; Nix strings can inject Clojure, Haskell, Nginx, Nim, Nushell, Perl, and XML; and Go `//go:generate` directives inject `bash`.
 
 Other query targets that are not bundled remain host-highlighted until you

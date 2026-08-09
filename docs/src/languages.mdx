@@ -32,7 +32,6 @@ import rust from '@treelight/rust';
 | [ERB](/languages/erb) | `@treelight/erb` | `erb` |
 | [Fish](/languages/fish) | `@treelight/fish` | `fish` |
 | [Go](/languages/go) | `@treelight/go` | `go` |
-| [Go format strings](/languages/go-format-string) | `@treelight/go-format-string` | `go-format-string` |
 | [GraphQL](/languages/graphql) | `@treelight/graphql` | `graphql` |
 | [Haskell](/languages/haskell) | `@treelight/haskell` | `haskell` |
 | [HCL / Terraform](/languages/hcl) | `@treelight/hcl` | `hcl` |
@@ -46,19 +45,14 @@ import rust from '@treelight/rust';
 | [Kotlin](/languages/kotlin) | `@treelight/kotlin` | `kotlin` |
 | [LaTeX](/languages/latex) | `@treelight/latex` | `latex` |
 | [Lua](/languages/lua) | `@treelight/lua` | `lua` |
-| [Lua format strings](/languages/lua-format-string) | `@treelight/lua-format-string` | `lua-format-string` |
-| [Lua patterns](/languages/luap) | `@treelight/luap` | `luap` |
 | [Markdown](/languages/markdown) | `@treelight/markdown` | `markdown` |
-| [Markdown inline](/languages/markdown-inline) | `@treelight/markdown-inline` | `markdown.inline` |
 | [Nginx](/languages/nginx) | `@treelight/nginx` | `nginx` |
 | [Nim](/languages/nim) | `@treelight/nim` | `nim` |
 | [Nix](/languages/nix) | `@treelight/nix` | `nix` |
 | [Nushell](/languages/nu) | `@treelight/nu` | `nu` |
 | [Perl](/languages/perl) | `@treelight/perl` | `perl` |
 | [PHP](/languages/php) | `@treelight/php` | `php` |
-| [PHPDoc](/languages/phpdoc) | `@treelight/phpdoc` | `phpdoc` |
 | [PowerShell](/languages/powershell) | `@treelight/powershell` | `powershell` |
-| [POD](/languages/pod) | `@treelight/pod` | `pod` |
 | [Protobuf](/languages/protobuf) | `@treelight/protobuf` | `protobuf` |
 | [Python](/languages/python) | `@treelight/python` | `python` |
 | [Regular expressions](/languages/regex) | `@treelight/regex` | `regex` |
@@ -79,6 +73,10 @@ import rust from '@treelight/rust';
 
 The internal `@treelight/ecma` package provides shared ECMAScript query data for JavaScript-family languages and is not usually installed directly by applications.
 
-AWK, comment annotations, ERB, Go format strings, HEEx, jq, JSDoc, LaTeX,
-Lua format strings, Lua patterns, Markdown inline, PHPDoc, POD, and regular
-expressions are commonly registered as [injection languages](/injections).
+Single-host supporting packages are documented with their host language: Go
+format strings under [Go](/languages/go), Lua format strings and patterns under
+[Lua](/languages/lua), Markdown inline under [Markdown](/languages/markdown),
+PHPDoc under [PHP](/languages/php), and POD under [Perl](/languages/perl).
+
+Cross-language and standalone injection targets remain listed in
+[Injections](/injections).

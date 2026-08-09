@@ -17,7 +17,8 @@ Use `@treelight/php` to register PHP syntax highlighting with Treelight.
 ## Install
 
 ```sh
-npm i @treelight/core @treelight/php @treelight/theme-github-dark
+npm i @treelight/core @treelight/php @treelight/phpdoc \
+  @treelight/theme-github-dark
 ```
 
 ## Register
@@ -25,16 +26,23 @@ npm i @treelight/core @treelight/php @treelight/theme-github-dark
 ```ts
 import { Highlighter } from '@treelight/core';
 import php from '@treelight/php';
+import phpdoc from '@treelight/phpdoc';
 import githubDark from '@treelight/theme-github-dark';
 
 const highlighter = await Highlighter.create({
-  languages: [php],
+  languages: [php, phpdoc],
   themes: [githubDark],
   theme: 'github-dark',
 });
 
 const html = highlighter.highlight(code, 'php');
 ```
+
+## Supporting packages
+
+| Package | Language ID | Purpose |
+| --- | --- | --- |
+| `@treelight/phpdoc` | `phpdoc` | Highlights PHPDoc tags and types inside PHP documentation comments. |
 
 ## Example
 

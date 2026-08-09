@@ -17,7 +17,8 @@ Use `@treelight/perl` to register Perl syntax highlighting with Treelight.
 ## Install
 
 ```sh
-npm i @treelight/core @treelight/perl @treelight/theme-github-dark
+npm i @treelight/core @treelight/perl @treelight/pod \
+  @treelight/theme-github-dark
 ```
 
 ## Register
@@ -25,16 +26,23 @@ npm i @treelight/core @treelight/perl @treelight/theme-github-dark
 ```ts
 import { Highlighter } from '@treelight/core';
 import perl from '@treelight/perl';
+import pod from '@treelight/pod';
 import githubDark from '@treelight/theme-github-dark';
 
 const highlighter = await Highlighter.create({
-  languages: [perl],
+  languages: [perl, pod],
   themes: [githubDark],
   theme: 'github-dark',
 });
 
 const html = highlighter.highlight(code, 'perl');
 ```
+
+## Supporting packages
+
+| Package | Language ID | Purpose |
+| --- | --- | --- |
+| `@treelight/pod` | `pod` | Highlights Plain Old Documentation sections embedded in Perl files. |
 
 ## Example
 

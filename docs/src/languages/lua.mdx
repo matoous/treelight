@@ -17,7 +17,8 @@ Use `@treelight/lua` to register Lua syntax highlighting with Treelight.
 ## Install
 
 ```sh
-npm i @treelight/core @treelight/lua @treelight/theme-github-dark
+npm i @treelight/core @treelight/lua @treelight/lua-format-string \
+  @treelight/luap @treelight/theme-github-dark
 ```
 
 ## Register
@@ -25,16 +26,25 @@ npm i @treelight/core @treelight/lua @treelight/theme-github-dark
 ```ts
 import { Highlighter } from '@treelight/core';
 import lua from '@treelight/lua';
+import luaFormatString from '@treelight/lua-format-string';
+import luap from '@treelight/luap';
 import githubDark from '@treelight/theme-github-dark';
 
 const highlighter = await Highlighter.create({
-  languages: [lua],
+  languages: [lua, luaFormatString, luap],
   themes: [githubDark],
   theme: 'github-dark',
 });
 
 const html = highlighter.highlight(code, 'lua');
 ```
+
+## Supporting packages
+
+| Package | Language ID | Purpose |
+| --- | --- | --- |
+| `@treelight/lua-format-string` | `lua-format-string` | Highlights format strings passed to `string.format` and `:format`. |
+| `@treelight/luap` | `luap` | Highlights Lua patterns passed to `find`, `match`, `gmatch`, and `gsub`. |
 
 ## Example
 

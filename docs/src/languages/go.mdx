@@ -42,6 +42,12 @@ const html = highlighter.highlight(code, 'go');
 
 Go's bundled query can inject comment annotations, block documentation Markdown, `//go:generate` Bash, `regexp` patterns, and `fmt`/`log` format strings. Only registered targets are applied; see [Injections](/injections).
 
+## Supporting packages
+
+| Package | Language ID | Purpose |
+| --- | --- | --- |
+| `@treelight/go-format-string` | `go-format-string` | Highlights flags, widths, precisions, argument indexes, and verbs inside supported `fmt` and `log` calls. |
+
 ## Example
 
 Example:
