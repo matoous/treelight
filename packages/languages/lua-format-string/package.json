@@ -1,6 +1,6 @@
 {
   "name": "@treelight/lua-format-string",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "Treelight language module for lua-format-string.",
   "type": "module",
   "main": "./dist/index.cjs",

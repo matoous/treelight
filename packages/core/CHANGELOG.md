@@ -1,5 +1,32 @@
 # @treelight/core
 
+## 0.5.0
+
+### Minor Changes
+
+- 964adb5: Add browser-native theme modifiers and structured underline styles. Theme
+  styles can now render bold, dim, italic, strikethrough, and underline decoration,
+  including underline color and line style. Restore modifier metadata in the
+  bundled themes.
+- 54cb8a5: Add a generated lazy catalog for all bundled language grammars, including file
+  extension and common alias resolution.
+
+  Add line-oriented highlighting APIs that return balanced, source-faithful HTML
+  fragments without requiring consumers to parse a full code block. Highlighting
+  now also honors instance-level strict defaults and parses injected language
+  layers only once per request.
+
+### Patch Changes
+
+- bfc16c2: Add language packages for C#, Kotlin, Swift, Dart, HCL/Terraform, Nix,
+  Protobuf, Vue, Svelte, Astro, Fish, PowerShell, AWK, jq, LaTeX, ERB, HEEx,
+  Lua format strings, and PHPDoc.
+
+  Move the Astro, Rehype, Remark, and Rspress integrations to `@treelight/plugin-*`
+  package names, leaving `@treelight/astro` available for the Astro language.
+
+  - @treelight/theme-github-dark@0.5.0
+
 ## 0.4.1
 
 ### Patch Changes
