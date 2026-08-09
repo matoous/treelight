@@ -11,6 +11,7 @@
       "@treelight/c",
       "@treelight/c-sharp",
       "@treelight/clojure",
+      "@treelight/catalog",
       "@treelight/core",
       "@treelight/cpp",
       "@treelight/css",
