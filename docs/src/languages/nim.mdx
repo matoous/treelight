@@ -1,0 +1,52 @@
+---
+title: "Nim"
+description: "Treelight language package for Nim."
+---
+
+# Nim
+
+Use `@treelight/nim` to register Nim syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/nim` |
+| Language ID | `nim` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/nim @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import nim from '@treelight/nim';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [nim],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'nim');
+```
+
+## Example
+
+<LanguageShowcase language="nim">
+
+```nim
+proc greet(name: string): string =
+  "Hello, " & name & "!"
+
+echo greet("Treelight")
+```
+
+</LanguageShowcase>
+
+[Back to all languages](/languages)

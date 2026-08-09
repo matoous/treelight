@@ -1,0 +1,57 @@
+---
+title: "SCSS"
+description: "Treelight language package for SCSS."
+---
+
+# SCSS
+
+Use `@treelight/scss` to register SCSS syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/scss` |
+| Language ID | `scss` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/scss @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import scss from '@treelight/scss';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [scss],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'scss');
+```
+
+## Example
+
+<LanguageShowcase language="scss">
+
+```scss
+$accent: rebeccapurple;
+
+.card {
+  color: $accent;
+
+  &:hover {
+    color: white;
+  }
+}
+```
+
+</LanguageShowcase>
+
+[Back to all languages](/languages)

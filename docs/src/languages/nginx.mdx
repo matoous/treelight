@@ -1,0 +1,56 @@
+---
+title: "Nginx"
+description: "Treelight language package for Nginx."
+---
+
+# Nginx
+
+Use `@treelight/nginx` to register Nginx syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/nginx` |
+| Language ID | `nginx` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/nginx @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import nginx from '@treelight/nginx';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [nginx],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'nginx');
+```
+
+## Example
+
+<LanguageShowcase language="nginx">
+
+```nginx
+server {
+  listen 80;
+  server_name example.com;
+
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+  }
+}
+```
+
+</LanguageShowcase>
+
+[Back to all languages](/languages)

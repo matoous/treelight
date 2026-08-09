@@ -1,0 +1,53 @@
+---
+title: "Nushell"
+description: "Treelight language package for Nushell."
+---
+
+# Nushell
+
+Use `@treelight/nu` to register Nushell syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/nu` |
+| Language ID | `nu` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/nu @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import nu from '@treelight/nu';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [nu],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'nu');
+```
+
+## Example
+
+<LanguageShowcase language="nu">
+
+```nu
+def greet [name: string] {
+  $"Hello, ($name)!"
+}
+
+greet "Treelight"
+```
+
+</LanguageShowcase>
+
+[Back to all languages](/languages)

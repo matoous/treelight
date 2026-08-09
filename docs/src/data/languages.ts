@@ -466,6 +466,76 @@ const count = ref(0);
   <button @click="count++">Count: {{ count }}</button>
 </template>`;
 
+const clojureSample = `(defn greet [name]
+  (println (str "Hello, " name "!")))
+
+(greet "Treelight")`;
+
+const haskellSample = `module Main where
+
+greet :: String -> String
+greet name = "Hello, " ++ name ++ "!"
+
+main :: IO ()
+main = putStrLn (greet "Treelight")`;
+
+const luapSample = `^%a+[%w_-]*$`;
+
+const nginxSample = `server {
+  listen 80;
+  server_name example.com;
+
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+  }
+}`;
+
+const nimSample = `proc greet(name: string): string =
+  "Hello, " & name & "!"
+
+echo greet("Treelight")`;
+
+const nuSample = `def greet [name: string] {
+  $"Hello, ($name)!"
+}
+
+greet "Treelight"`;
+
+const perlSample = `use strict;
+use warnings;
+
+sub greet {
+  my ($name) = @_;
+  return "Hello, $name!";
+}
+
+print greet("Treelight"), "\\n";`;
+
+const podSample = `=head1 NAME
+
+Treelight - Tree-sitter syntax highlighting
+
+=head1 SYNOPSIS
+
+  npm install @treelight/core
+
+=cut`;
+
+const scssSample = `$accent: rebeccapurple;
+
+.card {
+  color: $accent;
+
+  &:hover {
+    color: white;
+  }
+}`;
+
+const xmlSample = `<?xml version="1.0" encoding="UTF-8"?>
+<project name="treelight">
+  <language id="xml" enabled="true" />
+</project>`;
+
 export const languageOptions: LanguageOption[] = [
   {
     id: 'bash',
@@ -761,4 +831,85 @@ export const languageOptions: LanguageOption[] = [
     loader: () => import('@treelight/vue'),
     sample: vueSample,
   },
+  {
+    id: 'clojure',
+    label: 'Clojure',
+    loader: () => import('@treelight/clojure'),
+    sample: clojureSample,
+  },
+  {
+    id: 'haskell',
+    label: 'Haskell',
+    loader: () => import('@treelight/haskell'),
+    sample: haskellSample,
+  },
+  {
+    id: 'luap',
+    label: 'Lua patterns',
+    loader: () => import('@treelight/luap'),
+    sample: luapSample,
+  },
+  {
+    id: 'nginx',
+    label: 'Nginx',
+    loader: () => import('@treelight/nginx'),
+    sample: nginxSample,
+  },
+  {
+    id: 'nim',
+    label: 'Nim',
+    loader: () => import('@treelight/nim'),
+    sample: nimSample,
+  },
+  {
+    id: 'nu',
+    label: 'Nushell',
+    loader: () => import('@treelight/nu'),
+    sample: nuSample,
+  },
+  {
+    id: 'perl',
+    label: 'Perl',
+    loader: () => import('@treelight/perl'),
+    sample: perlSample,
+  },
+  {
+    id: 'pod',
+    label: 'POD',
+    loader: () => import('@treelight/pod'),
+    sample: podSample,
+  },
+  {
+    id: 'scss',
+    label: 'SCSS',
+    loader: () => import('@treelight/scss'),
+    sample: scssSample,
+  },
+  {
+    id: 'xml',
+    label: 'XML',
+    loader: () => import('@treelight/xml'),
+    sample: xmlSample,
+  },
 ];
+
+const supportingLanguageIds = new Set([
+  'awk',
+  'comment',
+  'erb',
+  'go-format-string',
+  'heex',
+  'jq',
+  'jsdoc',
+  'latex',
+  'lua-format-string',
+  'luap',
+  'markdown.inline',
+  'phpdoc',
+  'pod',
+  'regex',
+]);
+
+export const homepageLanguageOptions = languageOptions.filter(
+  ({ id }) => !supportingLanguageIds.has(id),
+);

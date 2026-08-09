@@ -1,0 +1,52 @@
+---
+title: "Clojure"
+description: "Treelight language package for Clojure."
+---
+
+# Clojure
+
+Use `@treelight/clojure` to register Clojure syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/clojure` |
+| Language ID | `clojure` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/clojure @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import clojure from '@treelight/clojure';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [clojure],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'clojure');
+```
+
+## Example
+
+<LanguageShowcase language="clojure">
+
+```clojure
+(defn greet [name]
+  (println (str "Hello, " name "!")))
+
+(greet "Treelight")
+```
+
+</LanguageShowcase>
+
+[Back to all languages](/languages)

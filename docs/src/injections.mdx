@@ -71,11 +71,13 @@ These packages are designed primarily as injection targets, although each can al
 | `jsdoc` | `@treelight/jsdoc` | JavaScript, TypeScript, and TSX comments |
 | `latex` | `@treelight/latex` | LaTeX blocks inside Markdown inline content |
 | `lua-format-string` | `@treelight/lua-format-string` | Format strings passed to Lua `string.format` and `:format` calls |
+| `luap` | `@treelight/luap` | Lua patterns passed to `find`, `match`, `gmatch`, and `gsub` |
 | `markdown.inline` | `@treelight/markdown-inline` | Inline nodes inside Markdown documents |
 | `phpdoc` | `@treelight/phpdoc` | Documentation comments in PHP |
+| `pod` | `@treelight/pod` | Plain Old Documentation sections inside Perl files |
 | `regex` | `@treelight/regex` | Go/Python regex calls, JavaScript-family regex literals, CSS regex nodes, and HTML `pattern` attributes |
 
-The regular language packages are also injection targets. HTML injects `javascript` and `css`; Markdown fences use their info string as a language ID; Markdown frontmatter can inject `yaml` or `toml`; and Go `//go:generate` directives inject `bash`.
+The regular language packages are also injection targets. HTML injects `javascript` and `css`; Astro can inject `scss`; Markdown fences use their info string as a language ID; Markdown frontmatter can inject `yaml` or `toml`; Fish can inject `nu`; Nix strings can inject Clojure, Haskell, Nginx, Nim, Nushell, Perl, and XML; and Go `//go:generate` directives inject `bash`.
 
 Other query targets that are not bundled remain host-highlighted until you
 register a custom definition under the exact language ID.

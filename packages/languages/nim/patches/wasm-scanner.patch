@@ -1,0 +1,42 @@
+--- a/src/scanner.c
++++ b/src/scanner.c
+@@ -26,7 +26,7 @@
+ #  define _pure_
+ #endif
+-
++
+-#ifdef TREE_SITTER_INTERNAL_BUILD
++#if defined(TREE_SITTER_INTERNAL_BUILD) && !defined(__wasm__)
+ #  define dprintf(...) fprintf(stderr, __VA_ARGS__)
+ #  define dputs(msg) fputs(msg, stderr)
+ #  define DBG(msg)  \
+@@ -46,13 +46,20 @@
+ static const bool debug_mode = false;
+ #endif
+-
++
+-#define RUNTIME_ASSERT(cond)                                            \
+-  if (!(cond)) {                                                        \
+-    (void)fprintf(                                                      \
+-        stderr, "lex_nim: %s():%d: Assertion `%s' failed.\n", __func__, \
+-        __LINE__, #cond);                                               \
+-    abort();                                                            \
+-  }
++#ifdef __wasm__
++#  define RUNTIME_ASSERT(cond) \
++    do {                     \
++      if (!(cond)) abort();  \
++    } while (0)
++#else
++#  define RUNTIME_ASSERT(cond)                                         \
++    if (!(cond)) {                                                     \
++      (void)fprintf(                                                   \
++          stderr, "lex_nim: %s():%d: Assertion `%s' failed.\n",       \
++          __func__, __LINE__, #cond);                                  \
++      abort();                                                         \
++    }
++#endif
+-
++
+ #define MIN(left, right) ((left) > (right) ? (right) : (left))
+ #define MAX(left, right) ((left) < (right) ? (right) : (left))

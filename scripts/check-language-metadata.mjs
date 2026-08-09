@@ -98,6 +98,13 @@ async function validatePackage(packageName) {
     }
   }
 
+  for (const patch of metadata.source?.patches ?? []) {
+    const patchPath = path.join(packageDir, patch);
+    if (!(await pathExists(patchPath))) {
+      errors.push(`declares source patch ${patch} but the file is missing`);
+    }
+  }
+
   return errors;
 }
 

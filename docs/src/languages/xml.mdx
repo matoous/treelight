@@ -1,0 +1,52 @@
+---
+title: "XML"
+description: "Treelight language package for XML."
+---
+
+# XML
+
+Use `@treelight/xml` to register XML syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/xml` |
+| Language ID | `xml` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/xml @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import xml from '@treelight/xml';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [xml],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'xml');
+```
+
+## Example
+
+<LanguageShowcase language="xml">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="treelight">
+  <language id="xml" enabled="true" />
+</project>
+```
+
+</LanguageShowcase>
+
+[Back to all languages](/languages)

@@ -1,0 +1,57 @@
+---
+title: "Perl"
+description: "Treelight language package for Perl."
+---
+
+# Perl
+
+Use `@treelight/perl` to register Perl syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/perl` |
+| Language ID | `perl` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/perl @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import perl from '@treelight/perl';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [perl],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'perl');
+```
+
+## Example
+
+<LanguageShowcase language="perl">
+
+```perl
+use strict;
+use warnings;
+
+sub greet {
+  my ($name) = @_;
+  return "Hello, $name!";
+}
+
+print greet("Treelight"), "\n";
+```
+
+</LanguageShowcase>
+
+[Back to all languages](/languages)

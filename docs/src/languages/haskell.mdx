@@ -1,0 +1,55 @@
+---
+title: "Haskell"
+description: "Treelight language package for Haskell."
+---
+
+# Haskell
+
+Use `@treelight/haskell` to register Haskell syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/haskell` |
+| Language ID | `haskell` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/haskell @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import haskell from '@treelight/haskell';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [haskell],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'haskell');
+```
+
+## Example
+
+<LanguageShowcase language="haskell">
+
+```haskell
+module Main where
+
+greet :: String -> String
+greet name = "Hello, " ++ name ++ "!"
+
+main :: IO ()
+main = putStrLn (greet "Treelight")
+```
+
+</LanguageShowcase>
+
+[Back to all languages](/languages)

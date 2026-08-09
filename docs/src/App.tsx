@@ -1,21 +1,20 @@
 import { useDark } from '@rspress/core/runtime';
 import { Callout } from '@rspress/core/theme';
 import { useEffect, useState } from 'react';
-import { languageOptions } from './data/languages';
+import { homepageLanguageOptions } from './data/languages';
 import { themeOptions } from './data/themes';
 import { ensureTheme, treelight } from './lib/treelight';
 
-const defaultLanguage = languageOptions[0]?.id ?? 'javascript';
+const defaultLanguage = homepageLanguageOptions[0]?.id ?? 'javascript';
 const fallbackTheme = themeOptions[0]?.id ?? 'github-dark';
 const siteAwareThemes = new Set(['github-dark', 'github-light']);
 
-const snippetsByLanguage = languageOptions.reduce<Record<string, string>>(
-  (acc, option) => {
-    acc[option.id] = option.sample;
-    return acc;
-  },
-  {},
-);
+const snippetsByLanguage = homepageLanguageOptions.reduce<
+  Record<string, string>
+>((acc, option) => {
+  acc[option.id] = option.sample;
+  return acc;
+}, {});
 
 function App() {
   const isDark = useDark();
@@ -76,7 +75,7 @@ function App() {
               value={language}
               onChange={(event) => setLanguage(event.target.value)}
             >
-              {languageOptions.map((option) => (
+              {homepageLanguageOptions.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.label}
                 </option>

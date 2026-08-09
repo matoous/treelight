@@ -39,7 +39,7 @@ async function main() {
   await mkdir(wasmDir, { recursive: true });
   const destPath = path.join(wasmDir, artifact);
   if (meta.source) {
-    await buildFromSource(meta, destPath);
+    await buildFromSource(meta, destPath, packageDir);
   } else {
     const url = `https://github.com/${repo}/releases/download/${version}/${artifact}`;
     console.log(`Downloading ${artifact} (${version}) from ${url}`);
@@ -49,7 +49,7 @@ async function main() {
   console.log(`Saved ${artifact} to ${path.relative(process.cwd(), destPath)}`);
 }
 
-async function buildFromSource(meta, destPath) {
+async function buildFromSource(meta, destPath, packageDir) {
   const source = meta.source;
   const repoUrl = source.git ?? `https://github.com/${meta.repo}.git`;
   const checkoutDir = await mkdtemp(
@@ -71,6 +71,14 @@ async function buildFromSource(meta, destPath) {
     repoUrl,
     checkoutDir,
   ]);
+
+  for (const patch of source.patches ?? []) {
+    const patchPath = path.resolve(packageDir, patch);
+    console.log(`Applying ${path.relative(packageDir, patchPath)}`);
+    await execFileAsync('git', ['apply', '--whitespace=nowarn', patchPath], {
+      cwd: checkoutDir,
+    });
+  }
 
   const grammarDir = path.join(checkoutDir, source.subpath ?? '.');
   console.log(`Building ${meta.artifact} from ${grammarDir}`);
