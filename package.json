@@ -62,7 +62,7 @@
   },
   "optionalDependencies": {
     "@ast-grep/napi-linux-x64-gnu": "^0.45.0",
-    "@rspack/binding-linux-x64-gnu": "^2.1.7",
+    "@rspack/binding-linux-x64-gnu": "^2.1.8",
     "@typescript/typescript-linux-x64": "^7.0.2"
   }
 }
