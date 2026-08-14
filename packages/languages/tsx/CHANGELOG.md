@@ -1,5 +1,11 @@
 # @treelight/tsx
 
+## 0.6.0
+
+### Patch Changes
+
+- @treelight/ecma@0.6.0
+
 ## 0.5.0
 
 ### Patch Changes
