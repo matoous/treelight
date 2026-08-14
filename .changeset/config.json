@@ -46,6 +46,7 @@
       "@treelight/nim",
       "@treelight/nix",
       "@treelight/nu",
+      "@treelight/objective-c",
       "@treelight/perl",
       "@treelight/php",
       "@treelight/phpdoc",

@@ -54,6 +54,7 @@
     "@treelight/nim": "0.5.0",
     "@treelight/nix": "0.5.0",
     "@treelight/nu": "0.5.0",
+    "@treelight/objective-c": "0.0.1",
     "@treelight/perl": "0.5.0",
     "@treelight/php": "0.5.0",
     "@treelight/phpdoc": "0.5.0",

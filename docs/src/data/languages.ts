@@ -61,6 +61,21 @@ int main() {
 }
 `;
 
+const objectiveCSample = `#import <Foundation/Foundation.h>
+
+@interface Greeter : NSObject
+@property(nonatomic, copy) NSString *name;
+- (instancetype)initWithName:(NSString *)name;
+- (void)greet;
+@end
+
+@implementation Greeter
+- (void)greet {
+  NSLog(@"Hello, %@!", self.name);
+}
+@end
+`;
+
 const cssSample = `.callout {
   display: grid;
   gap: 0.5rem;
@@ -554,6 +569,12 @@ export const languageOptions: LanguageOption[] = [
     label: 'C++',
     loader: () => import('@treelight/cpp'),
     sample: cppSample,
+  },
+  {
+    id: 'objective-c',
+    label: 'Objective-C',
+    loader: () => import('@treelight/objective-c'),
+    sample: objectiveCSample,
   },
   {
     id: 'css',

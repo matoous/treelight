@@ -50,6 +50,7 @@ const languagePages = [
   ['Nim', '/languages/nim'],
   ['Nix', '/languages/nix'],
   ['Nushell', '/languages/nu'],
+  ['Objective-C', '/languages/objective-c'],
   ['Perl', '/languages/perl'],
   ['PHP', '/languages/php'],
   ['PowerShell', '/languages/powershell'],

@@ -15,6 +15,7 @@ import luaLanguage from '@treelight/lua';
 import luaFormatStringLanguage from '@treelight/lua-format-string';
 import markdownInlineLanguage from '@treelight/markdown-inline';
 import nixLanguage from '@treelight/nix';
+import objectiveCLanguage from '@treelight/objective-c';
 import phpLanguage from '@treelight/php';
 import phpdocLanguage from '@treelight/phpdoc';
 import powershellLanguage from '@treelight/powershell';
@@ -47,6 +48,11 @@ const cases = [
     'nix',
     nixLanguage,
     '{ pkgs }: pkgs.mkShell { packages = [ pkgs.nodejs ]; }',
+  ],
+  [
+    'objective-c',
+    objectiveCLanguage,
+    '@interface Greeter : NSObject\n- (void)greet;\n@end',
   ],
   [
     'protobuf',
@@ -117,6 +123,27 @@ for (const [id, definition, source] of cases) {
     t.true(html.includes('class="'));
   });
 }
+
+test.serial('highlights Objective-C declarations and messages', async (t) => {
+  const isolated = new Treelight();
+  isolated.registerLanguage('objective-c', resolveLanguage(objectiveCLanguage));
+
+  const html = await isolated.highlight(
+    `@interface Greeter : NSObject
+- (void)greet;
+@end
+
+@implementation Greeter
+- (void)greet { [self greet]; }
+@end`,
+    'objective-c',
+    { strict: true },
+  );
+
+  t.regex(html, /class="keyword"[^>]*>@interface<\/span>/);
+  t.regex(html, /class="type"[^>]*>Greeter<\/span>/);
+  t.regex(html, /class="function-method-call"[^>]*>greet<\/span>/);
+});
 
 test.serial('Bash injects AWK and jq programs', async (t) => {
   const isolated = new Treelight();

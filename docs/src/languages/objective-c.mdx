@@ -1,0 +1,61 @@
+---
+title: Objective-C
+description: Treelight language package for Objective-C.
+---
+
+# Objective-C
+
+Use `@treelight/objective-c` to register Objective-C syntax highlighting with Treelight.
+
+## Package
+
+| Field | Value |
+| --- | --- |
+| Package | `@treelight/objective-c` |
+| Language ID | `objective-c` |
+
+## Install
+
+```sh
+npm i @treelight/core @treelight/objective-c @treelight/theme-github-dark
+```
+
+## Register
+
+```ts
+import { Highlighter } from '@treelight/core';
+import objectiveC from '@treelight/objective-c';
+import githubDark from '@treelight/theme-github-dark';
+
+const highlighter = await Highlighter.create({
+  languages: [objectiveC],
+  themes: [githubDark],
+  theme: 'github-dark',
+});
+
+const html = highlighter.highlight(code, 'objective-c');
+```
+
+## Example
+
+<LanguageShowcase language="objective-c">
+
+```objective-c
+#import <Foundation/Foundation.h>
+
+@interface Greeter : NSObject
+@property(nonatomic, copy) NSString *name;
+- (instancetype)initWithName:(NSString *)name;
+- (void)greet;
+@end
+
+@implementation Greeter
+- (void)greet {
+  NSLog(@"Hello, %@!", self.name);
+}
+@end
+```
+
+</LanguageShowcase>
+
+[Back to all languages](/languages)

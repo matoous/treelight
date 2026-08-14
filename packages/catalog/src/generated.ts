@@ -337,6 +337,15 @@ export const languageCatalog = [
     loader: () => import('@treelight/nu'),
   },
   {
+    id: 'objective-c',
+    packageName: '@treelight/objective-c',
+    aliases: ['objc', 'objectivec'],
+    extensions: ['m', 'objc'],
+    filenames: [],
+    filenamePrefixes: [],
+    loader: () => import('@treelight/objective-c'),
+  },
+  {
     id: 'perl',
     packageName: '@treelight/perl',
     aliases: ['pl'],

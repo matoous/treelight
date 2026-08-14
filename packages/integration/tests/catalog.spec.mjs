@@ -17,6 +17,7 @@ const resolutionCases = [
   [{ fileType: 'unknown', path: 'src/Component.astro' }, 'astro'],
   [{ fileType: 'clojure', path: 'src/core.clj' }, 'clojure'],
   [{ fileType: 'shell', path: 'script.nu' }, 'nu'],
+  [{ fileType: 'objc', path: 'Sources/AppDelegate.m' }, 'objective-c'],
   [{ fileType: 'unknown', path: 'nginx.conf' }, 'nginx'],
   [{ fileType: 'unknown', path: 'styles.scss' }, 'scss'],
   [{ fileType: 'unknown', path: 'document.xml' }, 'xml'],
@@ -32,7 +33,7 @@ test('resolves backend file types and path-specific languages', (t) => {
 
 test('catalog IDs are unique and every registration stays lazy', (t) => {
   const ids = languageCatalog.map((entry) => entry.id);
-  t.is(ids.length, 59);
+  t.is(ids.length, 60);
   t.is(new Set(ids).size, ids.length);
 
   const registrations = new Map();
@@ -84,6 +85,7 @@ test.serial(
       ['nginx', 'server { listen 80; }'],
       ['nim', 'proc greet() = echo "hello"'],
       ['nu', 'let answer = 42'],
+      ['objective-c', '@interface Greeter : NSObject\n- (void)greet;\n@end'],
       ['perl', 'my $answer = 42;'],
       ['pod', '=head1 NAME\n\nExample'],
       ['scss', '$color: red; .button { color: $color; }'],

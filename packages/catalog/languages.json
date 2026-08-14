@@ -146,6 +146,12 @@
       "extensions": ["nu", "nuon"]
     },
     {
+      "id": "objective-c",
+      "package": "@treelight/objective-c",
+      "aliases": ["objc", "objectivec"],
+      "extensions": ["m", "objc"]
+    },
+    {
       "id": "perl",
       "package": "@treelight/perl",
       "aliases": ["pl"],
