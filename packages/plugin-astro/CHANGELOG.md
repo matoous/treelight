@@ -1,5 +1,13 @@
 # @treelight/plugin-astro
 
+## 0.6.0
+
+### Patch Changes
+
+- @treelight/core@0.6.0
+- @treelight/hast@0.6.0
+- @treelight/plugin-rehype@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes

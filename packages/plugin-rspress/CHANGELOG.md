@@ -1,5 +1,12 @@
 # @treelight/plugin-rspress
 
+## 0.1.1
+
+### Patch Changes
+
+- @treelight/hast@0.6.0
+- @treelight/plugin-rehype@0.6.0
+
 ## 0.1.0
 
 ### Minor Changes

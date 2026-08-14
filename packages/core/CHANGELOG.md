@@ -1,5 +1,11 @@
 # @treelight/core
 
+## 0.6.0
+
+### Patch Changes
+
+- @treelight/theme-github-dark@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes
