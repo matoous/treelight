@@ -1,5 +1,11 @@
 # @treelight/browser
 
+## 0.6.0
+
+### Patch Changes
+
+- @treelight/core@0.6.0
+
 ## 0.5.0
 
 ### Patch Changes
