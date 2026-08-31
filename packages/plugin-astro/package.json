@@ -63,9 +63,9 @@
   },
   "devDependencies": {
     "@rslib/core": "^0.23.2",
-    "@types/node": "^26.2.0",
-    "astro": "^7.2.0",
-    "publint": "^0.3.23",
+    "@types/node": "^26.4.0",
+    "astro": "^7.2.9",
+    "publint": "^0.3.24",
     "typescript": "^7.0.2"
   },
   "peerDependencies": {
