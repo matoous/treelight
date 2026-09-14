@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@treelight/core": "0.6.0",
-    "web-tree-sitter": "^0.26.12"
+    "web-tree-sitter": "^0.27.0"
   },
   "devDependencies": {
     "@rslib/core": "^0.23.2",

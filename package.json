@@ -61,8 +61,8 @@
     "url": "git+https://github.com/matoous/treelight.git"
   },
   "optionalDependencies": {
-    "@ast-grep/napi-linux-x64-gnu": "^0.45.1",
-    "@rspack/binding-linux-x64-gnu": "^2.1.8",
+    "@ast-grep/napi-linux-x64-gnu": "^0.45.3",
+    "@rspack/binding-linux-x64-gnu": "^2.2.3",
     "@typescript/typescript-linux-x64": "^7.0.2"
   }
 }

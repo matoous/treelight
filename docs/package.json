@@ -93,14 +93,14 @@
     "@treelight/xml": "0.6.0",
     "@treelight/yaml": "0.6.0",
     "@treelight/zig": "0.6.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260811.1",
     "@rspress/core": "^2.0.19",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "typescript": "^7.0.2",
     "wrangler": "^4.120.1"
   }
