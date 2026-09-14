@@ -62,10 +62,10 @@
     "@treelight/plugin-rehype": "0.6.0"
   },
   "devDependencies": {
-    "@rslib/core": "^0.23.2",
-    "@types/node": "^26.2.0",
-    "astro": "^7.2.0",
-    "publint": "^0.3.23",
+    "@rslib/core": "^1.0.0",
+    "@types/node": "^26.5.1",
+    "astro": "^7.3.2",
+    "publint": "^0.3.24",
     "typescript": "^7.0.2"
   },
   "peerDependencies": {
