@@ -87,7 +87,7 @@
     "unified": "^11.0.5"
   },
   "devDependencies": {
-    "ava": "^8.0.1"
+    "ava": "^8.0.2"
   },
   "ava": {
     "timeout": "3m"
