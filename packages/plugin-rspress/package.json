@@ -66,7 +66,7 @@
   "dependencies": {
     "@treelight/hast": "0.6.0",
     "@treelight/plugin-rehype": "0.6.0",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit": "^5.2.0"
   },
   "devDependencies": {
     "@rslib/core": "^0.23.2",
@@ -74,9 +74,9 @@
     "@types/hast": "^3.0.5",
     "@types/mdast": "^4.0.4",
     "@types/node": "^26.2.0",
-    "@types/react": "^19.2.18",
+    "@types/react": "^19.3.0",
     "publint": "^0.3.23",
-    "react": "^19.2.8",
+    "react": "^19.3.1",
     "typescript": "^7.0.2",
     "unified": "^11.0.5"
   },
